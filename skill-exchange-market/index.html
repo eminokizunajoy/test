@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Exchange Market - Connect & Learn</title>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Glow Background Effects -->
+    <div class="glow-bg">
+        <div class="glow-sphere sphere-1"></div>
+        <div class="glow-sphere sphere-2"></div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- ================= AUTH CONTAINER ================= -->
+    <div id="auth-container" class="auth-container">
+        <!-- Login Card -->
+        <div id="login-card" class="auth-card">
+            <div class="brand">
+                <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h2>Skill Exchange</h2>
+                <p>Belajar & berbagi ilmu antar mahasiswa</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email"><i class="fa-regular fa-envelope"></i> Email Kampus</label>
+                    <input type="email" id="login-email" placeholder="mahasiswa@kampus.ac.id" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+            </form>
+            <div class="auth-footer">
+                <p>Belum punya akun? <a href="#" id="to-register">Daftar Sekarang</a></p>
+            </div>
+        </div>
+
+        <!-- Register Card -->
+        <div id="register-card" class="auth-card hidden">
+            <div class="brand">
+                <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+                <h2>Buat Akun</h2>
+                <p>Gabung dengan komunitas mahasiswa pembelajar</p>
+            </div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-username"><i class="fa-regular fa-user"></i> Username</label>
+                    <input type="text" id="reg-username" placeholder="dika_pratama" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email"><i class="fa-regular fa-envelope"></i> Email Kampus</label>
+                    <input type="email" id="reg-email" placeholder="mahasiswa@kampus.ac.id" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="reg-password" placeholder="Min. 6 karakter" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+            </form>
+            <div class="auth-footer">
+                <p>Sudah punya akun? <a href="#" id="to-login">Masuk di sini</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= APP CONTAINER ================= -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span>Skill Exchange</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-target="view-dashboard">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="#" class="menu-item" data-target="view-search">
+                    <i class="fa-solid fa-magnifying-glass"></i> Cari Partner
+                </a>
+                <a href="#" class="menu-item" data-target="view-matches">
+                    <i class="fa-solid fa-handshake"></i> Kecocokan
+                </a>
+                <a href="#" class="menu-item" data-target="view-chat">
+                    <i class="fa-solid fa-comments"></i> Obrolan
+                    <span id="chat-badge" class="badge hidden">0</span>
+                </a>
+                <a href="#" class="menu-item" data-target="view-profile">
+                    <i class="fa-solid fa-user-gear"></i> Edit Profil
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile-summary">
+                    <img id="user-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="avatar-small">
+                    <div class="user-info-text">
+                        <h4 id="user-display-name">Loading...</h4>
+                        <span id="user-display-dept">Fakultas...</span>
+                    </div>
+                </div>
+                <button id="btn-logout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- ================= DASHBOARD VIEW ================= -->
+            <section id="view-dashboard" class="app-view">
+                <div class="view-header">
+                    <h1>Selamat Datang Kembali! 👋</h1>
+                    <p>Temukan mahasiswa lain untuk bertukar keahlian hari ini.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-primary"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-teach-count">0</h3>
+                            <p>Skill Diajarkan</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-secondary"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-learn-count">0</h3>
+                            <p>Kebutuhan Belajar</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-success"><i class="fa-solid fa-people-arrows"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-match-count">0</h3>
+                            <p>Total Match</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content -->
+                <div class="dashboard-layout">
+                    <!-- Recommended Matches -->
+                    <div class="dashboard-card card-large">
+                        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Rekomendasi Match Heuristik</h3>
+                        <p class="subtitle">Kami mencocokkan apa yang ingin Anda pelajari dengan apa yang diajarkan pengguna lain.</p>
+                        <div id="recommended-list" class="recommended-list">
+                            <!-- Dynamically filled -->
+                            <div class="empty-state">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <p>Belum ada rekomendasi. Lengkapi profil dan skill Anda terlebih dahulu!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Profile Summary -->
+                    <div class="dashboard-card card-small">
+                        <h3><i class="fa-regular fa-id-card"></i> Ringkasan Profil</h3>
+                        <div class="profile-card-preview">
+                            <div class="preview-header">
+                                <img id="preview-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="avatar-large">
+                                <h4 id="preview-name">Nama Pengguna</h4>
+                                <p id="preview-dept-grade">Jurusan - Angkatan</p>
+                            </div>
+                            <hr class="preview-divider">
+                            <div class="preview-section">
+                                <h5>Bisa Mengajar:</h5>
+                                <div id="preview-teach-skills" class="skills-wrapper">
+                                    <!-- Chips -->
+                                </div>
+                            </div>
+                            <div class="preview-section">
+                                <h5>Ingin Belajar:</h5>
+                                <div id="preview-learn-needs" class="skills-wrapper">
+                                    <!-- Chips -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SEARCH PARTNERS VIEW ================= -->
+            <section id="view-search" class="app-view hidden">
+                <div class="view-header">
+                    <h1>Cari Partner Belajar</h1>
+                    <p>Cari berdasarkan keahlian, jurusan, atau nama pengguna.</p>
+                </div>
+                <div class="search-bar-container">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Cari keahlian (misal: Python, Desain UI, Akuntansi)...">
+                    </div>
+                    <select id="filter-category">
+                        <option value="all">Semua Kategori</option>
+                        <option value="IT">IT / Programming</option>
+                        <option value="Design">Desain / Seni</option>
+                        <option value="Business">Bisnis / Keuangan</option>
+                        <option value="Language">Bahasa</option>
+                        <option value="Other">Lain-lain</option>
+                    </select>
+                </div>
+                <div id="search-results-grid" class="search-grid">
+                    <!-- Dynamically filled -->
+                </div>
+            </section>
+
+            <!-- ================= MATCHES VIEW ================= -->
+            <section id="view-matches" class="app-view hidden">
+                <div class="view-header">
+                    <h1>Kecocokan Hubungan (Matches)</h1>
+                    <p>Kelola permintaan kecocokan belajar Anda di sini.</p>
+                </div>
+                <div class="matches-layout">
+                    <div class="matches-card">
+                        <h3><i class="fa-regular fa-paper-plane"></i> Permintaan Masuk</h3>
+                        <div id="incoming-matches-list" class="match-list">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                    <div class="matches-card">
+                        <h3><i class="fa-solid fa-check-double"></i> Match Aktif</h3>
+                        <div id="active-matches-list" class="match-list">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CHAT VIEW ================= -->
+            <section id="view-chat" class="app-view hidden">
+                <div class="chat-container-box">
+                    <!-- Chat Users Sidebar -->
+                    <div class="chat-sidebar">
+                        <div class="chat-sidebar-header">
+                            <h3>Pesan Masuk</h3>
+                        </div>
+                        <div id="chat-users-list" class="chat-users-list">
+                            <!-- List of matched users to chat with -->
+                        </div>
+                    </div>
+
+                    <!-- Chat Window -->
+                    <div class="chat-window">
+                        <!-- Default view before selecting user -->
+                        <div id="chat-no-selection" class="chat-placeholder">
+                            <i class="fa-regular fa-comments"></i>
+                            <h3>Mulai Obrolan</h3>
+                            <p>Pilih salah satu teman belajar di sebelah kiri untuk mulai mengobrol.</p>
+                        </div>
+
+                        <!-- Chat active state -->
+                        <div id="chat-active" class="chat-active-window hidden">
+                            <div class="chat-header">
+                                <div class="chat-header-user">
+                                    <img id="chat-partner-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=partner" alt="Avatar" class="avatar-small">
+                                    <div>
+                                        <h4 id="chat-partner-name">Nama Partner</h4>
+                                        <span id="chat-partner-status"><i class="fa-solid fa-circle"></i> Online (Simulasi)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chat-messages-container" class="chat-messages-container">
+                                <!-- Messages list -->
+                            </div>
+                            <form id="chat-send-form" class="chat-footer">
+                                <input type="text" id="chat-input" placeholder="Tulis pesan untuk partner Anda..." required autocomplete="off">
+                                <button type="submit" class="btn btn-primary btn-round"><i class="fa-solid fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= EDIT PROFILE VIEW ================= -->
+            <section id="view-profile" class="app-view hidden">
+                <div class="view-header">
+                    <h1>Edit Profil</h1>
+                    <p>Lengkapi informasi diri untuk mendapatkan pencocokan belajar terbaik.</p>
+                </div>
+                <div class="profile-layout">
+                    <!-- Profile Form Card -->
+                    <div class="profile-card">
+                        <h3><i class="fa-solid fa-id-card-clip"></i> Informasi Diri</h3>
+                        <form id="profile-form">
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="profile-name">Nama Lengkap</label>
+                                    <input type="text" id="profile-name" required>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="profile-avatar-seed">Pilih Style Avatar</label>
+                                    <select id="profile-avatar-seed">
+                                        <option value="Felix">Felix</option>
+                                        <option value="Aneka">Aneka</option>
+                                        <option value="Milo">Milo</option>
+                                        <option value="Jack">Jack</option>
+                                        <option value="Tigger">Tigger</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="profile-dept">Jurusan / Program Studi</label>
+                                    <input type="text" id="profile-dept" placeholder="Informatika, Sastra, Teknik..." required>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="profile-grade">Angkatan</label>
+                                    <input type="text" id="profile-grade" placeholder="2024, 2023, 2022..." required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-bio">Bio Diri (Deskripsi singkat)</label>
+                                <textarea id="profile-bio" rows="4" placeholder="Saya menyukai programming dan ingin belajar desain grafis..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Simpan Profil</button>
+                        </form>
+                    </div>
+
+                    <!-- Skills Management Card -->
+                    <div class="profile-card">
+                        <h3><i class="fa-solid fa-list-check"></i> Kelola Keahlian & Kebutuhan</h3>
+
+                        <!-- Teach Skills -->
+                        <div class="skills-manage-section">
+                            <h4>Keahlian yang Bisa Saya Ajarkan</h4>
+                            <div class="skill-input-row">
+                                <input type="text" id="input-teach-skill" placeholder="Misal: Python, Masak, Fotografi">
+                                <select id="select-teach-cat">
+                                    <option value="IT">IT</option>
+                                    <option value="Design">Desain</option>
+                                    <option value="Business">Bisnis</option>
+                                    <option value="Language">Bahasa</option>
+                                    <option value="Other">Lain-lain</option>
+                                </select>
+                                <button type="button" id="btn-add-teach" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div id="manage-teach-list" class="skills-wrapper margin-top">
+                                <!-- Chips dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Learn Needs -->
+                        <div class="skills-manage-section margin-top">
+                            <h4>Keahlian yang Ingin Saya Pelajari</h4>
+                            <div class="skill-input-row">
+                                <input type="text" id="input-learn-skill" placeholder="Misal: Laravel, Photoshop, Mandarin">
+                                <select id="select-learn-cat">
+                                    <option value="IT">IT</option>
+                                    <option value="Design">Desain</option>
+                                    <option value="Business">Bisnis</option>
+                                    <option value="Language">Bahasa</option>
+                                    <option value="Other">Lain-lain</option>
+                                </select>
+                                <button type="button" id="btn-add-learn" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div id="manage-learn-list" class="skills-wrapper margin-top">
+                                <!-- Chips dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Custom Logic Script -->
+    <script src="app.js"></script>
+</body>
+</html>
