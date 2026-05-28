@@ -23,28 +23,42 @@
     <!-- NOTIFICATION TOAST -->
     <div id="toast" class="toast hidden"></div>
 
+    <!-- ================= YOU MATCHED MODAL ================= -->
+    <div id="match-modal" class="modal-overlay hidden">
+        <div class="match-modal-card">
+            <h2 data-i18n="you_matched">YOU MATCHED!</h2>
+            <div class="match-avatars">
+                <img id="match-avatar-me" src="https://api.dicebear.com/7.x/bottts/svg?seed=me" alt="Me" class="match-avatar">
+                <div class="match-star"><i class="fa-solid fa-star"></i></div>
+                <img id="match-avatar-partner" src="https://api.dicebear.com/7.x/bottts/svg?seed=partner" alt="Partner" class="match-avatar">
+            </div>
+            <p id="match-modal-text">Kamu dan Dika saling menyukai!</p>
+            <button id="btn-close-match-modal" class="btn btn-primary" data-i18n="send_message">Kirim Pesan</button>
+        </div>
+    </div>
+
     <!-- ================= AUTH CONTAINER ================= -->
     <div id="auth-container" class="auth-container">
         <!-- Login Card -->
         <div id="login-card" class="auth-card">
             <div class="brand">
                 <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
-                <h2>Skill Exchange</h2>
-                <p>Belajar & berbagi ilmu antar mahasiswa</p>
+                <h2 data-i18n="app_title">Skill Exchange</h2>
+                <p data-i18n="app_subtitle">Belajar & berbagi ilmu antar mahasiswa</p>
             </div>
             <form id="login-form">
                 <div class="form-group">
-                    <label for="login-email"><i class="fa-regular fa-envelope"></i> Email Kampus</label>
+                    <label for="login-email"><i class="fa-regular fa-envelope"></i> <span data-i18n="email">Email Kampus</span></label>
                     <input type="email" id="login-email" placeholder="mahasiswa@kampus.ac.id" required>
                 </div>
                 <div class="form-group">
-                    <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <label for="login-password"><i class="fa-solid fa-lock"></i> <span data-i18n="password">Password</span></label>
                     <input type="password" id="login-password" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                <button type="submit" class="btn btn-primary btn-block" data-i18n="login">Masuk</button>
             </form>
             <div class="auth-footer">
-                <p>Belum punya akun? <a href="#" id="to-register">Daftar Sekarang</a></p>
+                <p><span data-i18n="no_account">Belum punya akun?</span> <a href="#" id="to-register" data-i18n="register_now">Daftar Sekarang</a></p>
             </div>
         </div>
 
@@ -52,26 +66,26 @@
         <div id="register-card" class="auth-card hidden">
             <div class="brand">
                 <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
-                <h2>Buat Akun</h2>
-                <p>Gabung dengan komunitas mahasiswa pembelajar</p>
+                <h2 data-i18n="register">Buat Akun</h2>
+                <p data-i18n="register_sub">Gabung dengan komunitas mahasiswa pembelajar</p>
             </div>
             <form id="register-form">
                 <div class="form-group">
-                    <label for="reg-username"><i class="fa-regular fa-user"></i> Username</label>
+                    <label for="reg-username"><i class="fa-regular fa-user"></i> <span data-i18n="username">Username</span></label>
                     <input type="text" id="reg-username" placeholder="dika_pratama" required>
                 </div>
                 <div class="form-group">
-                    <label for="reg-email"><i class="fa-regular fa-envelope"></i> Email Kampus</label>
+                    <label for="reg-email"><i class="fa-regular fa-envelope"></i> <span data-i18n="email">Email Kampus</span></label>
                     <input type="email" id="reg-email" placeholder="mahasiswa@kampus.ac.id" required>
                 </div>
                 <div class="form-group">
-                    <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <label for="reg-password"><i class="fa-solid fa-lock"></i> <span data-i18n="password">Password</span></label>
                     <input type="password" id="reg-password" placeholder="Min. 6 karakter" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+                <button type="submit" class="btn btn-primary btn-block" data-i18n="register">Daftar</button>
             </form>
             <div class="auth-footer">
-                <p>Sudah punya akun? <a href="#" id="to-login">Masuk di sini</a></p>
+                <p><span data-i18n="have_account">Sudah punya akun?</span> <a href="#" id="to-login" data-i18n="login_here">Masuk di sini</a></p>
             </div>
         </div>
     </div>
@@ -84,22 +98,34 @@
                 <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                 <span>Skill Exchange</span>
             </div>
+
+            <!-- Language Selector -->
+            <div class="lang-selector-box">
+                <label for="lang-select"><i class="fa-solid fa-globe"></i> Language</label>
+                <select id="lang-select">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="jp">日本語 (Japanese)</option>
+                    <option value="en">English</option>
+                    <option value="zh">中文 (Chinese)</option>
+                </select>
+            </div>
+
             <nav class="sidebar-menu">
                 <a href="#" class="menu-item active" data-target="view-dashboard">
-                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                    <i class="fa-solid fa-chart-pie"></i> <span data-i18n="menu_dashboard">Dashboard</span>
                 </a>
                 <a href="#" class="menu-item" data-target="view-search">
-                    <i class="fa-solid fa-magnifying-glass"></i> Cari Partner
+                    <i class="fa-solid fa-circle-nodes"></i> <span data-i18n="menu_swipe">Geser Kartu</span>
                 </a>
                 <a href="#" class="menu-item" data-target="view-matches">
-                    <i class="fa-solid fa-handshake"></i> Kecocokan
+                    <i class="fa-solid fa-handshake"></i> <span data-i18n="menu_matches">Kecocokan</span>
                 </a>
                 <a href="#" class="menu-item" data-target="view-chat">
-                    <i class="fa-solid fa-comments"></i> Obrolan
+                    <i class="fa-solid fa-comments"></i> <span data-i18n="menu_chat">Obrolan</span>
                     <span id="chat-badge" class="badge hidden">0</span>
                 </a>
                 <a href="#" class="menu-item" data-target="view-profile">
-                    <i class="fa-solid fa-user-gear"></i> Edit Profil
+                    <i class="fa-solid fa-user-gear"></i> <span data-i18n="menu_profile">Edit Profil</span>
                 </a>
             </nav>
             <div class="sidebar-footer">
@@ -110,7 +136,7 @@
                         <span id="user-display-dept">Fakultas...</span>
                     </div>
                 </div>
-                <button id="btn-logout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                <button id="btn-logout" class="btn btn-logout"><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="logout">Keluar</span></button>
             </div>
         </aside>
 
@@ -119,8 +145,8 @@
             <!-- ================= DASHBOARD VIEW ================= -->
             <section id="view-dashboard" class="app-view">
                 <div class="view-header">
-                    <h1>Selamat Datang Kembali! 👋</h1>
-                    <p>Temukan mahasiswa lain untuk bertukar keahlian hari ini.</p>
+                    <h1 data-i18n="dash_welcome">Selamat Datang Kembali! 👋</h1>
+                    <p data-i18n="dash_subtitle">Temukan mahasiswa lain untuk bertukar keahlian hari ini.</p>
                 </div>
 
                 <!-- Stats Cards -->
@@ -129,21 +155,21 @@
                         <div class="stat-icon icon-primary"><i class="fa-solid fa-chalkboard-user"></i></div>
                         <div class="stat-info">
                             <h3 id="stat-teach-count">0</h3>
-                            <p>Skill Diajarkan</p>
+                            <p data-i18n="stat_teach">Skill Diajarkan</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon icon-secondary"><i class="fa-solid fa-book-open"></i></div>
                         <div class="stat-info">
                             <h3 id="stat-learn-count">0</h3>
-                            <p>Kebutuhan Belajar</p>
+                            <p data-i18n="stat_learn">Kebutuhan Belajar</p>
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon icon-success"><i class="fa-solid fa-people-arrows"></i></div>
                         <div class="stat-info">
                             <h3 id="stat-match-count">0</h3>
-                            <p>Total Match</p>
+                            <p data-i18n="stat_match">Total Match</p>
                         </div>
                     </div>
                 </div>
@@ -152,20 +178,16 @@
                 <div class="dashboard-layout">
                     <!-- Recommended Matches -->
                     <div class="dashboard-card card-large">
-                        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Rekomendasi Match Heuristik</h3>
-                        <p class="subtitle">Kami mencocokkan apa yang ingin Anda pelajari dengan apa yang diajarkan pengguna lain.</p>
+                        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-i18n="dash_recommend">Rekomendasi Match Heuristik</span></h3>
+                        <p class="subtitle" data-i18n="dash_recommend_sub">Kami mencocokkan apa yang ingin Anda pelajari dengan apa yang diajarkan pengguna lain.</p>
                         <div id="recommended-list" class="recommended-list">
                             <!-- Dynamically filled -->
-                            <div class="empty-state">
-                                <i class="fa-solid fa-magnifying-glass-chart"></i>
-                                <p>Belum ada rekomendasi. Lengkapi profil dan skill Anda terlebih dahulu!</p>
-                            </div>
                         </div>
                     </div>
 
                     <!-- Quick Profile Summary -->
                     <div class="dashboard-card card-small">
-                        <h3><i class="fa-regular fa-id-card"></i> Ringkasan Profil</h3>
+                        <h3><i class="fa-regular fa-id-card"></i> <span data-i18n="dash_profile_summary">Ringkasan Profil</span></h3>
                         <div class="profile-card-preview">
                             <div class="preview-header">
                                 <img id="preview-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=default" alt="Avatar" class="avatar-large">
@@ -174,13 +196,13 @@
                             </div>
                             <hr class="preview-divider">
                             <div class="preview-section">
-                                <h5>Bisa Mengajar:</h5>
+                                <h5 data-i18n="profile_can_teach">Bisa Mengajar:</h5>
                                 <div id="preview-teach-skills" class="skills-wrapper">
                                     <!-- Chips -->
                                 </div>
                             </div>
                             <div class="preview-section">
-                                <h5>Ingin Belajar:</h5>
+                                <h5 data-i18n="profile_want_learn">Ingin Belajar:</h5>
                                 <div id="preview-learn-needs" class="skills-wrapper">
                                     <!-- Chips -->
                                 </div>
@@ -190,46 +212,47 @@
                 </div>
             </section>
 
-            <!-- ================= SEARCH PARTNERS VIEW ================= -->
+            <!-- ================= BUMBLE-STYLE SWIPE VIEW ================= -->
             <section id="view-search" class="app-view hidden">
                 <div class="view-header">
-                    <h1>Cari Partner Belajar</h1>
-                    <p>Cari berdasarkan keahlian, jurusan, atau nama pengguna.</p>
+                    <h1 data-i18n="swipe_title">Temukan Partner Belajar</h1>
+                    <p data-i18n="swipe_subtitle">Geser ke Kanan jika tertarik belajar bareng, Geser ke Kiri untuk melewati.</p>
                 </div>
-                <div class="search-bar-container">
-                    <div class="search-input-wrapper">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-input" placeholder="Cari keahlian (misal: Python, Desain UI, Akuntansi)...">
+                
+                <!-- Swiper Deck Container -->
+                <div class="swiper-deck-container">
+                    <div id="card-stack" class="card-stack">
+                        <!-- Swiping Cards dynamically loaded here -->
+                        <div class="empty-deck-message">
+                            <i class="fa-solid fa-circle-nodes"></i>
+                            <h3 data-i18n="no_cards_title">Semua Kartu Sudah Habis!</h3>
+                            <p data-i18n="no_cards_sub">Coba ubah profil Anda atau tambahkan skill lain agar kami bisa mencari lebih banyak orang.</p>
+                        </div>
                     </div>
-                    <select id="filter-category">
-                        <option value="all">Semua Kategori</option>
-                        <option value="IT">IT / Programming</option>
-                        <option value="Design">Desain / Seni</option>
-                        <option value="Business">Bisnis / Keuangan</option>
-                        <option value="Language">Bahasa</option>
-                        <option value="Other">Lain-lain</option>
-                    </select>
-                </div>
-                <div id="search-results-grid" class="search-grid">
-                    <!-- Dynamically filled -->
+
+                    <!-- Swipe Action Buttons -->
+                    <div class="swipe-actions-buttons">
+                        <button id="swipe-btn-left" class="action-btn btn-no" title="Pass (Swipe Left)"><i class="fa-solid fa-xmark"></i></button>
+                        <button id="swipe-btn-right" class="action-btn btn-yes" title="Like (Swipe Right)"><i class="fa-solid fa-star"></i></button>
+                    </div>
                 </div>
             </section>
 
             <!-- ================= MATCHES VIEW ================= -->
             <section id="view-matches" class="app-view hidden">
                 <div class="view-header">
-                    <h1>Kecocokan Hubungan (Matches)</h1>
-                    <p>Kelola permintaan kecocokan belajar Anda di sini.</p>
+                    <h1 data-i18n="matches_title">Kecocokan Hubungan (Matches)</h1>
+                    <p data-i18n="matches_subtitle">Kelola permintaan kecocokan belajar Anda di sini.</p>
                 </div>
                 <div class="matches-layout">
                     <div class="matches-card">
-                        <h3><i class="fa-regular fa-paper-plane"></i> Permintaan Masuk</h3>
+                        <h3><i class="fa-regular fa-paper-plane"></i> <span data-i18n="incoming_requests">Permintaan Masuk</span></h3>
                         <div id="incoming-matches-list" class="match-list">
                             <!-- Filled dynamically -->
                         </div>
                     </div>
                     <div class="matches-card">
-                        <h3><i class="fa-solid fa-check-double"></i> Match Aktif</h3>
+                        <h3><i class="fa-solid fa-check-double"></i> <span data-i18n="active_matches">Match Aktif</span></h3>
                         <div id="active-matches-list" class="match-list">
                             <!-- Filled dynamically -->
                         </div>
@@ -243,20 +266,20 @@
                     <!-- Chat Users Sidebar -->
                     <div class="chat-sidebar">
                         <div class="chat-sidebar-header">
-                            <h3>Pesan Masuk</h3>
+                            <h3 data-i18n="inbox">Pesan Masuk</h3>
                         </div>
                         <div id="chat-users-list" class="chat-users-list">
-                            <!-- List of matched users to chat with -->
+                            <!-- List of matched users -->
                         </div>
                     </div>
 
                     <!-- Chat Window -->
                     <div class="chat-window">
-                        <!-- Default view before selecting user -->
+                        <!-- Default view -->
                         <div id="chat-no-selection" class="chat-placeholder">
                             <i class="fa-regular fa-comments"></i>
-                            <h3>Mulai Obrolan</h3>
-                            <p>Pilih salah satu teman belajar di sebelah kiri untuk mulai mengobrol.</p>
+                            <h3 data-i18n="start_chat_title">Mulai Obrolan</h3>
+                            <p data-i18n="start_chat_sub">Pilih salah satu teman belajar di sebelah kiri untuk mulai mengobrol.</p>
                         </div>
 
                         <!-- Chat active state -->
@@ -268,6 +291,18 @@
                                         <h4 id="chat-partner-name">Nama Partner</h4>
                                         <span id="chat-partner-status"><i class="fa-solid fa-circle"></i> Online (Simulasi)</span>
                                     </div>
+                                </div>
+                                
+                                <!-- Real-time Translation Control -->
+                                <div class="chat-translate-selector">
+                                    <label for="chat-translate-lang"><i class="fa-solid fa-language"></i> Translate to:</label>
+                                    <select id="chat-translate-lang">
+                                        <option value="none">Original</option>
+                                        <option value="id">Bahasa Indonesia</option>
+                                        <option value="jp">日本語</option>
+                                        <option value="en">English</option>
+                                        <option value="zh">中文</option>
+                                    </select>
                                 </div>
                             </div>
                             <div id="chat-messages-container" class="chat-messages-container">
@@ -285,21 +320,21 @@
             <!-- ================= EDIT PROFILE VIEW ================= -->
             <section id="view-profile" class="app-view hidden">
                 <div class="view-header">
-                    <h1>Edit Profil</h1>
-                    <p>Lengkapi informasi diri untuk mendapatkan pencocokan belajar terbaik.</p>
+                    <h1 data-i18n="profile_title">Edit Profil</h1>
+                    <p data-i18n="profile_subtitle">Lengkapi informasi diri untuk mendapatkan pencocokan belajar terbaik.</p>
                 </div>
                 <div class="profile-layout">
                     <!-- Profile Form Card -->
                     <div class="profile-card">
-                        <h3><i class="fa-solid fa-id-card-clip"></i> Informasi Diri</h3>
+                        <h3><i class="fa-solid fa-id-card-clip"></i> <span data-i18n="profile_personal_info">Informasi Diri</span></h3>
                         <form id="profile-form">
                             <div class="form-row">
                                 <div class="form-group col-6">
-                                    <label for="profile-name">Nama Lengkap</label>
+                                    <label for="profile-name" data-i18n="fullname">Nama Lengkap</label>
                                     <input type="text" id="profile-name" required>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label for="profile-avatar-seed">Pilih Style Avatar</label>
+                                    <label for="profile-avatar-seed" data-i18n="avatar_style">Pilih Style Avatar</label>
                                     <select id="profile-avatar-seed">
                                         <option value="Felix">Felix</option>
                                         <option value="Aneka">Aneka</option>
@@ -311,31 +346,31 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-6">
-                                    <label for="profile-dept">Jurusan / Program Studi</label>
+                                    <label for="profile-dept" data-i18n="department">Jurusan / Program Studi</label>
                                     <input type="text" id="profile-dept" placeholder="Informatika, Sastra, Teknik..." required>
                                 </div>
                                 <div class="form-group col-6">
-                                    <label for="profile-grade">Angkatan</label>
+                                    <label for="profile-grade" data-i18n="grade">Angkatan</label>
                                     <input type="text" id="profile-grade" placeholder="2024, 2023, 2022..." required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="profile-bio">Bio Diri (Deskripsi singkat)</label>
-                                <textarea id="profile-bio" rows="4" placeholder="Saya menyukai programming dan ingin belajar desain grafis..."></textarea>
+                                <label for="profile-bio" data-i18n="bio">Bio Diri (Deskripsi singkat)</label>
+                                <textarea id="profile-bio" rows="4" placeholder="Saya menyukai programming..."></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Simpan Profil</button>
+                            <button type="submit" class="btn btn-primary" data-i18n="save_profile">Simpan Profil</button>
                         </form>
                     </div>
 
                     <!-- Skills Management Card -->
                     <div class="profile-card">
-                        <h3><i class="fa-solid fa-list-check"></i> Kelola Keahlian & Kebutuhan</h3>
+                        <h3><i class="fa-solid fa-list-check"></i> <span data-i18n="profile_manage_skills">Kelola Keahlian & Kebutuhan</span></h3>
 
                         <!-- Teach Skills -->
                         <div class="skills-manage-section">
-                            <h4>Keahlian yang Bisa Saya Ajarkan</h4>
+                            <h4 data-i18n="skills_to_teach">Keahlian yang Bisa Saya Ajarkan</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-teach-skill" placeholder="Misal: Python, Masak, Fotografi">
+                                <input type="text" id="input-teach-skill" placeholder="Python, Masak, Fotografi">
                                 <select id="select-teach-cat">
                                     <option value="IT">IT</option>
                                     <option value="Design">Desain</option>
@@ -352,9 +387,9 @@
 
                         <!-- Learn Needs -->
                         <div class="skills-manage-section margin-top">
-                            <h4>Keahlian yang Ingin Saya Pelajari</h4>
+                            <h4 data-i18n="skills_to_learn">Keahlian yang Ingin Saya Pelajari</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-learn-skill" placeholder="Misal: Laravel, Photoshop, Mandarin">
+                                <input type="text" id="input-learn-skill" placeholder="Laravel, Photoshop, Mandarin">
                                 <select id="select-learn-cat">
                                     <option value="IT">IT</option>
                                     <option value="Design">Desain</option>
