@@ -89,6 +89,41 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 2rem;
+    position: relative;
+}
+
+.auth-lang-selector {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 50;
+}
+
+.auth-lang-selector select {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-lang-selector select:focus {
+    outline: none;
+}
+
+.auth-lang-selector i {
+    color: var(--primary);
 }
 
 .auth-card {

@@ -369,6 +369,7 @@ const elToRegister = document.getElementById("to-register");
 const elToLogin = document.getElementById("to-login");
 const elBtnLogout = document.getElementById("btn-logout");
 const elLangSelect = document.getElementById("lang-select");
+const elAuthLangSelect = document.getElementById("auth-lang-select");
 
 // Sidebar DOM
 const elUserDisplayName = document.getElementById("user-display-name");
@@ -465,12 +466,14 @@ function updateLanguageUI() {
         }
     });
 
-    elLangSelect.value = currentLanguage;
+    if (elLangSelect) elLangSelect.value = currentLanguage;
+    if (elAuthLangSelect) elAuthLangSelect.value = currentLanguage;
 }
 
 elLangSelect.addEventListener("change", (e) => {
     currentLanguage = e.target.value;
     localStorage.setItem("sem_lang", currentLanguage);
+    if (elAuthLangSelect) elAuthLangSelect.value = currentLanguage;
     updateLanguageUI();
     
     // Refresh page structures
@@ -479,6 +482,23 @@ elLangSelect.addEventListener("change", (e) => {
     renderMatches();
     renderChat();
 });
+
+if (elAuthLangSelect) {
+    elAuthLangSelect.addEventListener("change", (e) => {
+        currentLanguage = e.target.value;
+        localStorage.setItem("sem_lang", currentLanguage);
+        if (elLangSelect) elLangSelect.value = currentLanguage;
+        updateLanguageUI();
+        
+        // Refresh page structures if logged in
+        if (currentUser) {
+            renderDashboard();
+            renderSearch();
+            renderMatches();
+            renderChat();
+        }
+    });
+}
 
 // ================= ROUTING & MENU SWITCHING =================
 elMenuItems.forEach(item => {
