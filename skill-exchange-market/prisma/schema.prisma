@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MatchStatus {
+  PENDING
+  ACTIVE
+  BLOCKED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+
+  // NextAuth-compatible fields
+  name         String?
+  image        String?
+  emailVerified DateTime?
+
+  // App profile fields
+  displayName  String?
+  grade        String?
+  department   String?
+  bio          String?
+
+  accounts     Account[]
+  sessions     Session[]
+
+  teachSkills  UserSkill[]
+  learning     LearningNeed[]
+
+  matchesAsA   Match[]  @relation("MatchUserA")
+  matchesAsB   Match[]  @relation("MatchUserB")
+
+  sentMessages Message[] @relation("MessageSender")
+
+  @@index([username])
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  createdAt DateTime @default(now())
+
+  users     UserSkill[]
+
+  @@unique([name, category])
+  @@index([category])
+}
+
+model UserSkill {
+  userId  String
+  skillId String
+  level   String?
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([userId, skillId])
+  @@index([skillId])
+}
+
+model LearningNeed {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  userId    String
+  name      String
+  category  String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([name])
+}
+
+model Match {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  userAId   String
+  userBId   String
+  status    MatchStatus @default(PENDING)
+
+  userA User @relation("MatchUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("MatchUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  @@unique([userAId, userBId])
+  @@index([status])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  matchId   String
+  senderId  String
+  body      String
+
+  match  Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  sender User  @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([matchId, createdAt])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+}
+
