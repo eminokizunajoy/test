@@ -56,7 +56,8 @@ const TRANSLATIONS = {
         send_message: "Kirim Pesan",
         matched_text: "Kamu dan {name} saling menyukai!",
         empty_matches: "Belum ada match yang aktif.",
-        empty_incoming: "Tidak ada permintaan match masuk."
+        empty_incoming: "Tidak ada permintaan match masuk.",
+        upload_photo: "Unggah Foto Kustom"
     },
     jp: {
         app_title: "スキルエクスチェンジ",
@@ -114,7 +115,8 @@ const TRANSLATIONS = {
         send_message: "メッセージを送る",
         matched_text: "あなたと {name} はお互いにいいね！しました！",
         empty_matches: "アクティブなマッチングはありません。",
-        empty_incoming: "受信したリクエストはありません。"
+        empty_incoming: "受信したリクエストはありません。",
+        upload_photo: "カスタム写真をアップロード"
     },
     en: {
         app_title: "Skill Exchange",
@@ -172,7 +174,8 @@ const TRANSLATIONS = {
         send_message: "Send Message",
         matched_text: "You and {name} liked each other!",
         empty_matches: "No active matches yet.",
-        empty_incoming: "No incoming match requests."
+        empty_incoming: "No incoming match requests.",
+        upload_photo: "Upload Custom Photo"
     },
     zh: {
         app_title: "技能交换市场",
@@ -230,7 +233,8 @@ const TRANSLATIONS = {
         send_message: "发送消息",
         matched_text: "你和 {name} 互相喜欢了！",
         empty_matches: "尚无活跃的配对。",
-        empty_incoming: "没有收到配对请求。"
+        empty_incoming: "没有收到配对请求。",
+        upload_photo: "上传自定义照片"
     }
 };
 
@@ -349,6 +353,13 @@ let messages = [];
 let currentUser = JSON.parse(localStorage.getItem("sem_current_user")) || null;
 let currentLanguage = localStorage.getItem("sem_lang") || "jp";
 let syncInterval = null;
+let customAvatarBase64 = null;
+
+function getUserAvatarUrl(user) {
+    if (!user) return `https://api.dicebear.com/7.x/bottts/svg?seed=default`;
+    if (user.avatarUrl) return user.avatarUrl;
+    return `https://api.dicebear.com/7.x/bottts/svg?seed=${user.avatarSeed || 'default'}`;
+}
 
 async function syncData() {
     try {
@@ -484,6 +495,7 @@ const elChatTranslateLang = document.getElementById("chat-translate-lang");
 const elProfileForm = document.getElementById("profile-form");
 const elProfileName = document.getElementById("profile-name");
 const elProfileAvatarSeed = document.getElementById("profile-avatar-seed");
+const elProfileAvatarFile = document.getElementById("profile-avatar-file");
 const elProfileDept = document.getElementById("profile-dept");
 const elProfileGrade = document.getElementById("profile-grade");
 const elProfileBio = document.getElementById("profile-bio");
@@ -700,7 +712,7 @@ function loginSuccess() {
     // Set Sidebar User Info
     elUserDisplayName.innerText = currentUser.displayName || currentUser.username;
     elUserDisplayDept.innerText = `${currentUser.department || 'Jurusan'} (${currentUser.grade || 'Angkatan'})`;
-    elUserAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.avatarSeed || 'default'}`;
+    elUserAvatar.src = getUserAvatarUrl(currentUser);
 
     updateLanguageUI();
     updateChatBadge();
@@ -812,7 +824,7 @@ function renderDashboard() {
     ).length;
     elStatMatch.innerText = activeMatchesCount;
 
-    elPreviewAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.avatarSeed || 'default'}`;
+    elPreviewAvatar.src = getUserAvatarUrl(currentUser);
     elPreviewName.innerText = currentUser.displayName || currentUser.username;
     elPreviewDeptGrade.innerText = `${currentUser.department || 'Jurusan'} - Angkatan ${currentUser.grade || '-'}`;
 
@@ -852,14 +864,12 @@ function renderDashboard() {
             const teachList = r.user.teachSkills.map(s => s.name).join(", ") || "Tidak ada";
             
             elRecommendedList.innerHTML += `
-                <div class="user-match-card">
-                    <div class="user-match-info">
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${r.user.avatarSeed}" alt="Avatar" class="avatar-small">
-                        <div class="user-match-details">
-                            <h4>${r.user.displayName} <span class="match-percentage">${r.score}% Match</span></h4>
-                            <p>${r.user.department} (${r.user.grade})</p>
-                            <p class="subtitle" style="margin-bottom:0; font-size:0.75rem;">Mengajar: <strong>${teachList}</strong></p>
-                        </div>
+                <div class="recommended-item">
+                    <img src="${getUserAvatarUrl(r.user)}" alt="Avatar" class="avatar-small">
+                    <div class="rec-info">
+                        <h4>${r.user.displayName} <span class="match-percentage">${r.score}% Match</span></h4>
+                        <p>${r.user.department} (${r.user.grade})</p>
+                        <p class="subtitle" style="margin-bottom:0; font-size:0.75rem;">Mengajar: <strong>${teachList}</strong></p>
                     </div>
                     <button class="btn btn-primary" onclick="triggerCardSwipeRight('${r.user.id}')">Kirim Match</button>
                 </div>
@@ -923,17 +933,19 @@ function renderSearch() {
         cardEl.setAttribute("data-user-id", r.user.id);
         
         cardEl.innerHTML = `
-            <div class="card-user-info">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${r.user.avatarSeed}" alt="Avatar" class="card-avatar">
-                <h2>${r.user.displayName} <span class="match-percentage">${r.score}%</span></h2>
-                <span class="dept">${r.user.department} (${r.user.grade})</span>
-            </div>
-            <div class="card-bio">${r.user.bio}</div>
-            <div class="card-skills-section">
-                <h4 data-i18n="profile_can_teach">Bisa Mengajar:</h4>
-                <div class="skills-wrapper" style="margin-bottom: 10px;">${teachChips}</div>
-                <h4 data-i18n="profile_want_learn">Ingin Belajar:</h4>
-                <div class="skills-wrapper">${learnChips}</div>
+            <div class="card-inner">
+                <img src="${getUserAvatarUrl(r.user)}" alt="Avatar" class="card-avatar">
+                <div class="card-details">
+                    <h2>${r.user.displayName} <span class="match-percentage">${r.score}%</span></h2>
+                    <span class="dept">${r.user.department} (${r.user.grade})</span>
+                </div>
+                <div class="card-bio">${r.user.bio}</div>
+                <div class="card-skills-section">
+                    <h4 data-i18n="profile_can_teach">Bisa Mengajar:</h4>
+                    <div class="skills-wrapper" style="margin-bottom: 10px;">${teachChips}</div>
+                    <h4 data-i18n="profile_want_learn">Ingin Belajar:</h4>
+                    <div class="skills-wrapper">${learnChips}</div>
+                </div>
             </div>
         `;
 
@@ -1164,7 +1176,7 @@ function renderMatches() {
                 elIncomingMatchesList.innerHTML += `
                     <div class="match-item">
                         <div class="match-user">
-                            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${sender.avatarSeed}" alt="Avatar" class="avatar-small">
+                            <img src="${getUserAvatarUrl(sender)}" alt="Avatar" class="avatar-small">
                             <div class="match-user-details">
                                 <h4>${sender.displayName}</h4>
                                 <p>${sender.department} (${sender.grade})</p>
@@ -1187,7 +1199,7 @@ function renderMatches() {
                 elActiveMatchesList.innerHTML += `
                     <div class="match-item">
                         <div class="match-user">
-                            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${partner.avatarSeed}" alt="Avatar" class="avatar-small">
+                            <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="avatar-small">
                             <div class="match-user-details">
                                 <h4>${partner.displayName}</h4>
                                 <p>${partner.department} (${partner.grade})</p>
@@ -1287,7 +1299,7 @@ function renderChat() {
 
             elChatUsersList.innerHTML += `
                 <div class="chat-user-item ${isActiveClass}" onclick="selectChatPartner('${partner.id}')">
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=${partner.avatarSeed}" alt="Avatar" class="chat-user-avatar">
+                    <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="chat-user-avatar">
                     <div class="chat-user-item-info">
                         <h4>${partner.displayName}</h4>
                         <p>${lastMsgText}</p>
@@ -1306,7 +1318,7 @@ function renderChat() {
 
         const partner = users.find(u => u.id === activeChatPartnerId);
         elChatPartnerName.innerText = partner.displayName;
-        elChatPartnerAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${partner.avatarSeed}`;
+        elChatPartnerAvatar.src = getUserAvatarUrl(partner);
 
         // Render Messages dengan Terjemahan Real-time (jika dipilih)
         elChatMessagesContainer.innerHTML = "";
@@ -1424,6 +1436,7 @@ function loadProfileFields() {
     elProfileDept.value = currentUser.department || "";
     elProfileGrade.value = currentUser.grade || "";
     elProfileBio.value = currentUser.bio || "";
+    customAvatarBase64 = currentUser.avatarUrl || null;
 
     renderManageSkills();
 }
@@ -1438,7 +1451,8 @@ elProfileForm.addEventListener("submit", async (e) => {
         avatarSeed: elProfileAvatarSeed.value,
         department: elProfileDept.value.trim(),
         grade: elProfileGrade.value.trim(),
-        bio: elProfileBio.value.trim()
+        bio: elProfileBio.value.trim(),
+        avatarUrl: customAvatarBase64 || currentUser.avatarUrl || null
     };
 
     try {
@@ -1461,12 +1475,40 @@ elProfileForm.addEventListener("submit", async (e) => {
         
         elUserDisplayName.innerText = currentUser.displayName;
         elUserDisplayDept.innerText = `${currentUser.department} (${currentUser.grade})`;
-        elUserAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.avatarSeed}`;
+        elUserAvatar.src = getUserAvatarUrl(currentUser);
     } catch (err) {
         showToast("Terjadi kesalahan jaringan!", "danger");
         console.error(err);
     }
 });
+
+// Attach profile photo change listeners
+if (elProfileAvatarFile) {
+    elProfileAvatarFile.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 2 * 1024 * 1024) {
+                showToast("Ukuran foto maksimal 2MB!", "danger");
+                elProfileAvatarFile.value = "";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                customAvatarBase64 = reader.result;
+                elPreviewAvatar.src = customAvatarBase64;
+                showToast("Foto berhasil dimuat. Klik Simpan Profil!", "success");
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+if (elProfileAvatarSeed) {
+    elProfileAvatarSeed.addEventListener("change", () => {
+        customAvatarBase64 = null;
+        elPreviewAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${elProfileAvatarSeed.value}`;
+    });
+}
 
 function renderManageSkills() {
     elManageTeachList.innerHTML = "";

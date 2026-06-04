@@ -289,7 +289,7 @@ app.post('/api/swipe', (req, res) => {
 
 // Profile Management
 app.post('/api/profile/update', (req, res) => {
-    const { userId, displayName, bio, department, grade, avatarSeed } = req.body;
+    const { userId, displayName, bio, department, grade, avatarSeed, avatarUrl } = req.body;
     if (!userId) {
         return res.status(400).json({ error: "User ID wajib disertakan" });
     }
@@ -307,6 +307,7 @@ app.post('/api/profile/update', (req, res) => {
     if (department) user.department = department;
     if (grade) user.grade = grade;
     if (avatarSeed) user.avatarSeed = avatarSeed;
+    if (avatarUrl !== undefined) user.avatarUrl = avatarUrl;
 
     writeDB(db);
     res.json({ user, users: db.users });
