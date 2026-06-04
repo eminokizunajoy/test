@@ -1830,13 +1830,66 @@ select option {
     padding: 1rem 0;
 }
 
+/* Mode selector tabs */
+.pomodoro-modes {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.pomodoro-mode-btn {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.pomodoro-mode-btn:hover {
+    background: rgba(108,99,255,0.15);
+    border-color: rgba(108,99,255,0.5);
+    color: var(--text-primary);
+}
+
+.pomodoro-mode-btn.active {
+    background: linear-gradient(135deg, #6c63ff, #3b82f6);
+    color: #fff;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+/* Ring wrapper: SVG + timer overlay */
+.pomodoro-ring-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 1rem;
+}
+
+.pomodoro-ring-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(0deg);
+}
+
 .pomodoro-timer {
-    font-size: 3.5rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.4rem;
     font-weight: 800;
     font-family: monospace;
-    color: var(--primary-color);
-    margin: 1.5rem 0;
-    text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    color: var(--text-primary);
+    text-shadow: 0 0 20px rgba(108,99,255,0.4);
+    line-height: 1;
+    pointer-events: none;
 }
 
 .pomodoro-controls {
@@ -1844,6 +1897,7 @@ select option {
     justify-content: center;
     gap: 8px;
 }
+
 
 .study-room-main {
     background: rgba(255, 255, 255, 0.02);

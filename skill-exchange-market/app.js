@@ -115,9 +115,25 @@ const TRANSLATIONS = {
         btn_submit_answer: "Kirim Jawaban",
         study_title: "Virtual Study Room (Pomodoro)",
         study_subtitle: "Belajar produktif bersama teman secara visual tanpa gangguan.",
-        pomodoro_session: "Fokus Sesi",
+        pomodoro_session: "Sesi Fokus",
         study_info_title: "Status Co-Working",
-        study_desc: "Mulai timer Pomodoro Anda sekarang untuk mengaktifkan sesi belajar fokus.",
+        study_desc: "Mulai timer Pomodoro untuk mengaktifkan sesi belajar fokus.",
+        pomodoro_mode_focus: "Fokus (25 Menit)",
+        pomodoro_mode_short: "Istirahat Singkat (5 Menit)",
+        pomodoro_mode_long: "Istirahat Panjang (15 Menit)",
+        pomodoro_status_running: "Fokus Belajar Aktif! Tetap fokus pada tugas Anda.",
+        pomodoro_status_paused: "Sesi ditunda. Klik putar untuk melanjutkan.",
+        pomodoro_status_idle: "Mulai timer Pomodoro untuk sesi belajar fokus.",
+        pomodoro_status_break: "Waktunya Istirahat! Nikmati 5 menit waktu senggang.",
+        pomodoro_finished_focus: "Sesi fokus selesai! Waktunya istirahat.",
+        pomodoro_finished_break: "Istirahat selesai! Mulai sesi fokus berikutnya.",
+        cam_on: "Kamera On",
+        cam_off: "Kamera Off",
+        mic_on: "Mic On",
+        mic_off: "Mic Off",
+        screen_share: "Bagikan Layar",
+        video_label_you: "Kamu",
+        video_label_partner: "Partner Belajar (Simulasi)",
         leaderboard_title: "Papan Peringkat (Leaderboard)",
         leaderboard_subtitle: "Aktivitas mengajar dan belajar terbaik mahasiswa bulan ini.",
         rank: "Peringkat",
@@ -319,6 +335,22 @@ const TRANSLATIONS = {
         pomodoro_session: "集中セッション",
         study_info_title: "コワーキングステータス",
         study_desc: "ポモドーロタイマーを開始して、集中学習セッションを始めましょう。",
+        pomodoro_mode_focus: "集中 (25分)",
+        pomodoro_mode_short: "短い休憩 (5分)",
+        pomodoro_mode_long: "長い休憩 (15分)",
+        pomodoro_status_running: "集中学習中！タスクに集中しましょう。",
+        pomodoro_status_paused: "一時停止中。再開するには再生を押してください。",
+        pomodoro_status_idle: "ポモドーロタイマーを開始して集中セッションを始めましょう。",
+        pomodoro_status_break: "休憩時間！5分間リフレッシュしましょう。",
+        pomodoro_finished_focus: "集中セッション終了！休憩しましょう。",
+        pomodoro_finished_break: "休憩終了！次の集中セッションを始めましょう。",
+        cam_on: "カメラ オン",
+        cam_off: "カメラ オフ",
+        mic_on: "マイク オン",
+        mic_off: "マイク オフ",
+        screen_share: "画面共有",
+        video_label_you: "あなた",
+        video_label_partner: "学習パートナー (シミュレーション)",
         leaderboard_title: "リーダーボード",
         leaderboard_subtitle: "今月の最もアクティブな学生のランキング。",
         rank: "順位",
@@ -520,7 +552,22 @@ const TRANSLATIONS = {
         pomodoro_session: "Focus Session",
         study_info_title: "Co-Working Status",
         study_desc: "Start Pomodoro timer to begin your focus session.",
-        leaderboard_title: "Leaderboard",
+        pomodoro_mode_focus: "Focus (25 Min)",
+        pomodoro_mode_short: "Short Break (5 Min)",
+        pomodoro_mode_long: "Long Break (15 Min)",
+        pomodoro_status_running: "Focus Mode Active! Stay on task.",
+        pomodoro_status_paused: "Session paused. Press play to resume.",
+        pomodoro_status_idle: "Start Pomodoro timer to begin a focus session.",
+        pomodoro_status_break: "Break Time! Refresh for 5 minutes.",
+        pomodoro_finished_focus: "Focus session done! Take a break.",
+        pomodoro_finished_break: "Break over! Start your next focus session.",
+        cam_on: "Camera On",
+        cam_off: "Camera Off",
+        mic_on: "Mic On",
+        mic_off: "Mic Off",
+        screen_share: "Share Screen",
+        video_label_you: "You",
+        video_label_partner: "Study Partner (Simulation)",
         leaderboard_subtitle: "Rankings of the most active learning students this month.",
         rank: "Rank",
         modal_ask_title: "Ask a Question",
@@ -721,7 +768,22 @@ const TRANSLATIONS = {
         pomodoro_session: "专注时间",
         study_info_title: "自习状态",
         study_desc: "启动番茄计时器，开启你的专注学习之旅。",
-        leaderboard_title: "排行榜",
+        pomodoro_mode_focus: "专注 (25分)",
+        pomodoro_mode_short: "短休 (5分)",
+        pomodoro_mode_long: "长休 (15分)",
+        pomodoro_status_running: "专注模式已激活！请专注于任务。",
+        pomodoro_status_paused: "已暂停。点播放继续。",
+        pomodoro_status_idle: "启动番茄计时器开始专注学习。",
+        pomodoro_status_break: "休息时间！放松5分钟。",
+        pomodoro_finished_focus: "专注时间结束！去休息吧。",
+        pomodoro_finished_break: "休息结束！开始下一个专注时间。",
+        cam_on: "开启摄像头",
+        cam_off: "关闭摄像头",
+        mic_on: "开启麦克风",
+        mic_off: "关闭麦克风",
+        screen_share: "共享屏幕",
+        video_label_you: "我",
+        video_label_partner: "学习伙伴 (模拟)",
         leaderboard_subtitle: "本月最活跃的学生光荣榜。",
         rank: "排名",
         modal_ask_title: "发布提问",
@@ -1181,6 +1243,8 @@ elMenuItems.forEach(item => {
             renderChat();
         } else if (targetId === "view-profile") {
             loadProfileFields();
+        } else if (targetId === "view-study") {
+            initStudyRoom();
         }
     });
 });
@@ -3339,128 +3403,276 @@ window.inviteFromForum = async function(partnerId) {
 
 // --- Open Study Room (Pomodoro & WebRTC Mock Camera) ---
 let pomodoroTimer = null;
+let pomodoroTotalSeconds = 25 * 60;
 let pomodoroSeconds = 25 * 60;
 let isTimerRunning = false;
 let localStream = null;
+let micStream = null;
+let isCamOn = false;
+let isMicOn = false;
+let pomodoroMode = 'focus'; // 'focus' | 'short' | 'long'
+
+const POMODORO_MODES = {
+    focus: 25 * 60,
+    short: 5 * 60,
+    long: 15 * 60
+};
+
+function t(key) {
+    return (TRANSLATIONS[currentLanguage] || TRANSLATIONS['jp'])[key] || key;
+}
 
 function initStudyRoom() {
-    // Reset room elements
+    // Update localized labels
+    const labelYou = document.getElementById('local-video-label');
+    const labelPartner = document.getElementById('study-partner-label');
+    if (labelYou) labelYou.innerText = t('video_label_you');
+    if (labelPartner) labelPartner.innerText = t('video_label_partner');
+
+    // Update mode buttons
+    const modeButtons = document.querySelectorAll('.pomodoro-mode-btn');
+    modeButtons.forEach(btn => {
+        const mode = btn.getAttribute('data-mode');
+        btn.innerText = t(`pomodoro_mode_${mode}`);
+        btn.classList.toggle('active', mode === pomodoroMode);
+    });
+
+    // Update camera/mic/share labels
+    _updateCamBtn();
+    _updateMicBtn();
+    _updateShareBtn();
+
+    // Update status text
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl && !isTimerRunning) {
+        statusEl.innerText = t('pomodoro_status_idle');
+    }
+
     updatePomodoroDisplay();
-    document.getElementById("study-partner-label").innerText = "Partner Belajar (Simulasi)";
+    updatePomodoroRing();
 }
 
 function updatePomodoroDisplay() {
     const min = Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0');
     const sec = (pomodoroSeconds % 60).toString().padStart(2, '0');
-    document.getElementById("pomodoro-timer").innerText = `${min}:${sec}`;
+    const timerEl = document.getElementById('pomodoro-timer');
+    if (timerEl) timerEl.innerText = `${min}:${sec}`;
 }
 
-document.getElementById("btn-pomodoro-start").addEventListener("click", () => {
+function updatePomodoroRing() {
+    const ring = document.getElementById('pomodoro-ring');
+    if (!ring) return;
+    const total = POMODORO_MODES[pomodoroMode];
+    const radius = ring.r ? ring.r.baseVal.value : 90;
+    const circumference = 2 * Math.PI * radius;
+    const progress = pomodoroSeconds / total;
+    const offset = circumference * (1 - progress);
+    ring.style.strokeDasharray = `${circumference}`;
+    ring.style.strokeDashoffset = `${offset}`;
+
+    // Change ring color by mode
+    if (pomodoroMode === 'focus') {
+        ring.style.stroke = '#6c63ff';
+    } else if (pomodoroMode === 'short') {
+        ring.style.stroke = '#22c55e';
+    } else {
+        ring.style.stroke = '#f59e0b';
+    }
+}
+
+function setMode(mode) {
+    if (isTimerRunning) {
+        clearInterval(pomodoroTimer);
+        isTimerRunning = false;
+    }
+    pomodoroMode = mode;
+    pomodoroTotalSeconds = POMODORO_MODES[mode];
+    pomodoroSeconds = pomodoroTotalSeconds;
+    document.querySelectorAll('.pomodoro-mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+    });
+    const startBtn = document.getElementById('btn-pomodoro-start');
+    const pauseBtn = document.getElementById('btn-pomodoro-pause');
+    if (startBtn) startBtn.classList.remove('hidden');
+    if (pauseBtn) pauseBtn.classList.add('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = t('pomodoro_status_idle');
+    updatePomodoroDisplay();
+    updatePomodoroRing();
+}
+
+// Mode buttons
+document.querySelectorAll('.pomodoro-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.getAttribute('data-mode')));
+});
+
+document.getElementById('btn-pomodoro-start').addEventListener('click', () => {
     if (isTimerRunning) return;
     isTimerRunning = true;
-    document.getElementById("btn-pomodoro-start").classList.add("hidden");
-    document.getElementById("btn-pomodoro-pause").classList.remove("hidden");
-    document.getElementById("study-status-desc").innerText = "Fokus Belajar Aktif! Tetap fokus pada tugas Anda.";
-    
+    document.getElementById('btn-pomodoro-start').classList.add('hidden');
+    document.getElementById('btn-pomodoro-pause').classList.remove('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = t('pomodoro_status_running');
+
     pomodoroTimer = setInterval(() => {
         if (pomodoroSeconds > 0) {
             pomodoroSeconds--;
             updatePomodoroDisplay();
+            updatePomodoroRing();
         } else {
             clearInterval(pomodoroTimer);
             isTimerRunning = false;
-            showToast("Sesi Pomodoro selesai! Waktunya istirahat.", "success");
-            document.getElementById("btn-pomodoro-start").classList.remove("hidden");
-            document.getElementById("btn-pomodoro-pause").classList.add("hidden");
-            document.getElementById("study-status-desc").innerText = "Waktunya Istirahat! Nikmati 5 menit waktu senggang Anda.";
-            pomodoroSeconds = 5 * 60; // Set to short break
+            const isFocus = pomodoroMode === 'focus';
+            showToast(isFocus ? t('pomodoro_finished_focus') : t('pomodoro_finished_break'), 'success');
+            document.getElementById('btn-pomodoro-start').classList.remove('hidden');
+            document.getElementById('btn-pomodoro-pause').classList.add('hidden');
+            if (statusEl) statusEl.innerText = isFocus ? t('pomodoro_status_break') : t('pomodoro_status_idle');
+            // Auto-switch mode
+            const nextMode = isFocus ? 'short' : 'focus';
+            pomodoroMode = nextMode;
+            pomodoroTotalSeconds = POMODORO_MODES[nextMode];
+            pomodoroSeconds = pomodoroTotalSeconds;
+            document.querySelectorAll('.pomodoro-mode-btn').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-mode') === nextMode);
+            });
             updatePomodoroDisplay();
+            updatePomodoroRing();
         }
     }, 1000);
 });
 
-document.getElementById("btn-pomodoro-pause").addEventListener("click", () => {
+document.getElementById('btn-pomodoro-pause').addEventListener('click', () => {
     clearInterval(pomodoroTimer);
     isTimerRunning = false;
-    document.getElementById("btn-pomodoro-start").classList.remove("hidden");
-    document.getElementById("btn-pomodoro-pause").classList.add("hidden");
-    document.getElementById("study-status-desc").innerText = "Sesi ditunda. Klik putar untuk melanjutkan kembali.";
+    document.getElementById('btn-pomodoro-start').classList.remove('hidden');
+    document.getElementById('btn-pomodoro-pause').classList.add('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = t('pomodoro_status_paused');
 });
 
-document.getElementById("btn-pomodoro-reset").addEventListener("click", () => {
+document.getElementById('btn-pomodoro-reset').addEventListener('click', () => {
     clearInterval(pomodoroTimer);
     isTimerRunning = false;
-    document.getElementById("btn-pomodoro-start").classList.remove("hidden");
-    document.getElementById("btn-pomodoro-pause").classList.add("hidden");
-    document.getElementById("study-status-desc").innerText = "Timer Pomodoro di-reset. Siap belajar kembali?";
-    pomodoroSeconds = 25 * 60;
+    pomodoroSeconds = POMODORO_MODES[pomodoroMode];
+    pomodoroTotalSeconds = pomodoroSeconds;
+    document.getElementById('btn-pomodoro-start').classList.remove('hidden');
+    document.getElementById('btn-pomodoro-pause').classList.add('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = t('pomodoro_status_idle');
     updatePomodoroDisplay();
+    updatePomodoroRing();
 });
 
-// Webcam access handling
-let isCamOn = false;
-let isMicOn = false;
+// Camera
+function _updateCamBtn() {
+    const btn = document.getElementById('btn-toggle-cam');
+    if (!btn) return;
+    if (isCamOn) {
+        btn.innerHTML = `<i class="fa-solid fa-video-slash"></i> ${t('cam_off')}`;
+        btn.className = 'btn btn-danger';
+    } else {
+        btn.innerHTML = `<i class="fa-solid fa-video"></i> ${t('cam_on')}`;
+        btn.className = 'btn btn-secondary';
+    }
+}
 
-document.getElementById("btn-toggle-cam").addEventListener("click", async () => {
-    const video = document.getElementById("local-video");
-    const placeholder = document.getElementById("local-video-placeholder");
-    const btn = document.getElementById("btn-toggle-cam");
-    
+function _updateMicBtn() {
+    const btn = document.getElementById('btn-toggle-mic');
+    if (!btn) return;
+    if (isMicOn) {
+        btn.innerHTML = `<i class="fa-solid fa-microphone-slash"></i> ${t('mic_off')}`;
+        btn.className = 'btn btn-danger';
+    } else {
+        btn.innerHTML = `<i class="fa-solid fa-microphone"></i> ${t('mic_on')}`;
+        btn.className = 'btn btn-secondary';
+    }
+}
+
+function _updateShareBtn() {
+    const btn = document.getElementById('btn-share-screen');
+    if (!btn) return;
+    btn.innerHTML = `<i class="fa-solid fa-desktop"></i> ${t('screen_share')}`;
+}
+
+document.getElementById('btn-toggle-cam').addEventListener('click', async () => {
+    const video = document.getElementById('local-video');
+    const placeholder = document.getElementById('local-video-placeholder');
+
     if (!isCamOn) {
         try {
-            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            const constraints = { video: true, audio: false };
+            const camStream = await navigator.mediaDevices.getUserMedia(constraints);
+            // Merge with existing mic stream if active
+            if (localStream) localStream.getTracks().forEach(t => t.stop());
+            const tracks = [...camStream.getVideoTracks()];
+            if (micStream) tracks.push(...micStream.getAudioTracks());
+            localStream = new MediaStream(tracks);
             video.srcObject = localStream;
-            placeholder.classList.add("hidden");
-            video.classList.remove("hidden");
+            placeholder.style.display = 'none';
+            video.style.display = 'block';
             isCamOn = true;
-            btn.innerHTML = `<i class="fa-solid fa-video-slash"></i> Kamera Off`;
-            btn.className = "btn btn-danger";
         } catch (err) {
-            console.error("Camera access denied:", err);
-            showToast("Gagal mengakses kamera!", "danger");
+            console.error('Camera access denied:', err);
+            showToast(t('toast_camera_error'), 'danger');
         }
     } else {
-        if (localStream) {
-            localStream.getTracks().forEach(track => track.stop());
-        }
+        if (localStream) localStream.getVideoTracks().forEach(t => t.stop());
         video.srcObject = null;
-        placeholder.classList.remove("hidden");
+        placeholder.style.display = '';
+        video.style.display = 'none';
         isCamOn = false;
-        btn.innerHTML = `<i class="fa-solid fa-video"></i> Kamera On`;
-        btn.className = "btn btn-secondary";
+        // Keep mic stream running
+        if (isMicOn && micStream) {
+            localStream = micStream;
+        } else {
+            localStream = null;
+        }
     }
+    _updateCamBtn();
 });
 
-document.getElementById("btn-toggle-mic").addEventListener("click", () => {
-    const btn = document.getElementById("btn-toggle-mic");
+// Microphone
+document.getElementById('btn-toggle-mic').addEventListener('click', async () => {
     if (!isMicOn) {
-        isMicOn = true;
-        btn.innerHTML = `<i class="fa-solid fa-microphone-slash"></i> Mic Off`;
-        btn.className = "btn btn-danger";
-        showToast("Mikrofon Diaktifkan!");
+        try {
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            isMicOn = true;
+            showToast(t('toast_mic_on'));
+        } catch (err) {
+            console.error('Mic access denied:', err);
+            showToast(t('toast_camera_error'), 'danger');
+        }
     } else {
+        if (micStream) micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
         isMicOn = false;
-        btn.innerHTML = `<i class="fa-solid fa-microphone"></i> Mic On`;
-        btn.className = "btn btn-secondary";
-        showToast("Mikrofon Dimatikan!");
+        showToast(t('toast_mic_off'));
     }
+    _updateMicBtn();
 });
 
-document.getElementById("btn-share-screen").addEventListener("click", async () => {
+// Screen share
+document.getElementById('btn-share-screen').addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        const video = document.getElementById("local-video");
+        const video = document.getElementById('local-video');
         video.srcObject = stream;
-        document.getElementById("local-video-placeholder").classList.add("hidden");
-        showToast("Berbagi Layar Dimulai!");
-        
+        document.getElementById('local-video-placeholder').style.display = 'none';
+        video.style.display = 'block';
+        showToast(t('toast_screenshare_start'));
+
         stream.getVideoTracks()[0].addEventListener('ended', () => {
-            video.srcObject = isCamOn ? localStream : null;
-            if (!isCamOn) document.getElementById("local-video-placeholder").classList.remove("hidden");
-            showToast("Berbagi Layar Selesai.");
+            if (isCamOn && localStream) {
+                video.srcObject = localStream;
+            } else {
+                video.srcObject = null;
+                video.style.display = 'none';
+                document.getElementById('local-video-placeholder').style.display = '';
+            }
+            showToast(t('toast_screenshare_end'));
         });
     } catch (err) {
-        console.error("Display media error:", err);
+        console.error('Display media error:', err);
     }
 });
 
