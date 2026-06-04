@@ -2208,19 +2208,37 @@ async function fetchRealTranslation(text, lang) {
     };
     const targetLangCode = langMap[lang] || lang;
     const cacheKey = `${text}_${lang}`;
-    
+
+    // Detect source language from characters (MyMemory does NOT support 'auto')
+    function detectSourceLang(str) {
+        if (/[\u3040-\u30FF\u31F0-\u31FF]/.test(str)) return "ja"; // Hiragana/Katakana
+        if (/[\u4E00-\u9FFF]/.test(str)) return "zh";              // CJK (Chinese/Kanji)
+        if (/[\uAC00-\uD7A3]/.test(str)) return "ko";              // Korean Hangul
+        if (/[\u0600-\u06FF]/.test(str)) return "ar";              // Arabic
+        return "en"; // Default: English / Latin
+    }
+
+    const sourceLangCode = detectSourceLang(text);
+    // Don't translate if source == target
+    if (sourceLangCode === targetLangCode) {
+        translationCache[cacheKey] = text;
+        renderChat();
+        return;
+    }
+
     try {
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=auto|${targetLangCode}`;
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLangCode}|${targetLangCode}`;
         const res = await fetch(url);
         const data = await res.json();
-        if (data && data.responseData && data.responseData.translatedText) {
+        if (data && data.responseData && data.responseData.translatedText &&
+            data.responseStatus === 200) {
             translationCache[cacheKey] = data.responseData.translatedText;
         } else {
-            translationCache[cacheKey] = "[Gagal menerjemahkan]";
+            translationCache[cacheKey] = text; // Fallback: tampilkan teks asli
         }
     } catch (err) {
         console.error("Translation API error:", err);
-        translationCache[cacheKey] = "[Error]";
+        translationCache[cacheKey] = text; // Fallback: tampilkan teks asli
     }
     renderChat();
 }
