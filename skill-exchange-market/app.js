@@ -3418,11 +3418,18 @@ const POMODORO_MODES = {
     long: 15 * 60
 };
 
-function t(key) {
+function tr(key) {
     return (TRANSLATIONS[currentLanguage] || TRANSLATIONS['jp'])[key] || key;
 }
 
 function initStudyRoom() {
+    // Show HTTPS warning if not secure
+    const httpsWarning = document.getElementById('study-https-warning');
+    if (httpsWarning) {
+        const isSecure = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        httpsWarning.classList.toggle('hidden', isSecure);
+    }
+
     // Update localized labels
     const labelYou = document.getElementById('local-video-label');
     const labelPartner = document.getElementById('study-partner-label');
@@ -3496,7 +3503,7 @@ function setMode(mode) {
     if (startBtn) startBtn.classList.remove('hidden');
     if (pauseBtn) pauseBtn.classList.add('hidden');
     const statusEl = document.getElementById('study-status-desc');
-    if (statusEl) statusEl.innerText = t('pomodoro_status_idle');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_idle');
     updatePomodoroDisplay();
     updatePomodoroRing();
 }
@@ -3512,7 +3519,7 @@ document.getElementById('btn-pomodoro-start').addEventListener('click', () => {
     document.getElementById('btn-pomodoro-start').classList.add('hidden');
     document.getElementById('btn-pomodoro-pause').classList.remove('hidden');
     const statusEl = document.getElementById('study-status-desc');
-    if (statusEl) statusEl.innerText = t('pomodoro_status_running');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_running');
 
     pomodoroTimer = setInterval(() => {
         if (pomodoroSeconds > 0) {
@@ -3523,10 +3530,10 @@ document.getElementById('btn-pomodoro-start').addEventListener('click', () => {
             clearInterval(pomodoroTimer);
             isTimerRunning = false;
             const isFocus = pomodoroMode === 'focus';
-            showToast(isFocus ? t('pomodoro_finished_focus') : t('pomodoro_finished_break'), 'success');
+            showToast(isFocus ? tr('pomodoro_finished_focus') : tr('pomodoro_finished_break'), 'success');
             document.getElementById('btn-pomodoro-start').classList.remove('hidden');
             document.getElementById('btn-pomodoro-pause').classList.add('hidden');
-            if (statusEl) statusEl.innerText = isFocus ? t('pomodoro_status_break') : t('pomodoro_status_idle');
+            if (statusEl) statusEl.innerText = isFocus ? tr('pomodoro_status_break') : tr('pomodoro_status_idle');
             // Auto-switch mode
             const nextMode = isFocus ? 'short' : 'focus';
             pomodoroMode = nextMode;
@@ -3547,7 +3554,7 @@ document.getElementById('btn-pomodoro-pause').addEventListener('click', () => {
     document.getElementById('btn-pomodoro-start').classList.remove('hidden');
     document.getElementById('btn-pomodoro-pause').classList.add('hidden');
     const statusEl = document.getElementById('study-status-desc');
-    if (statusEl) statusEl.innerText = t('pomodoro_status_paused');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_paused');
 });
 
 document.getElementById('btn-pomodoro-reset').addEventListener('click', () => {
@@ -3558,7 +3565,7 @@ document.getElementById('btn-pomodoro-reset').addEventListener('click', () => {
     document.getElementById('btn-pomodoro-start').classList.remove('hidden');
     document.getElementById('btn-pomodoro-pause').classList.add('hidden');
     const statusEl = document.getElementById('study-status-desc');
-    if (statusEl) statusEl.innerText = t('pomodoro_status_idle');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_idle');
     updatePomodoroDisplay();
     updatePomodoroRing();
 });
@@ -3568,10 +3575,10 @@ function _updateCamBtn() {
     const btn = document.getElementById('btn-toggle-cam');
     if (!btn) return;
     if (isCamOn) {
-        btn.innerHTML = `<i class="fa-solid fa-video-slash"></i> ${t('cam_off')}`;
+        btn.innerHTML = `<i class="fa-solid fa-video-slash"></i> ${tr('cam_off')}`;
         btn.className = 'btn btn-danger';
     } else {
-        btn.innerHTML = `<i class="fa-solid fa-video"></i> ${t('cam_on')}`;
+        btn.innerHTML = `<i class="fa-solid fa-video"></i> ${tr('cam_on')}`;
         btn.className = 'btn btn-secondary';
     }
 }
@@ -3580,10 +3587,10 @@ function _updateMicBtn() {
     const btn = document.getElementById('btn-toggle-mic');
     if (!btn) return;
     if (isMicOn) {
-        btn.innerHTML = `<i class="fa-solid fa-microphone-slash"></i> ${t('mic_off')}`;
+        btn.innerHTML = `<i class="fa-solid fa-microphone-slash"></i> ${tr('mic_off')}`;
         btn.className = 'btn btn-danger';
     } else {
-        btn.innerHTML = `<i class="fa-solid fa-microphone"></i> ${t('mic_on')}`;
+        btn.innerHTML = `<i class="fa-solid fa-microphone"></i> ${tr('mic_on')}`;
         btn.className = 'btn btn-secondary';
     }
 }
@@ -3591,19 +3598,23 @@ function _updateMicBtn() {
 function _updateShareBtn() {
     const btn = document.getElementById('btn-share-screen');
     if (!btn) return;
-    btn.innerHTML = `<i class="fa-solid fa-desktop"></i> ${t('screen_share')}`;
+    btn.innerHTML = `<i class="fa-solid fa-desktop"></i> ${tr('screen_share')}`;
 }
 
 document.getElementById('btn-toggle-cam').addEventListener('click', async () => {
+    // Camera/mic require HTTPS in production
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        showToast('⚠️ カメラはHTTPS接続が必要です / Camera requires HTTPS', 'danger');
+        return;
+    }
     const video = document.getElementById('local-video');
     const placeholder = document.getElementById('local-video-placeholder');
 
     if (!isCamOn) {
         try {
-            const constraints = { video: true, audio: false };
-            const camStream = await navigator.mediaDevices.getUserMedia(constraints);
-            // Merge with existing mic stream if active
-            if (localStream) localStream.getTracks().forEach(t => t.stop());
+            const camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            // Stop previous video tracks only
+            if (localStream) localStream.getVideoTracks().forEach(track => track.stop());
             const tracks = [...camStream.getVideoTracks()];
             if (micStream) tracks.push(...micStream.getAudioTracks());
             localStream = new MediaStream(tracks);
@@ -3613,15 +3624,20 @@ document.getElementById('btn-toggle-cam').addEventListener('click', async () => 
             isCamOn = true;
         } catch (err) {
             console.error('Camera access denied:', err);
-            showToast(t('toast_camera_error'), 'danger');
+            if (err.name === 'NotAllowedError') {
+                showToast('🚫 カメラのアクセスが拒否されました / Camera permission denied', 'danger');
+            } else if (err.name === 'NotFoundError') {
+                showToast('📷 カメラが見つかりません / No camera found', 'danger');
+            } else {
+                showToast(tr('toast_camera_error'), 'danger');
+            }
         }
     } else {
-        if (localStream) localStream.getVideoTracks().forEach(t => t.stop());
+        if (localStream) localStream.getVideoTracks().forEach(track => track.stop());
         video.srcObject = null;
         placeholder.style.display = '';
         video.style.display = 'none';
         isCamOn = false;
-        // Keep mic stream running
         if (isMicOn && micStream) {
             localStream = micStream;
         } else {
@@ -3633,33 +3649,47 @@ document.getElementById('btn-toggle-cam').addEventListener('click', async () => 
 
 // Microphone
 document.getElementById('btn-toggle-mic').addEventListener('click', async () => {
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        showToast('⚠️ マイクはHTTPS接続が必要です / Mic requires HTTPS', 'danger');
+        return;
+    }
     if (!isMicOn) {
         try {
             micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
             isMicOn = true;
-            showToast(t('toast_mic_on'));
+            showToast(tr('toast_mic_on'));
         } catch (err) {
             console.error('Mic access denied:', err);
-            showToast(t('toast_camera_error'), 'danger');
+            if (err.name === 'NotAllowedError') {
+                showToast('🚫 マイクのアクセスが拒否されました / Mic permission denied', 'danger');
+            } else if (err.name === 'NotFoundError') {
+                showToast('🎤 マイクが見つかりません / No microphone found', 'danger');
+            } else {
+                showToast(tr('toast_camera_error'), 'danger');
+            }
         }
     } else {
-        if (micStream) micStream.getTracks().forEach(t => t.stop());
+        if (micStream) micStream.getTracks().forEach(track => track.stop());
         micStream = null;
         isMicOn = false;
-        showToast(t('toast_mic_off'));
+        showToast(tr('toast_mic_off'));
     }
     _updateMicBtn();
 });
 
 // Screen share
 document.getElementById('btn-share-screen').addEventListener('click', async () => {
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        showToast('⚠️ 画面共有はHTTPS接続が必要です / Screen share requires HTTPS', 'danger');
+        return;
+    }
     try {
-        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
         const video = document.getElementById('local-video');
         video.srcObject = stream;
         document.getElementById('local-video-placeholder').style.display = 'none';
         video.style.display = 'block';
-        showToast(t('toast_screenshare_start'));
+        showToast(tr('toast_screenshare_start'));
 
         stream.getVideoTracks()[0].addEventListener('ended', () => {
             if (isCamOn && localStream) {
@@ -3669,10 +3699,12 @@ document.getElementById('btn-share-screen').addEventListener('click', async () =
                 video.style.display = 'none';
                 document.getElementById('local-video-placeholder').style.display = '';
             }
-            showToast(t('toast_screenshare_end'));
+            showToast(tr('toast_screenshare_end'));
         });
     } catch (err) {
-        console.error('Display media error:', err);
+        if (err.name !== 'AbortError' && err.name !== 'NotAllowedError') {
+            console.error('Display media error:', err);
+        }
     }
 });
 

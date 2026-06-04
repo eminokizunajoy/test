@@ -636,6 +636,16 @@
                     <p data-i18n="study_subtitle">ポモドーロタイマーとWebカメラ共有で、他の学生と一緒に集中して勉強しましょう。</p>
                 </div>
 
+                <!-- HTTPS warning — hidden when on HTTPS/localhost -->
+                <div id="study-https-warning" class="study-https-warning hidden">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <strong>⚠️ HTTPS が必要 / HTTPS Required</strong><br>
+                        <span style="font-size:0.85rem;">カメラ・マイク・画面共有は HTTPS 接続でのみ動作します。<br>
+                        Camera, mic & screen share only work over HTTPS. Please deploy with SSL.</span>
+                    </div>
+                </div>
+
                 <div class="study-room-layout">
                     <!-- Left: Pomodoro clock & Controls -->
                     <div class="study-room-sidebar">

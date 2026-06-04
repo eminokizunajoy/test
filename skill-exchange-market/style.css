@@ -1899,7 +1899,29 @@ select option {
 }
 
 
+/* HTTPS warning banner */
+.study-https-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.1));
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin-bottom: 1.5rem;
+    color: #fbbf24;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.study-https-warning .fa-triangle-exclamation {
+    font-size: 1.4rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
 .study-room-main {
+
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
