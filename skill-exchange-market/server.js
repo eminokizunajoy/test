@@ -26,7 +26,8 @@ function readDB() {
                 schedules: [],
                 notifications: [],
                 questions: [],
-                flashRequests: []
+                flashRequests: [],
+                groups: []
             };
             fs.writeFileSync(DB_FILE, JSON.stringify(initialData, null, 2), 'utf8');
             return initialData;
@@ -42,10 +43,11 @@ function readDB() {
         if (!db.notifications) db.notifications = [];
         if (!db.questions) db.questions = [];
         if (!db.flashRequests) db.flashRequests = [];
+        if (!db.groups) db.groups = [];
         return db;
     } catch (error) {
         console.error("Error reading database file:", error);
-        return { users: [], matches: [], messages: [], reviews: [], schedules: [], notifications: [], questions: [], flashRequests: [] };
+        return { users: [], matches: [], messages: [], reviews: [], schedules: [], notifications: [], questions: [], flashRequests: [], groups: [] };
     }
 }
 
@@ -167,7 +169,8 @@ app.get('/api/sync', (req, res) => {
         schedules: db.schedules || [],
         notifications: db.notifications || [],
         questions: db.questions || [],
-        flashRequests: db.flashRequests || []
+        flashRequests: db.flashRequests || [],
+        groups: db.groups || []
     });
 });
 
@@ -695,6 +698,97 @@ app.post('/api/flash-requests/take', (req, res) => {
 
     writeDB(db);
     res.json({ request, flashRequests: db.flashRequests, matches: db.matches });
+});
+
+// --- Study Groups API Endpoints ---
+app.post('/api/groups/create', (req, res) => {
+    const { name, description, skillName, createdById } = req.body;
+    if (!name || !skillName || !createdById) {
+        return res.status(400).json({ error: "Parameter pembuatan grup tidak lengkap" });
+    }
+
+    const db = readDB();
+    const newGroup = {
+        id: "group_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+        name: name.trim(),
+        description: (description || "").trim(),
+        skillName: skillName.trim().toLowerCase(),
+        createdById,
+        members: [createdById],
+        messages: [],
+        createdAt: new Date().toISOString()
+    };
+
+    db.groups = db.groups || [];
+    db.groups.push(newGroup);
+    
+    // Award XP
+    awardXP(db, createdById, 100);
+    addNotification(db, createdById, "badge", `Selamat! Anda mendapatkan 100 XP karena telah membuat grup belajar: "${newGroup.name}".`);
+
+    writeDB(db);
+    res.json({ group: newGroup, groups: db.groups });
+});
+
+app.post('/api/groups/invite', (req, res) => {
+    const { groupId, inviteeId, inviterId } = req.body;
+    if (!groupId || !inviteeId) {
+        return res.status(400).json({ error: "Parameter undangan grup tidak lengkap" });
+    }
+
+    const db = readDB();
+    db.groups = db.groups || [];
+    const group = db.groups.find(g => g.id === groupId);
+    if (!group) {
+        return res.status(404).json({ error: "Grup tidak ditemukan" });
+    }
+
+    if (group.members.includes(inviteeId)) {
+        return res.status(400).json({ error: "Pengguna sudah menjadi anggota grup ini" });
+    }
+
+    group.members.push(inviteeId);
+    
+    // Notify invitee
+    const inviter = db.users.find(u => u.id === inviterId) || { displayName: "Seseorang" };
+    addNotification(db, inviteeId, "group", `${inviter.displayName} mengundang Anda bergabung ke grup belajar: "${group.name}".`);
+
+    writeDB(db);
+    res.json({ group, groups: db.groups });
+});
+
+app.post('/api/groups/messages', (req, res) => {
+    const { groupId, senderId, body } = req.body;
+    if (!groupId || !senderId || !body) {
+        return res.status(400).json({ error: "Pesan grup tidak lengkap" });
+    }
+
+    const db = readDB();
+    db.groups = db.groups || [];
+    const group = db.groups.find(g => g.id === groupId);
+    if (!group) {
+        return res.status(404).json({ error: "Grup tidak ditemukan" });
+    }
+
+    if (!group.members.includes(senderId)) {
+        return res.status(403).json({ error: "Anda bukan anggota grup ini" });
+    }
+
+    const sender = db.users.find(u => u.id === senderId) || { displayName: "User" };
+
+    const newMsg = {
+        id: "gmsg_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+        senderId,
+        senderName: sender.displayName,
+        body: body.trim(),
+        createdAt: new Date().toISOString()
+    };
+
+    group.messages = group.messages || [];
+    group.messages.push(newMsg);
+
+    writeDB(db);
+    res.json({ message: newMsg, group, groups: db.groups });
 });
 
 // Fallback to index.html for Single Page Routing

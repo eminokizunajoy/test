@@ -142,7 +142,36 @@ const TRANSLATIONS = {
         level_advanced: "Advanced (Ahli)",
         toast_registration_success: "Pendaftaran berhasil! Silakan masuk.",
         toast_password_length: "Password harus minimal 6 karakter!",
-        toast_opening_deck: "Membuka deck kartu..."
+        toast_opening_deck: "Membuka deck kartu...",
+        no_recommendations: "Belum ada rekomendasi baru yang cocok. Coba lengkapi profil di halaman edit profil!",
+        teaches: "Mengajar",
+        send_match: "Kirim Match",
+        no_bio_fallback: "Mahasiswa ini belum mengisi bio.",
+        no_leaderboard_other: "Belum ada peringkat lainnya",
+        no_forum_questions: "Belum ada pertanyaan di forum ini. Jadilah yang pertama bertanya!",
+        no_forum_answers: "Belum ada jawaban. Tulis jawaban pertama Anda di bawah!",
+        no_badges_earned: "Belum ada gelar",
+        no_teach_skills_passport: "Belum ada keahlian diajarkan.",
+        no_learn_skills_passport: "Belum ada kebutuhan belajar.",
+        modal_create_group_title: "Buat Grup Belajar Baru",
+        group_name_label: "Nama Grup",
+        group_desc_label: "Deskripsi",
+        group_skill_label: "Fokus Skill Utama",
+        btn_create: "Buat Grup",
+        modal_invite_title: "Undang Teman Belajar",
+        invite_helper_desc: "Hanya menampilkan partner match aktif yang memiliki kecocokan skill yang sama dengan grup ini.",
+        btn_invite: "Undang",
+        no_groups: "Belum bergabung ke grup",
+        no_eligible_partners: "Tidak ada partner match yang cocok untuk diundang.",
+        menu_study_group: "Grup Belajar",
+        passport_cert_text: "Sertifikat Portofolio ini secara resmi diberikan kepada:",
+        passport_cert_subtext: "atas keaktifan akademik dan partisipasi dalam pertukaran keahlian mahasiswa.",
+        passport_give_title: "Materi Pengajaran (Give Skills)",
+        passport_take_title: "Materi Kebutuhan Belajar (Take Skills)",
+        passport_level_label: "Tingkat Reputasi",
+        passport_rating_label: "Rating Penilaian",
+        passport_badges_label: "Badges yang Diperoleh",
+        passport_date_label: "Tanggal Cetak"
     },
     jp: {
         app_title: "スキルエクスチェンジ",
@@ -287,7 +316,36 @@ const TRANSLATIONS = {
         level_advanced: "Advanced (上級者)",
         toast_registration_success: "登録が完了しました！",
         toast_password_length: "パスワードは6文字以上で入力してください！",
-        toast_opening_deck: "探索カードを開いています..."
+        toast_opening_deck: "探索カードを開いています...",
+        no_recommendations: "マッチする新しいおすすめのパートナーはまだいません。プロフィール編集ページで情報を入力してください！",
+        teaches: "教えられるスキル",
+        send_match: "マッチを送信",
+        no_bio_fallback: "この学生はまだ自己紹介を入力していません。",
+        no_leaderboard_other: "他の順位はまだありません",
+        no_forum_questions: "このフォーラムにはまだ質問がありません。最初の質問を投稿しましょう！",
+        no_forum_answers: "回答はまだありません。以下に最初の回答を入力しましょう！",
+        no_badges_earned: "獲得したバッジ（称号）はまだありません",
+        no_teach_skills_passport: "教えられるスキルがまだ登録されていません。",
+        no_learn_skills_passport: "学びたいスキルがまだ登録されていません。",
+        modal_create_group_title: "新規勉強グループ作成",
+        group_name_label: "グループ名",
+        group_desc_label: "説明",
+        group_skill_label: "主な対象スキル",
+        btn_create: "作成",
+        modal_invite_title: "学習パートナーを招待",
+        invite_helper_desc: "このグループと同じスキルを持つ、アクティブなマッチングパートナーのみが表示されます。",
+        btn_invite: "招待",
+        no_groups: "グループ未加入",
+        no_eligible_partners: "招待可能なマッチングパートナーがいません。",
+        menu_study_group: "勉強グループ",
+        passport_cert_text: "このポートフォリオ証明書は、以下の方に正式に授与されます：",
+        passport_cert_subtext: "学術的な活動および学生間のスキル交換への積極的な参加を称えます。",
+        passport_give_title: "教えられるスキル (Give Skills)",
+        passport_take_title: "学びたいスキル (Take Skills)",
+        passport_level_label: "評判レベル",
+        passport_rating_label: "評価",
+        passport_badges_label: "獲得したバッジ",
+        passport_date_label: "発行日"
     },
     en: {
         app_title: "Skill Exchange",
@@ -432,7 +490,36 @@ const TRANSLATIONS = {
         level_advanced: "Advanced",
         toast_registration_success: "Registration successful! Please login.",
         toast_password_length: "Password must be at least 6 characters!",
-        toast_opening_deck: "Opening card deck..."
+        toast_opening_deck: "Opening card deck...",
+        no_recommendations: "No matching recommendations yet. Try completing your profile on the edit profile page!",
+        teaches: "Teaches",
+        send_match: "Send Match",
+        no_bio_fallback: "This student has not filled out their bio yet.",
+        no_leaderboard_other: "No other ranks yet",
+        no_forum_questions: "No questions in this forum yet. Be the first to ask!",
+        no_forum_answers: "No answers yet. Write your first answer below!",
+        no_badges_earned: "No titles earned yet",
+        no_teach_skills_passport: "No teaching skills registered yet.",
+        no_learn_skills_passport: "No learning needs registered yet.",
+        modal_create_group_title: "Create New Study Group",
+        group_name_label: "Group Name",
+        group_desc_label: "Description",
+        group_skill_label: "Target Skill",
+        btn_create: "Create Group",
+        modal_invite_title: "Invite Study Partner",
+        invite_helper_desc: "Only displays active match partners who share the same skill as this group.",
+        btn_invite: "Invite",
+        no_groups: "Not in any group",
+        no_eligible_partners: "No matched partners eligible for invitation.",
+        menu_study_group: "Study Groups",
+        passport_cert_text: "This Portfolio Certificate is officially awarded to:",
+        passport_cert_subtext: "for academic activity and participation in student skill exchange.",
+        passport_give_title: "Teaching Topics (Give Skills)",
+        passport_take_title: "Learning Needs (Take Skills)",
+        passport_level_label: "Reputation Level",
+        passport_rating_label: "Rating",
+        passport_badges_label: "Badges Earned",
+        passport_date_label: "Print Date"
     },
     zh: {
         app_title: "技能交换市场",
@@ -577,7 +664,36 @@ const TRANSLATIONS = {
         level_advanced: "Advanced (熟练)",
         toast_registration_success: "注册成功！请登录。",
         toast_password_length: "密码长度必须至少为6位！",
-        toast_opening_deck: "正在打开卡片组..."
+        toast_opening_deck: "正在打开卡片组...",
+        no_recommendations: "暂无符合的推荐伙伴。请尝试在编辑资料页面完善您的信息！",
+        teaches: "可教技能",
+        send_match: "发送匹配",
+        no_bio_fallback: "该学生尚未填写个人简介。",
+        no_leaderboard_other: "暂无其他排名",
+        no_forum_questions: "本论坛暂无提问。快来发布第一个提问吧！",
+        no_forum_answers: "暂无回答。在下方发表你的第一个回答吧！",
+        no_badges_earned: "暂无称号",
+        no_teach_skills_passport: "暂无登记的可教技能。",
+        no_learn_skills_passport: "暂无登记的想学技能。",
+        modal_create_group_title: "创建新学习小组",
+        group_name_label: "小组名称",
+        group_desc_label: "描述",
+        group_skill_label: "主要目标技能",
+        btn_create: "创建小组",
+        modal_invite_title: "邀请学习伙伴",
+        invite_helper_desc: "仅显示与此小组拥有相同技能的活跃匹配伙伴。",
+        btn_invite: "邀请",
+        no_groups: "未加入任何小组",
+        no_eligible_partners: "没有可邀请的匹配伙伴。",
+        menu_study_group: "学习小组",
+        passport_cert_text: "此个人资料证书正式授予给：",
+        passport_cert_subtext: "以表彰其在学生技能交换中的积极学术表现与参与。",
+        passport_give_title: "教学内容 (Give Skills)",
+        passport_take_title: "学习需求 (Take Skills)",
+        passport_level_label: "信誉等级",
+        passport_rating_label: "评分",
+        passport_badges_label: "所获徽章",
+        passport_date_label: "打印日期"
     }
 };
 
@@ -669,6 +785,8 @@ let notifications = [];
 let questions = [];
 let flashRequests = [];
 let activeFilters = { level: 'all', method: 'all', availability: 'all' };
+let groups = [];
+let activeGroupId = null;
 let matches = [];
 let messages = [];
 let currentUser = JSON.parse(localStorage.getItem("sem_current_user")) || null;
@@ -696,6 +814,7 @@ async function syncData() {
         notifications = data.notifications || [];
         questions = data.questions || [];
         flashRequests = data.flashRequests || [];
+        groups = data.groups || [];
 
         if (currentUser) {
             const updatedMe = users.find(u => u.id === currentUser.id);
@@ -1161,6 +1280,7 @@ function getRecommendedMatches() {
 // ================= DASHBOARD RENDER =================
 function renderDashboard() {
     if (!currentUser) return;
+    const dict = TRANSLATIONS[currentLanguage] || {};
 
     elStatTeach.innerText = currentUser.teachSkills.length;
     elStatLearn.innerText = currentUser.learning.length;
@@ -1176,7 +1296,7 @@ function renderDashboard() {
 
     elPreviewTeachSkills.innerHTML = "";
     if (currentUser.teachSkills.length === 0) {
-        elPreviewTeachSkills.innerHTML = `<span class="subtitle" data-i18n="no_skills">Belum ada skill</span>`;
+        elPreviewTeachSkills.innerHTML = `<span class="subtitle" data-i18n="no_skills">${dict["no_skills"] || "Belum ada skill"}</span>`;
     } else {
         currentUser.teachSkills.forEach(s => {
             elPreviewTeachSkills.innerHTML += `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`;
@@ -1185,7 +1305,7 @@ function renderDashboard() {
 
     elPreviewLearnNeeds.innerHTML = "";
     if (currentUser.learning.length === 0) {
-        elPreviewLearnNeeds.innerHTML = `<span class="subtitle" data-i18n="no_learning_needs">Belum ada kebutuhan</span>`;
+        elPreviewLearnNeeds.innerHTML = `<span class="subtitle" data-i18n="no_learning_needs">${dict["no_learning_needs"] || "Belum ada kebutuhan"}</span>`;
     } else {
         currentUser.learning.forEach(s => {
             elPreviewLearnNeeds.innerHTML += `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`;
@@ -1202,13 +1322,15 @@ function renderDashboard() {
         elRecommendedList.innerHTML = `
             <div class="empty-state">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <p>Belum ada rekomendasi baru yang cocok. Coba lengkapi profil di halaman edit profil!</p>
+                <p>${dict["no_recommendations"] || "Belum ada rekomendasi baru yang cocok. Coba lengkapi profil di halaman edit profil!"}</p>
             </div>
         `;
     } else {
         filteredRecs.forEach(r => {
             const fallbackText = currentLanguage === "jp" ? "なし" : "None";
             const teachList = r.user.teachSkills.map(s => s.name).join(", ") || fallbackText;
+            const teachesLabel = dict["teaches"] || "Mengajar";
+            const sendMatchLabel = dict["send_match"] || "Kirim Match";
             
             elRecommendedList.innerHTML += `
                 <div class="recommended-item">
@@ -1216,9 +1338,9 @@ function renderDashboard() {
                     <div class="rec-info">
                         <h4>${r.user.displayName} <span class="match-percentage">${r.score}% Match</span></h4>
                         <p>${formatDeptGrade(r.user)}</p>
-                        <p class="subtitle" style="margin-bottom:0; font-size:0.75rem;">Mengajar: <strong>${teachList}</strong></p>
+                        <p class="subtitle" style="margin-bottom:0; font-size:0.75rem;">${teachesLabel}: <strong>${teachList}</strong></p>
                     </div>
-                    <button class="btn btn-primary" onclick="triggerCardSwipeRight('${r.user.id}')">Kirim Match</button>
+                    <button class="btn btn-primary" onclick="triggerCardSwipeRight('${r.user.id}')">${sendMatchLabel}</button>
                 </div>
             `;
         });
@@ -1640,8 +1762,133 @@ window.rejectMatchRequest = async function(matchId) {
 // ================= CHAT LOGIC & TRANSLATOR TOOL =================
 window.openChatWindow = function(partnerId) {
     activeChatPartnerId = partnerId;
-    document.querySelector('[data-target="view-chat"]').click();
+function renderGroups() {
+    const list = document.getElementById("chat-groups-list");
+    if (!list) return;
+    list.innerHTML = "";
+    
+    if (!currentUser) return;
+    
+    const myGroups = groups.filter(g => g.members.includes(currentUser.id));
+    const dict = TRANSLATIONS[currentLanguage] || {};
+    
+    if (myGroups.length === 0) {
+        const fallbackText = dict["no_groups"] || "Belum bergabung ke grup";
+        list.innerHTML = `<span class="subtitle" style="padding: 1rem; display:block; text-align:center; font-size: 0.75rem;" data-i18n="no_groups">${fallbackText}</span>`;
+        return;
+    }
+    
+    myGroups.forEach(g => {
+        const lastMsg = g.messages && g.messages.length > 0 ? g.messages[g.messages.length - 1] : null;
+        const lastMsgText = lastMsg ? `${lastMsg.senderName}: ${lastMsg.body}` : (dict["no_conversations"] || "Belum ada obrolan");
+        const isActiveClass = g.id === activeGroupId ? "active" : "";
+        
+        list.innerHTML += `
+            <div class="chat-user-item ${isActiveClass}" onclick="selectGroup('${g.id}')">
+                <div style="position: relative; display: inline-block; flex-shrink: 0;">
+                    <div class="chat-user-avatar" style="display: flex; align-items: center; justify-content: center; background: var(--primary-color); color: #fff; font-weight: bold; border-radius: 50%; font-size: 0.8rem; width: 40px; height: 40px;">
+                        ${g.name.substring(0, 2).toUpperCase()}
+                    </div>
+                </div>
+                <div class="chat-user-item-info">
+                    <h4>${g.name} <span class="badge badge-info" style="font-size: 0.6rem; padding: 2px 4px; background: rgba(59, 130, 246, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 4px; margin-left: 4px;">${g.skillName.toUpperCase()}</span></h4>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;">${lastMsgText}</p>
+                </div>
+            </div>
+        `;
+    });
+}
+
+window.selectGroup = function(groupId) {
+    activeGroupId = groupId;
+    activeChatPartnerId = null;
     renderChat();
+};
+
+window.selectChatPartner = function(partnerId) {
+    activeChatPartnerId = partnerId;
+    activeGroupId = null;
+    renderChat();
+};
+
+window.openGroupInviteModal = function() {
+    if (!activeGroupId || !currentUser) return;
+    const group = groups.find(g => g.id === activeGroupId);
+    if (!group) return;
+
+    const dict = TRANSLATIONS[currentLanguage] || {};
+    const inviteList = document.getElementById("group-invite-list");
+    if (!inviteList) return;
+    inviteList.innerHTML = "";
+
+    // Find active matches
+    const activeMatches = matches.filter(m => 
+        m.status === "ACTIVE" && (m.userAId === currentUser.id || m.userBId === currentUser.id)
+    );
+
+    const eligiblePartners = [];
+    activeMatches.forEach(m => {
+        const partnerId = m.userAId === currentUser.id ? m.userBId : m.userAId;
+        const partner = users.find(u => u.id === partnerId);
+        
+        if (partner && !group.members.includes(partner.id)) {
+            const sharesSkill = partner.teachSkills.some(s => s.name.toLowerCase() === group.skillName.toLowerCase()) ||
+                                partner.learning.some(s => s.name.toLowerCase() === group.skillName.toLowerCase());
+            
+            if (sharesSkill) {
+                eligiblePartners.push(partner);
+            }
+        }
+    });
+
+    if (eligiblePartners.length === 0) {
+        inviteList.innerHTML = `<p style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8rem;">${dict["no_eligible_partners"] || "Tidak ada partner match yang cocok untuk diundang."}</p>`;
+        openModal("modal-group-invite");
+        return;
+    }
+
+    eligiblePartners.forEach(partner => {
+        inviteList.innerHTML += `
+            <div class="match-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid var(--border-color);">
+                <div style="display: flex; align-items: center;">
+                    <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="avatar-small" style="margin-right: 10px; width: 32px; height: 32px; border-radius: 50%;">
+                    <div>
+                        <h5 style="margin: 0; font-size: 0.9rem; color: var(--text-light);">${partner.displayName}</h5>
+                        <small style="color: var(--text-muted);">${formatDeptGrade(partner)}</small>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="inviteToGroup('${partner.id}')" type="button" style="font-size: 0.75rem; padding: 4px 10px;">${dict["btn_invite"] || "Undang"}</button>
+            </div>
+        `;
+    });
+
+    openModal("modal-group-invite");
+};
+
+window.inviteToGroup = async function(inviteeId) {
+    if (!activeGroupId || !currentUser) return;
+    try {
+        const res = await fetch('/api/groups/invite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                groupId: activeGroupId,
+                inviteeId: inviteeId,
+                inviterId: currentUser.id
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            groups = data.groups || [];
+            showToast(currentLanguage === "jp" ? "招待を送りました！" : "Undangan berhasil dikirim!");
+            closeModal("modal-group-invite");
+            renderChat();
+        } else {
+            showToast(data.error || "Gagal mengundang", "danger");
+        }
+    } catch (err) {
+        console.error("Error inviting user to group:", err);
+    }
 };
 
 function renderChat() {
@@ -1653,134 +1900,197 @@ function renderChat() {
         m.status === "ACTIVE" && (m.userAId === currentUser.id || m.userBId === currentUser.id)
     );
 
-    const dict = TRANSLATIONS[currentLanguage];
+    const dict = TRANSLATIONS[currentLanguage] || {};
 
     if (activeMatches.length === 0) {
         const fallbackText = dict["no_chat_partner"] || "Belum memiliki partner chat.";
         elChatUsersList.innerHTML = `<span class="subtitle" style="padding: 1.5rem; display:block; text-align:center;" data-i18n="no_chat_partner">${fallbackText}</span>`;
-        elChatNoSelection.classList.remove("hidden");
-        elChatActive.classList.add("hidden");
-        return;
+    } else {
+        activeMatches.forEach(m => {
+            const partnerId = m.userAId === currentUser.id ? m.userBId : m.userAId;
+            const partner = users.find(u => u.id === partnerId);
+            
+            if (partner) {
+                const partnerMsgs = messages.filter(msg => 
+                    (msg.senderId === currentUser.id && msg.receiverId === partner.id) ||
+                    (msg.senderId === partner.id && msg.receiverId === currentUser.id)
+                );
+                const fallbackText = dict["no_conversations"] || "Belum ada obrolan";
+                const lastMsgText = partnerMsgs.length > 0 ? partnerMsgs[partnerMsgs.length - 1].body : fallbackText;
+
+                const isActiveClass = partner.id === activeChatPartnerId ? "active" : "";
+
+                elChatUsersList.innerHTML += `
+                    <div class="chat-user-item ${isActiveClass}" onclick="selectChatPartner('${partner.id}')">
+                        <div style="position: relative; display: inline-block; flex-shrink: 0;">
+                            <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="chat-user-avatar">
+                            <span class="status-indicator-dot ${isUserOnline(partner) ? 'online' : 'offline'}" style="position: absolute; bottom: 0; right: 0; border: 2px solid #0b0f19; width: 10px; height: 10px;"></span>
+                        </div>
+                        <div class="chat-user-item-info">
+                            <h4>${partner.displayName}</h4>
+                            <p>${lastMsgText}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        });
     }
 
-    activeMatches.forEach(m => {
-        const partnerId = m.userAId === currentUser.id ? m.userBId : m.userAId;
-        const partner = users.find(u => u.id === partnerId);
-        
-        if (partner) {
-            const partnerMsgs = messages.filter(msg => 
-                (msg.senderId === currentUser.id && msg.receiverId === partner.id) ||
-                (msg.senderId === partner.id && msg.receiverId === currentUser.id)
-            );
-            const fallbackText = dict["no_conversations"] || "Belum ada obrolan";
-            const lastMsgText = partnerMsgs.length > 0 ? partnerMsgs[partnerMsgs.length - 1].body : fallbackText;
-
-            const isActiveClass = partner.id === activeChatPartnerId ? "active" : "";
-
-            elChatUsersList.innerHTML += `
-                <div class="chat-user-item ${isActiveClass}" onclick="selectChatPartner('${partner.id}')">
-                    <div style="position: relative; display: inline-block; flex-shrink: 0;">
-                        <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="chat-user-avatar">
-                        <span class="status-indicator-dot ${isUserOnline(partner) ? 'online' : 'offline'}" style="position: absolute; bottom: 0; right: 0; border: 2px solid #0b0f19; width: 10px; height: 10px;"></span>
-                    </div>
-                    <div class="chat-user-item-info">
-                        <h4>${partner.displayName}</h4>
-                        <p>${lastMsgText}</p>
-                    </div>
-                </div>
-            `;
-        }
-    });
-
-    if (!activeChatPartnerId) {
+    if (!activeChatPartnerId && !activeGroupId) {
         elChatNoSelection.classList.remove("hidden");
         elChatActive.classList.add("hidden");
     } else {
         elChatNoSelection.classList.add("hidden");
         elChatActive.classList.remove("hidden");
 
-        const partner = users.find(u => u.id === activeChatPartnerId);
-        elChatPartnerName.innerText = partner.displayName;
-        elChatPartnerAvatar.src = getUserAvatarUrl(partner);
-
-        // Update online/offline presence indicator dynamically
-        const online = isUserOnline(partner);
-        const statusText = online ? (currentLanguage === "jp" ? "オンライン" : "Online") : (currentLanguage === "jp" ? "オフライン" : "Offline");
-        const statusClass = online ? "status-online" : "status-offline";
-        
-        elChatPartnerStatus.className = `chat-partner-status ${statusClass}`;
-        elChatPartnerStatus.innerHTML = `<i class="fa-solid fa-circle"></i> ${statusText}`;
-
-        // Render Messages dengan Terjemahan Real-time (jika dipilih)
-        elChatMessagesContainer.innerHTML = "";
-        const conversation = messages.filter(msg => 
-            (msg.senderId === currentUser.id && msg.receiverId === partner.id) ||
-            (msg.senderId === partner.id && msg.receiverId === currentUser.id)
-        );
-
-        const targetLang = elChatTranslateLang.value; // 'none', 'id', 'jp', 'en', 'zh'
-
-        if (conversation.length === 0) {
-            elChatMessagesContainer.innerHTML = `
-                <div class="empty-state">
-                    <p data-i18n="start_conversation">Mulai percakapan Anda!</p>
-                </div>
-            `;
-        } else {
-             conversation.forEach(msg => {
-                const isSent = msg.senderId === currentUser.id;
+        if (activeGroupId) {
+            const group = groups.find(g => g.id === activeGroupId);
+            if (group) {
+                elChatPartnerName.innerText = group.name;
+                elChatPartnerAvatar.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(group.name)}`;
                 
-                // Cari terjemahan di database kamus chat atau cache real-time
-                let translationText = "";
-                let isLoadingTranslate = false;
-                if (targetLang !== "none") {
-                    if (CHAT_TRANSLATIONS[msg.body] && CHAT_TRANSLATIONS[msg.body][targetLang]) {
-                        translationText = CHAT_TRANSLATIONS[msg.body][targetLang];
-                    } else if (!isSent) {
-                        const cacheKey = `${msg.body}_${targetLang}`;
-                        if (translationCache[cacheKey]) {
-                            if (translationCache[cacheKey] === "...") {
-                                isLoadingTranslate = true;
-                            } else {
-                                translationText = translationCache[cacheKey];
-                            }
-                        } else {
-                            translationCache[cacheKey] = "..."; // set loading state
-                            isLoadingTranslate = true;
-                            fetchRealTranslation(msg.body, targetLang);
-                        }
-                    }
-                }
+                const membersLabel = currentLanguage === "jp" ? "人のメンバー" : (currentLanguage === "en" ? "members" : "Anggota");
+                elChatPartnerStatus.className = "chat-partner-status status-online";
+                elChatPartnerStatus.innerHTML = `<i class="fa-solid fa-users"></i> ${group.members.length} ${membersLabel} &bull; Focus: ${group.skillName.toUpperCase()}`;
 
-                const translationHtml = isLoadingTranslate ?
-                    `<div class="translate-subtext"><i class="fa-solid fa-spinner fa-spin"></i> Translating...</div>` :
-                    (translationText ? `<div class="translate-subtext"><i class="fa-solid fa-language"></i> ${targetLang.toUpperCase()}: ${translationText}</div>` : "");
+                document.getElementById("btn-chat-schedule")?.classList.add("hidden");
+                document.getElementById("btn-chat-review")?.classList.add("hidden");
+                document.getElementById("btn-group-invite")?.classList.remove("hidden");
 
-                elChatMessagesContainer.innerHTML += `
-                    <div class="message-wrapper ${isSent ? 'wrapper-sent' : 'wrapper-received'}">
-                        <div class="message-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
-                            ${msg.body}
+                elChatMessagesContainer.innerHTML = "";
+                const conversation = group.messages || [];
+                const targetLang = elChatTranslateLang.value;
+
+                if (conversation.length === 0) {
+                    elChatMessagesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p data-i18n="start_conversation">${dict["start_conversation"] || "Mulai percakapan Anda!"}</p>
                         </div>
-                        ${translationHtml}
-                    </div>
-                `;
-            });
-            elChatMessagesContainer.scrollTop = elChatMessagesContainer.scrollHeight;
+                    `;
+                } else {
+                    conversation.forEach(msg => {
+                        const isSent = msg.senderId === currentUser.id;
+                        
+                        let translationText = "";
+                        let isLoadingTranslate = false;
+                        if (targetLang !== "none") {
+                            if (CHAT_TRANSLATIONS[msg.body] && CHAT_TRANSLATIONS[msg.body][targetLang]) {
+                                translationText = CHAT_TRANSLATIONS[msg.body][targetLang];
+                            } else if (!isSent) {
+                                const cacheKey = `${msg.body}_${targetLang}`;
+                                if (translationCache[cacheKey]) {
+                                    if (translationCache[cacheKey] === "...") {
+                                        isLoadingTranslate = true;
+                                    } else {
+                                        translationText = translationCache[cacheKey];
+                                    }
+                                } else {
+                                    translationCache[cacheKey] = "...";
+                                    isLoadingTranslate = true;
+                                    fetchRealTranslation(msg.body, targetLang);
+                                }
+                            }
+                        }
+
+                        const translationHtml = isLoadingTranslate ?
+                            `<div class="translate-subtext"><i class="fa-solid fa-spinner fa-spin"></i> Translating...</div>` :
+                            (translationText ? `<div class="translate-subtext"><i class="fa-solid fa-language"></i> ${targetLang.toUpperCase()}: ${translationText}</div>` : "");
+
+                        const senderNameHtml = isSent ? "" : `<div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:2px; margin-left:4px;">${msg.senderName || 'User'}</div>`;
+
+                        elChatMessagesContainer.innerHTML += `
+                            <div class="message-wrapper ${isSent ? 'wrapper-sent' : 'wrapper-received'}">
+                                ${senderNameHtml}
+                                <div class="message-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
+                                    ${msg.body}
+                                </div>
+                                ${translationHtml}
+                            </div>
+                        `;
+                    });
+                    elChatMessagesContainer.scrollTop = elChatMessagesContainer.scrollHeight;
+                }
+            }
+        } else {
+            const partner = users.find(u => u.id === activeChatPartnerId);
+            if (partner) {
+                elChatPartnerName.innerText = partner.displayName;
+                elChatPartnerAvatar.src = getUserAvatarUrl(partner);
+
+                const online = isUserOnline(partner);
+                const statusText = online ? (currentLanguage === "jp" ? "オンライン" : "Online") : (currentLanguage === "jp" ? "オフライン" : "Offline");
+                const statusClass = online ? "status-online" : "status-offline";
+                
+                elChatPartnerStatus.className = `chat-partner-status ${statusClass}`;
+                elChatPartnerStatus.innerHTML = `<i class="fa-solid fa-circle"></i> ${statusText}`;
+
+                document.getElementById("btn-chat-schedule")?.classList.remove("hidden");
+                document.getElementById("btn-chat-review")?.classList.remove("hidden");
+                document.getElementById("btn-group-invite")?.classList.add("hidden");
+
+                elChatMessagesContainer.innerHTML = "";
+                const conversation = messages.filter(msg => 
+                    (msg.senderId === currentUser.id && msg.receiverId === partner.id) ||
+                    (msg.senderId === partner.id && msg.receiverId === currentUser.id)
+                );
+
+                const targetLang = elChatTranslateLang.value;
+
+                if (conversation.length === 0) {
+                    elChatMessagesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p data-i18n="start_conversation">${dict["start_conversation"] || "Mulai percakapan Anda!"}</p>
+                        </div>
+                    `;
+                } else {
+                     conversation.forEach(msg => {
+                        const isSent = msg.senderId === currentUser.id;
+                        
+                        let translationText = "";
+                        let isLoadingTranslate = false;
+                        if (targetLang !== "none") {
+                            if (CHAT_TRANSLATIONS[msg.body] && CHAT_TRANSLATIONS[msg.body][targetLang]) {
+                                translationText = CHAT_TRANSLATIONS[msg.body][targetLang];
+                            } else if (!isSent) {
+                                const cacheKey = `${msg.body}_${targetLang}`;
+                                if (translationCache[cacheKey]) {
+                                    if (translationCache[cacheKey] === "...") {
+                                        isLoadingTranslate = true;
+                                    } else {
+                                        translationText = translationCache[cacheKey];
+                                    }
+                                } else {
+                                    translationCache[cacheKey] = "...";
+                                    isLoadingTranslate = true;
+                                    fetchRealTranslation(msg.body, targetLang);
+                                }
+                            }
+                        }
+
+                        const translationHtml = isLoadingTranslate ?
+                            `<div class="translate-subtext"><i class="fa-solid fa-spinner fa-spin"></i> Translating...</div>` :
+                            (translationText ? `<div class="translate-subtext"><i class="fa-solid fa-language"></i> ${targetLang.toUpperCase()}: ${translationText}</div>` : "");
+
+                        elChatMessagesContainer.innerHTML += `
+                            <div class="message-wrapper ${isSent ? 'wrapper-sent' : 'wrapper-received'}">
+                                <div class="message-bubble ${isSent ? 'msg-sent' : 'msg-received'}">
+                                    ${msg.body}
+                                </div>
+                                ${translationHtml}
+                            </div>
+                        `;
+                    });
+                    elChatMessagesContainer.scrollTop = elChatMessagesContainer.scrollHeight;
+                }
+            }
         }
     }
 }
 
-window.selectChatPartner = function(partnerId) {
-    activeChatPartnerId = partnerId;
-    renderChat();
-};
-
-// Deteksi perubahan bahasa dropdown terjemahan di chat
 elChatTranslateLang.addEventListener("change", renderChat);
 
 const translationCache = {};
 
-// Fungsi terjemahan asli menggunakan API MyMemory
 async function fetchRealTranslation(text, lang) {
     const langMap = {
         id: "id",
@@ -1804,13 +2114,13 @@ async function fetchRealTranslation(text, lang) {
         console.error("Translation API error:", err);
         translationCache[cacheKey] = "[Error]";
     }
-    // Re-render chat to show the translation
     renderChat();
 }
 
 elChatSendForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!activeChatPartnerId || !currentUser) return;
+    if (!currentUser) return;
+    if (!activeChatPartnerId && !activeGroupId) return;
 
     const messageText = elChatInput.value.trim();
     if (!messageText) return;
@@ -1818,28 +2128,86 @@ elChatSendForm.addEventListener("submit", async (e) => {
     elChatInput.value = "";
 
     try {
-        const res = await fetch('/api/messages', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                senderId: currentUser.id,
-                receiverId: activeChatPartnerId,
-                body: messageText
-            })
-        });
-        const data = await res.json();
-        
-        if (res.ok) {
-            messages = data.messages || [];
-            renderChat();
-            
-            const chatContainer = document.getElementById("chat-messages-container");
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        if (activeGroupId) {
+            const res = await fetch('/api/groups/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    groupId: activeGroupId,
+                    senderId: currentUser.id,
+                    body: messageText
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                groups = data.groups || [];
+                renderChat();
+            }
+        } else {
+            const res = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    senderId: currentUser.id,
+                    receiverId: activeChatPartnerId,
+                    body: messageText
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                messages = data.messages || [];
+                renderChat();
+            }
         }
     } catch (err) {
         console.error("Error sending message:", err);
     }
 });
+
+const elFormCreateGroup = document.getElementById("form-create-group");
+if (elFormCreateGroup) {
+    elFormCreateGroup.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("group-name").value.trim();
+        const description = document.getElementById("group-desc").value.trim();
+        const skillName = document.getElementById("group-skill").value.trim();
+        
+        if (!name || !skillName || !currentUser) return;
+        
+        try {
+            const res = await fetch('/api/groups/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    description,
+                    skillName,
+                    createdById: currentUser.id
+                })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                groups = data.groups || [];
+                closeModal('modal-create-group');
+                elFormCreateGroup.reset();
+                showToast(currentLanguage === "jp" ? "勉強グループを作成しました！" : "Grup belajar berhasil dibuat!");
+                
+                if (data.group) {
+                    activeGroupId = data.group.id;
+                    activeChatPartnerId = null;
+                }
+                syncData().then(() => {
+                    renderChat();
+                });
+            } else {
+                showToast(data.error || "Gagal membuat grup", "danger");
+            }
+        } catch (err) {
+            console.error("Error creating group:", err);
+            showToast("Gagal membuat grup", "danger");
+        }
+    });
+}
 
 function updateChatBadge() {
     elChatBadge.classList.add("hidden");
@@ -2114,6 +2482,7 @@ renderDashboard = function() {
 
 // --- XP Podium & Leaderboard ---
 async function renderLeaderboard() {
+    const dict = TRANSLATIONS[currentLanguage] || {};
     try {
         const res = await fetch('/api/leaderboard');
         const data = await res.json();
@@ -2179,7 +2548,7 @@ async function renderLeaderboard() {
         // Render 4-10 position rows
         listRowsContainer.innerHTML = "";
         if (topUsers.length <= 3) {
-            listRowsContainer.innerHTML = `<div class="empty-state" style="padding: 1.5rem;"><p data-i18n="no_records">Belum ada peringkat lainnya</p></div>`;
+            listRowsContainer.innerHTML = `<div class="empty-state" style="padding: 1.5rem;"><p data-i18n="no_records">${dict["no_leaderboard_other"] || "Belum ada peringkat lainnya"}</p></div>`;
         } else {
             for (let i = 3; i < topUsers.length; i++) {
                 const u = topUsers[i];
@@ -2211,12 +2580,102 @@ function updateNotificationsBell() {
     }
 }
 
+function getLocalizedNotificationText(content, lang) {
+    if (lang !== "jp" && lang !== "en") {
+        return content; // Keep original Indonesian if not Japanese or English
+    }
+    
+    // 1. Level/Badge awards
+    if (content.includes("Selamat! Anda mendapatkan gelar 'Scholar'")) {
+        return lang === "jp" ? "おめでとうございます！レベル3に達したため、「Scholar」の称号を獲得しました。" : "Congratulations! You have earned the 'Scholar' title for reaching Level 3.";
+    }
+    if (content.includes("Luar biasa! Anda telah mencapai Level 6")) {
+        return lang === "jp" ? "素晴らしい！レベル6に達し、「Grandmaster」の称号が授与されました！" : "Amazing! You have reached Level 6 and been awarded the 'Grandmaster' title!";
+    }
+    if (content.includes("Selamat! Anda mendapatkan lencana 'Bahasa Is My Jam'")) {
+        return lang === "jp" ? "おめでとうございます！3つ以上の語学スキルを持っているため、「Bahasa Is My Jam」のバッジを獲得しました。" : "Congratulations! You have earned the 'Bahasa Is My Jam' badge for having 3+ language skills.";
+    }
+    if (content.includes("Selamat! Anda mendapatkan lencana 'Bug Hunter'")) {
+        return lang === "jp" ? "おめでとうございます！3つ以上のIT/プログラミングスキルを持っているため、「Bug Hunter」のバッジを獲得しました。" : "Congratulations! You have earned the 'Bug Hunter' badge for having 3+ IT/Programming skills.";
+    }
+    if (content.includes("Selamat! Anda mendapatkan lencana 'Night Owl'")) {
+        return lang === "jp" ? "おめでとうございます！深夜の学習セッションをスケジュールしたため、「Night Owl」のバッジを獲得しました。" : "Congratulations! You have earned the 'Night Owl' badge for scheduling a late-night study session.";
+    }
+    
+    // Group creation award
+    let groupCreateMatch = content.match(/Selamat! Anda mendapatkan 100 XP karena telah membuat grup belajar:\s*"(.*)"/);
+    if (groupCreateMatch) {
+        const groupName = groupCreateMatch[1];
+        return lang === "jp" ? `おめでとうございます！勉強グループ「${groupName}」を作成したため、100 XPを獲得しました。` : `Congratulations! You earned 100 XP for creating the study group: "${groupName}".`;
+    }
+
+    // 2. Match
+    let matchMatch = content.match(/Kecocokan terjalin! Anda sekarang terhubung dengan\s*(.*)\./);
+    if (matchMatch) {
+        const name = matchMatch[1];
+        return lang === "jp" ? `マッチングが成立しました！${name}さんと繋がりました。` : `Match made! You are now connected with ${name}.`;
+    }
+
+    // 3. Review
+    let reviewMatch = content.match(/(.*)\s+memberikan rating\s+⭐\s+(\d+)\s+untuk Anda!/);
+    if (reviewMatch) {
+        const name = reviewMatch[1];
+        const rating = reviewMatch[2];
+        return lang === "jp" ? `${name}さんがあなたに ⭐ ${rating} の評価をつけました！` : `${name} gave you a ⭐ ${rating} rating!`;
+    }
+
+    // 4. Schedule
+    let scheduleMatch = content.match(/(.*)\s+mengundang Anda ke sesi belajar:\s+(.*)\s+pada\s+(.*)\s+pukul\s+(.*)\./);
+    if (scheduleMatch) {
+        const name = scheduleMatch[1];
+        const title = scheduleMatch[2];
+        const date = scheduleMatch[3];
+        const time = scheduleMatch[4];
+        return lang === "jp" 
+            ? `${name}さんがあなたを学習セッション「${title}」（日程: ${date} ${time}）に招待しました。` 
+            : `${name} invited you to a study session: ${title} on ${date} at ${time}.`;
+    }
+
+    // 5. Forum
+    let forumMatch = content.match(/(.*)\s+menjawab pertanyaan Anda:\s+"(.*)"/);
+    if (forumMatch) {
+        const name = forumMatch[1];
+        const qTitle = forumMatch[2];
+        return lang === "jp" ? `${name}さんがあなたの質問「${qTitle}」に回答しました。` : `${name} answered your question: "${qTitle}".`;
+    }
+
+    // 6. Flash Match
+    let flashTakeMatch = content.match(/Flash Match!\s+(.*)\s+telah mengambil request darurat Anda:\s+"(.*)"/);
+    if (flashTakeMatch) {
+        const name = flashTakeMatch[1];
+        const title = flashTakeMatch[2];
+        return lang === "jp" ? `フラッシュマッチ！${name}さんがあなたの緊急リクエスト「${title}」を引き受けました。` : `Flash Match! ${name} has accepted your emergency request: "${title}".`;
+    }
+    let flashReceiveMatch = content.match(/Flash Match!\s+Anda berhasil mengambil request darurat dari\s+(.*):\s+"(.*)"/);
+    if (flashReceiveMatch) {
+        const name = flashReceiveMatch[1];
+        const title = flashReceiveMatch[2];
+        return lang === "jp" ? `フラッシュマッチ！${name}さんの緊急リクエスト「${title}」を正常に引き受けました。` : `Flash Match! You successfully accepted the emergency request from ${name}: "${title}".`;
+    }
+
+    // 7. Group Invitation
+    let groupInviteMatch = content.match(/(.*)\s+mengundang Anda bergabung ke grup belajar:\s+"(.*)"/);
+    if (groupInviteMatch) {
+        const name = groupInviteMatch[1];
+        const groupName = groupInviteMatch[2];
+        return lang === "jp" ? `${name}さんがあなたを勉強グループ「${groupName}」に招待しました。` : `${name} invited you to join the study group: "${groupName}".`;
+    }
+
+    return content;
+}
+
 async function renderNotificationsDropdown() {
     const list = document.getElementById("notif-list-box");
     const userNotifs = notifications.filter(n => n.userId === currentUser.id).reverse(); // Newest first
+    const dict = TRANSLATIONS[currentLanguage] || {};
     
     if (userNotifs.length === 0) {
-        list.innerHTML = `<div class="empty-state" style="padding: 1.5rem; text-align: center;"><p style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada notifikasi baru</p></div>`;
+        list.innerHTML = `<div class="empty-state" style="padding: 1.5rem; text-align: center;"><p style="font-size: 0.75rem; color: var(--text-muted);">${dict["no_notifications"] || "Tidak ada notifikasi baru"}</p></div>`;
         return;
     }
     
@@ -2231,7 +2690,7 @@ async function renderNotificationsDropdown() {
         
         list.innerHTML += `
             <div class="notif-item ${n.read ? '' : 'unread'}">
-                <span><i class="fa-solid ${icon}" style="margin-right: 6px; color: var(--primary-color);"></i> ${n.content}</span>
+                <span><i class="fa-solid ${icon}" style="margin-right: 6px; color: var(--primary-color);"></i> ${getLocalizedNotificationText(n.content, currentLanguage)}</span>
                 <small>${new Date(n.createdAt).toLocaleDateString()} ${new Date(n.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
             </div>
         `;
@@ -2301,6 +2760,7 @@ document.getElementById("btn-apply-filters").addEventListener("click", () => {
 const originalRenderSearch = renderSearch;
 renderSearch = function() {
     if (!currentUser) return;
+    const dict = TRANSLATIONS[currentLanguage] || {};
     
     // XP board updates
     renderFlashRequests();
@@ -2367,16 +2827,16 @@ renderSearch = function() {
                 </div>
                 <p class="dept-grade" style="margin-top: 4px; font-weight: 700; color: var(--primary-color);">${formatDeptGrade(topUser)}</p>
                 <div class="user-badges-list" style="margin: 6px 0;">${badgesHtml}</div>
-                <p class="bio" style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; max-height: 60px; overflow-y: auto;">${topUser.bio || 'Mahasiswa ini belum mengisi bio.'}</p>
+                <p class="bio" style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; max-height: 60px; overflow-y: auto;">${topUser.bio || (dict["no_bio_fallback"] || 'Mahasiswa ini belum mengisi bio.')}</p>
                 
                 <hr class="preview-divider">
                 <div class="preview-section">
-                    <h5 style="color: #10b981; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-hand-holding-hand"></i> Can Teach (Bisa Mengajar):</h5>
-                    <div class="skills-wrapper">${teachHtml || '<small class="text-muted">Tidak ada skill</small>'}</div>
+                    <h5 style="color: #10b981; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-hand-holding-hand"></i> ${dict["skills_to_teach"] || "Can Teach (Bisa Mengajar)"}:</h5>
+                    <div class="skills-wrapper">${teachHtml || `<small class="text-muted">${dict["no_skills_teach_fallback"] || "Tidak ada skill"}</small>`}</div>
                 </div>
                 <div class="preview-section" style="margin-top: 10px;">
-                    <h5 style="color: #8b5cf6; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-book-open"></i> Wants to Learn (Ingin Belajar):</h5>
-                    <div class="skills-wrapper">${learnHtml || '<small class="text-muted">Tidak ada kebutuhan</small>'}</div>
+                    <h5 style="color: #8b5cf6; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-book-open"></i> ${dict["skills_to_learn"] || "Wants to Learn (Ingin Belajar)"}:</h5>
+                    <div class="skills-wrapper">${learnHtml || `<small class="text-muted">${dict["no_skills_learn_fallback"] || "Tidak ada kebutuhan"}</small>`}</div>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px;">
@@ -2522,22 +2982,24 @@ function renderChatSchedules() {
     });
 }
 
-// Hook render schedules into chat render
+// Hook render schedules and groups into chat render
 const originalRenderChat = renderChat;
 renderChat = function() {
     if (typeof originalRenderChat === "function") {
         originalRenderChat();
     }
     renderChatSchedules();
+    renderGroups();
 };
 
 // --- Q&A Forum Hub ---
 async function renderForum() {
+    const dict = TRANSLATIONS[currentLanguage] || {};
     const list = document.getElementById("forum-list-view");
     list.innerHTML = "";
     
     if (questions.length === 0) {
-        list.innerHTML = `<div class="empty-state" style="padding: 2rem;"><p>Belum ada pertanyaan di forum ini. Jadilah yang pertama bertanya!</p></div>`;
+        list.innerHTML = `<div class="empty-state" style="padding: 2rem;"><p>${dict["no_forum_questions"] || "Belum ada pertanyaan di forum ini. Jadilah yang pertama bertanya!"}</p></div>`;
         return;
     }
     
@@ -2628,6 +3090,7 @@ document.getElementById("btn-forum-back").addEventListener("click", () => {
 });
 
 function renderQuestionDetail() {
+    const dict = TRANSLATIONS[currentLanguage] || {};
     if (!activeQuestionId) return;
     const q = questions.find(item => item.id === activeQuestionId);
     if (!q) return;
@@ -2654,7 +3117,7 @@ function renderQuestionDetail() {
     
     const qAnswers = q.answers || [];
     if (qAnswers.length === 0) {
-        answersList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem; color: var(--text-muted);">Belum ada jawaban. Tulis jawaban pertama Anda di bawah!</p></div>`;
+        answersList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem; color: var(--text-muted);">${dict["no_forum_answers"] || "Belum ada jawaban. Tulis jawaban pertama Anda di bawah!"}</p></div>`;
         return;
     }
     
@@ -2991,29 +3454,76 @@ if (profileCard) {
 
 function exportSkillPassport() {
     if (!currentUser) return;
+    const dict = TRANSLATIONS[currentLanguage] || {};
     
     // Fill passport printable data
     document.getElementById("passport-name").innerText = currentUser.displayName;
-    document.getElementById("passport-dept").innerText = currentUser.department;
+    document.getElementById("passport-dept").innerText = getLocalizedDept(currentUser.department);
     document.getElementById("passport-grade").innerText = currentUser.grade;
     document.getElementById("passport-level").innerText = currentUser.level || 1;
     document.getElementById("passport-xp").innerText = currentUser.xp || 0;
-    document.getElementById("passport-print-date").innerText = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    
+    // Format date based on language
+    const printDate = new Date();
+    let formattedDate = "";
+    if (currentLanguage === "jp") {
+        formattedDate = `${printDate.getFullYear()}年${printDate.getMonth() + 1}月${printDate.getDate()}日`;
+    } else {
+        formattedDate = printDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    document.getElementById("passport-print-date").innerText = formattedDate;
     
     // Average rating
     const myReviews = reviews.filter(r => r.revieweeId === currentUser.id);
     const avg = myReviews.length > 0 ? (myReviews.reduce((sum, r) => sum + r.rating, 0) / myReviews.length).toFixed(1) : "0";
-    document.getElementById("passport-rating").innerText = `⭐ ${avg}/5 (${myReviews.length} ulasan)`;
     
     // Badges
-    const badgeText = (currentUser.badges || []).length > 0 ? (currentUser.badges || []).join(", ") : "Belum ada gelar";
-    document.getElementById("passport-badges").innerText = badgeText;
+    const badgeText = (currentUser.badges || []).length > 0 ? (currentUser.badges || []).join(", ") : (dict["no_badges_earned"] || "Belum ada gelar");
+    
+    // Translate printable certificate text labels dynamically
+    document.getElementById("passport-cert-text").innerText = dict["passport_cert_text"] || "Sertifikat Portofolio ini secara resmi diberikan kepada:";
+    
+    // Set localized user department & grade info row
+    const dept = getLocalizedDept(currentUser.department);
+    const grade = currentUser.grade || "-";
+    const infoRow = document.getElementById("passport-user-info-row");
+    if (infoRow) {
+        if (currentLanguage === "jp") {
+            infoRow.innerHTML = `<strong>${dept}</strong>（${grade}年度）の学生として、<br>学術的な活動および学生間のスキル交換への積極的な参加を称えます。`;
+        } else if (currentLanguage === "en") {
+            infoRow.innerHTML = `from the Department of <strong>${dept}</strong> (Class of ${grade})<br>for academic activity and participation in student skill exchange.`;
+        } else {
+            infoRow.innerHTML = `dari Program Studi / Jurusan <strong>${dept}</strong> (Angkatan ${grade})<br>atas keaktifan akademik dan partisipasi dalam pertukaran keahlian mahasiswa.`;
+        }
+    }
+    
+    const giveTitle = document.getElementById("passport-give-title");
+    if (giveTitle) giveTitle.innerText = dict["passport_give_title"] || "Materi Pengajaran (Give Skills)";
+    
+    const takeTitle = document.getElementById("passport-take-title");
+    if (takeTitle) takeTitle.innerText = dict["passport_take_title"] || "Materi Kebutuhan Belajar (Take Skills)";
+    
+    const dateLabel = document.getElementById("passport-date-label");
+    if (dateLabel) dateLabel.innerText = (dict["passport_date_label"] || "Tanggal Cetak") + ":";
+    
+    const levelLabel = dict["passport_level_label"] || "Tingkat Reputasi";
+    const ratingLabel = dict["passport_rating_label"] || "Rating Penilaian";
+    const badgesLabel = dict["passport_badges_label"] || "Badges yang Diperoleh";
+    
+    const statsRow = document.getElementById("passport-stats-row");
+    if (statsRow) {
+        statsRow.innerHTML = `
+            ${levelLabel}: <strong>Level ${currentUser.level || 1}</strong> (${currentUser.xp || 0} XP) &bull;
+            ${ratingLabel}: <strong>⭐ ${avg}/5 (${myReviews.length} ${currentLanguage === "jp" ? "レビュー" : "ulasan"})</strong> &bull;
+            ${badgesLabel}: <strong>${badgeText}</strong>
+        `;
+    }
     
     // Teaching skills list
     const teachList = document.getElementById("passport-teach-list");
     teachList.innerHTML = "";
     if (currentUser.teachSkills.length === 0) {
-        teachList.innerHTML = "<li>Belum ada keahlian diajarkan.</li>";
+        teachList.innerHTML = `<li>${dict["no_teach_skills_passport"] || "Belum ada keahlian diajarkan."}</li>`;
     } else {
         currentUser.teachSkills.forEach(s => {
             teachList.innerHTML += `<li>&bull; <strong>${s.name}</strong> (${s.category}) &bull; ${s.level || 'Intermediate'}</li>`;
@@ -3024,7 +3534,7 @@ function exportSkillPassport() {
     const learnList = document.getElementById("passport-learn-list");
     learnList.innerHTML = "";
     if (currentUser.learning.length === 0) {
-        learnList.innerHTML = "<li>Belum ada kebutuhan belajar.</li>";
+        learnList.innerHTML = `<li>${dict["no_learn_skills_passport"] || "Belum ada kebutuhan belajar."}</li>`;
     } else {
         currentUser.learning.forEach(s => {
             learnList.innerHTML += `<li>&bull; <strong>${s.name}</strong> (${s.category}) &bull; ${s.level || 'Intermediate'}</li>`;

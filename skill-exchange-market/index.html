@@ -374,12 +374,20 @@
             <section id="view-chat" class="app-view hidden">
                 <div class="chat-container-box">
                     <!-- Chat Users Sidebar -->
-                    <div class="chat-sidebar">
+                    <div class="chat-sidebar" style="display: flex; flex-direction: column;">
                         <div class="chat-sidebar-header">
                             <h3 data-i18n="inbox">Pesan Masuk</h3>
                         </div>
-                        <div id="chat-users-list" class="chat-users-list">
+                        <div id="chat-users-list" class="chat-users-list" style="flex: 1; overflow-y: auto; max-height: 250px;">
                             <!-- List of matched users -->
+                        </div>
+                        
+                        <div class="chat-sidebar-header" style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                            <h3 data-i18n="menu_study_group" style="font-size: 0.9rem; font-weight: 700; color: var(--text-light);"><i class="fa-solid fa-users"></i> Grup Belajar</h3>
+                            <button class="btn btn-secondary btn-icon-only btn-sm" onclick="openModal('modal-create-group')" type="button" style="width: 24px; height: 24px; min-width: 24px; font-size: 0.7rem;"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <div id="chat-groups-list" class="chat-users-list" style="flex: 1; overflow-y: auto; max-height: 250px;">
+                            <!-- List of study groups -->
                         </div>
                     </div>
 
@@ -415,6 +423,9 @@
                                             <option value="zh" data-i18n="lang_zh">中文</option>
                                         </select>
                                     </div>
+                                    
+                                    <!-- Invite to Group Button -->
+                                    <button id="btn-group-invite" class="btn btn-secondary btn-sm hidden" onclick="openGroupInviteModal()" type="button" style="font-size: 0.75rem; padding: 6px 12px; background: rgba(59, 130, 246, 0.2); border: 1px solid var(--primary);"><i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_invite">Undang</span></button>
                                     
                                     <!-- Review Partner Button -->
                                     <button id="btn-chat-review" class="btn btn-secondary btn-sm" type="button" style="font-size: 0.75rem; padding: 6px 12px;"><i class="fa-solid fa-star"></i> <span data-i18n="rate_partner">Beri Ulasan</span></button>
@@ -838,6 +849,50 @@
         </div>
     </div>
 
+    <!-- Modal Buat Grup Baru -->
+    <div id="modal-create-group" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_create_group_title">Buat Grup Belajar Baru</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-create-group')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-create-group" class="modal-body">
+                <div class="form-group">
+                    <label for="group-name" data-i18n="group_name_label">Nama Grup</label>
+                    <input type="text" id="group-name" placeholder="Contoh: Belajar Python Dasar" required>
+                </div>
+                <div class="form-group">
+                    <label for="group-desc" data-i18n="group_desc_label">Deskripsi</label>
+                    <textarea id="group-desc" rows="3" placeholder="Contoh: Grup untuk berdiskusi tugas kuliah Python..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="group-skill" data-i18n="group_skill_label">Fokus Skill Utama</label>
+                    <input type="text" id="group-skill" placeholder="Contoh: Python" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="closeModal('modal-create-group')" data-i18n="cancel">Batal</button>
+                    <button class="btn btn-primary" type="submit" data-i18n="btn_create">Buat Grup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Undang ke Grup -->
+    <div id="modal-group-invite" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_invite_title">Undang Teman Belajar</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-group-invite')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;" data-i18n="invite_helper_desc">Hanya menampilkan partner match aktif yang memiliki kecocokan skill yang sama dengan grup ini.</p>
+                <div id="group-invite-list" class="match-list">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= PRINTABLE CERTIFICATE / PORTFOLIO PASSPORT ================= -->
     <div id="passport-export-wrapper" class="passport-export-wrapper">
         <div class="passport-border">
@@ -847,26 +902,26 @@
                 <div class="passport-line"></div>
             </div>
             <div class="passport-body">
-                <p style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px;">
+                <p id="passport-cert-text" style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px;">
                     Sertifikat Portofolio ini secara resmi diberikan kepada:
                 </p>
                 <div style="font-size: 2.2rem; font-weight: 800; font-family: 'Georgia', serif; color: #1a365d; text-align: center; margin: 15px 0;">
                     <span id="passport-name">Sabda</span>
                 </div>
-                <p style="font-size: 1.05rem; line-height: 1.6; text-align: center;">
+                <p id="passport-user-info-row" style="font-size: 1.05rem; line-height: 1.6; text-align: center; margin-bottom: 20px;">
                     dari Program Studi / Jurusan <strong id="passport-dept">Fakultas Belum Diisi</strong> (Angkatan <span id="passport-grade">2026</span>)
                     atas keaktifan akademik dan partisipasi dalam pertukaran keahlian mahasiswa.
                 </p>
                 
                 <div class="passport-grid">
                     <div class="passport-section-box">
-                        <h4>Materi Pengajaran (Give Skills)</h4>
+                        <h4 id="passport-give-title">Materi Pengajaran (Give Skills)</h4>
                         <div id="passport-teach-list" style="font-size: 0.9rem; line-height: 1.8;">
                             <!-- Filled dynamically -->
                         </div>
                     </div>
                     <div class="passport-section-box">
-                        <h4>Materi Kebutuhan Belajar (Take Skills)</h4>
+                        <h4 id="passport-take-title">Materi Kebutuhan Belajar (Take Skills)</h4>
                         <div id="passport-learn-list" style="font-size: 0.9rem; line-height: 1.8;">
                             <!-- Filled dynamically -->
                         </div>
@@ -875,7 +930,7 @@
 
                 <div class="passport-grid" style="margin-top: 20px;">
                     <div class="passport-section-box" style="grid-column: span 2; text-align: center; background: #f7fafc;">
-                        <p style="margin: 0; font-size: 1rem;">
+                        <p id="passport-stats-row" style="margin: 0; font-size: 1rem;">
                             Tingkat Reputasi: <strong>Level <span id="passport-level">1</span></strong> (<span id="passport-xp">0</span> XP) &bull;
                             Rating Penilaian: <strong id="passport-rating">⭐ 0/5</strong> &bull;
                             Badges yang Diperoleh: <strong id="passport-badges">None</strong>
@@ -885,7 +940,7 @@
             </div>
             <div class="passport-footer-signature">
                 <div class="signature-line">
-                    Tanggal Cetak: <span id="passport-print-date">04 Juni 2026</span>
+                    <span id="passport-date-label">Tanggal Cetak:</span> <span id="passport-print-date">04 Juni 2026</span>
                 </div>
                 <div class="signature-line">
                     Skill Exchange Market
