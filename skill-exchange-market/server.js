@@ -57,6 +57,16 @@ function writeDB(data) {
     }
 }
 
+// User online/offline calculation on server side to avoid client clock drift
+function mapUsersOnlineStatus(users) {
+    const now = new Date();
+    return users.map(u => {
+        const lastActive = u.lastActive ? new Date(u.lastActive) : null;
+        const isOnline = lastActive ? (now - lastActive < 15000) : false; // 15 seconds threshold
+        return { ...u, isOnline };
+    });
+}
+
 // XP Gamification Helpers
 function awardXP(db, userId, amount) {
     const user = db.users.find(u => u.id === userId);
@@ -150,7 +160,7 @@ app.get('/api/sync', (req, res) => {
         }
     }
     res.json({
-        users: db.users,
+        users: mapUsersOnlineStatus(db.users),
         matches: db.matches,
         messages: db.messages,
         reviews: db.reviews || [],
@@ -301,7 +311,7 @@ app.post('/api/profile/update', (req, res) => {
     if (availability) user.availability = availability;
 
     writeDB(db);
-    res.json({ user, users: db.users });
+    res.json({ user, users: mapUsersOnlineStatus(db.users) });
 });
 
 app.post('/api/profile/skills', (req, res) => {
@@ -332,7 +342,7 @@ app.post('/api/profile/skills', (req, res) => {
         writeDB(db);
     }
 
-    res.json({ user, users: db.users });
+    res.json({ user, users: mapUsersOnlineStatus(db.users) });
 });
 
 app.post('/api/profile/skills/delete', (req, res) => {
@@ -351,7 +361,7 @@ app.post('/api/profile/skills/delete', (req, res) => {
     user[targetArray] = user[targetArray].filter(s => s.name.toLowerCase() !== skillName.toLowerCase());
 
     writeDB(db);
-    res.json({ user, users: db.users });
+    res.json({ user, users: mapUsersOnlineStatus(db.users) });
 });
 
 // Match Acceptance / Rejection API

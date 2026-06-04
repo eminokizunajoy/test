@@ -614,10 +614,11 @@ const DUMMY_USERS = [];
 
 function isUserOnline(user) {
     if (!user) return false;
+    if (user.isOnline !== undefined) return !!user.isOnline;
     if (!user.lastActive) return false;
     const lastActiveDate = new Date(user.lastActive);
     const now = new Date();
-    return (now - lastActiveDate) < 10000;
+    return (now - lastActiveDate) < 15000;
 }
 
 function getLocalizedDept(dept) {
@@ -1678,7 +1679,10 @@ function renderChat() {
 
             elChatUsersList.innerHTML += `
                 <div class="chat-user-item ${isActiveClass}" onclick="selectChatPartner('${partner.id}')">
-                    <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="chat-user-avatar">
+                    <div style="position: relative; display: inline-block; flex-shrink: 0;">
+                        <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="chat-user-avatar">
+                        <span class="status-indicator-dot ${isUserOnline(partner) ? 'online' : 'offline'}" style="position: absolute; bottom: 0; right: 0; border: 2px solid #0b0f19; width: 10px; height: 10px;"></span>
+                    </div>
                     <div class="chat-user-item-info">
                         <h4>${partner.displayName}</h4>
                         <p>${lastMsgText}</p>

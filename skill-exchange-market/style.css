@@ -1128,6 +1128,7 @@ select option {
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
 }
 
 .chat-partner-status.status-online {
@@ -1140,6 +1141,24 @@ select option {
 
 .chat-partner-status i {
     font-size: 0.55rem;
+}
+
+/* Presence status indicator dot */
+.status-indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.status-indicator-dot.online {
+    background-color: var(--success);
+    box-shadow: 0 0 6px var(--success);
+}
+
+.status-indicator-dot.offline {
+    background-color: var(--danger);
 }
 
 /* Translate Box in header */
