@@ -1,4 +1,3 @@
-// ================= MULTI-LANGUAGE TRANSLATION DICTIONARY =================
 const TRANSLATIONS = {
     id: {
         app_title: "Skill Exchange",
@@ -57,7 +56,45 @@ const TRANSLATIONS = {
         matched_text: "Kamu dan {name} saling menyukai!",
         empty_matches: "Belum ada match yang aktif.",
         empty_incoming: "Tidak ada permintaan match masuk.",
-        upload_photo: "Unggah Foto Kustom"
+        upload_photo: "Unggah Foto Kustom",
+        label_language: "Bahasa",
+        chat_translate_to: "Terjemahkan ke:",
+        lang_original: "Asli",
+        lang_id: "Bahasa Indonesia",
+        lang_jp: "日本語",
+        lang_en: "English",
+        lang_zh: "中文",
+        chat_input_placeholder: "Tulis pesan untuk partner Anda...",
+        profile_dept_placeholder: "Informatika, Sastra, Teknik...",
+        profile_bio_placeholder: "Saya menyukai programming...",
+        input_teach_skill_placeholder: "Python, Masak, Fotografi",
+        input_learn_skill_placeholder: "Laravel, Photoshop, Mandarin",
+        cat_design: "Desain",
+        cat_business: "Bisnis",
+        cat_language: "Bahasa",
+        cat_other: "Lain-lain",
+        no_chat_partner: "Belum memiliki partner chat.",
+        no_conversations: "Belum ada obrolan",
+        start_conversation: "Mulai percakapan Anda!",
+        no_skills: "Belum ada skill",
+        no_learning_needs: "Belum ada kebutuhan",
+        no_skills_teach_fallback: "Belum ada skill diajarkan",
+        no_skills_learn_fallback: "Belum ada skill dipelajari",
+        toast_match_accepted: "Match diterima!",
+        toast_match_removed: "Match dihapus.",
+        toast_match_sent: "Permintaan match dikirim!",
+        toast_skipped: "Dilewati",
+        toast_profile_updated: "Profil berhasil diperbarui!",
+        toast_photo_loaded: "Foto berhasil dimuat. Klik Simpan Profil!",
+        toast_skill_exists: "Skill sudah ditambahkan!",
+        toast_skill_added: "Skill berhasil ditambahkan!",
+        toast_skill_removed: "Skill berhasil dihapus!",
+        toast_network_error: "Terjadi kesalahan jaringan!",
+        toast_photo_limit: "Ukuran foto maksimal 2MB!",
+        toast_logout: "Berhasil keluar.",
+        toast_registration_success: "Pendaftaran berhasil! Silakan masuk.",
+        toast_password_length: "Password harus minimal 6 karakter!",
+        toast_opening_deck: "Membuka deck kartu..."
     },
     jp: {
         app_title: "スキルエクスチェンジ",
@@ -108,7 +145,7 @@ const TRANSLATIONS = {
         grade: "学年 (入学年度)",
         bio: "自己紹介 (短い説明)",
         save_profile: "プロフィールを保存",
-        profile_manage_skills: "スキルとニーズの管理",
+        profile_manage_skills: "スキルとニーズ of 管理",
         skills_to_teach: "自分が教えられるスキル",
         skills_to_learn: "自分が学びたいスキル",
         you_matched: "マッチング成立！",
@@ -116,7 +153,45 @@ const TRANSLATIONS = {
         matched_text: "あなたと {name} はお互いにいいね！しました！",
         empty_matches: "アクティブなマッチングはありません。",
         empty_incoming: "受信したリクエストはありません。",
-        upload_photo: "カスタム写真をアップロード"
+        upload_photo: "カスタム写真をアップロード",
+        label_language: "言語",
+        chat_translate_to: "翻訳先:",
+        lang_original: "原文",
+        lang_id: "インドネシア語",
+        lang_jp: "日本語",
+        lang_en: "英語",
+        lang_zh: "中国語",
+        chat_input_placeholder: "メッセージを入力してください...",
+        profile_dept_placeholder: "情報工学、文学、工学など...",
+        profile_bio_placeholder: "プログラミングが好きです...",
+        input_teach_skill_placeholder: "Python、料理、写真など",
+        input_learn_skill_placeholder: "Laravel、Photoshop、中国語など",
+        cat_design: "デザイン",
+        cat_business: "ビジネス",
+        cat_language: "語学",
+        cat_other: "その他",
+        no_chat_partner: "チャットパートナーがまだいません。",
+        no_conversations: "会話履歴なし",
+        start_conversation: "メッセージを送信して会話を始めましょう！",
+        no_skills: "スキルが登録されていません",
+        no_learning_needs: "学びたいスキルがありません",
+        no_skills_teach_fallback: "教えられるスキルがありません",
+        no_skills_learn_fallback: "学びたいスキルがありません",
+        toast_match_accepted: "マッチを承認しました！",
+        toast_match_removed: "マッチリクエストを削除しました。",
+        toast_match_sent: "マッチリクエストを送信しました！",
+        toast_skipped: "スワイプしました",
+        toast_profile_updated: "プロフィールを更新しました！",
+        toast_photo_loaded: "写真が読み込まれました。「プロフィールを保存」をクリックしてください！",
+        toast_skill_exists: "このスキルは既に追加されています！",
+        toast_skill_added: "スキルを追加しました！",
+        toast_skill_removed: "スキルを削除しました！",
+        toast_network_error: "ネットワークエラーが発生しました！",
+        toast_photo_limit: "写真のサイズは最大2MBまでです！",
+        toast_logout: "ログアウトしました。",
+        toast_registration_success: "登録が完了しました！",
+        toast_password_length: "パスワードは6文字以上で入力してください！",
+        toast_opening_deck: "探索カードを開いています..."
     },
     en: {
         app_title: "Skill Exchange",
@@ -175,7 +250,45 @@ const TRANSLATIONS = {
         matched_text: "You and {name} liked each other!",
         empty_matches: "No active matches yet.",
         empty_incoming: "No incoming match requests.",
-        upload_photo: "Upload Custom Photo"
+        upload_photo: "Upload Custom Photo",
+        label_language: "Language",
+        chat_translate_to: "Translate to:",
+        lang_original: "Original",
+        lang_id: "Indonesian",
+        lang_jp: "Japanese",
+        lang_en: "English",
+        lang_zh: "Chinese",
+        chat_input_placeholder: "Type a message for your partner...",
+        profile_dept_placeholder: "IT, Literature, Engineering...",
+        profile_bio_placeholder: "I like programming...",
+        input_teach_skill_placeholder: "Python, Cooking, Photography",
+        input_learn_skill_placeholder: "Laravel, Photoshop, Chinese",
+        cat_design: "Design",
+        cat_business: "Business",
+        cat_language: "Language",
+        cat_other: "Other",
+        no_chat_partner: "No chat partners yet.",
+        no_conversations: "No conversation",
+        start_conversation: "Start your conversation!",
+        no_skills: "No skills added yet",
+        no_learning_needs: "No learning needs added yet",
+        no_skills_teach_fallback: "No skills to teach",
+        no_skills_learn_fallback: "No skills to learn",
+        toast_match_accepted: "Match accepted!",
+        toast_match_removed: "Match request removed.",
+        toast_match_sent: "Match request sent!",
+        toast_skipped: "Skipped",
+        toast_profile_updated: "Profile updated!",
+        toast_photo_loaded: "Photo loaded successfully. Click Save Profile!",
+        toast_skill_exists: "Skill already added!",
+        toast_skill_added: "Skill added!",
+        toast_skill_removed: "Skill removed!",
+        toast_network_error: "Network error occurred!",
+        toast_photo_limit: "Max photo size is 2MB!",
+        toast_logout: "Logged out successfully.",
+        toast_registration_success: "Registration successful! Please login.",
+        toast_password_length: "Password must be at least 6 characters!",
+        toast_opening_deck: "Opening card deck..."
     },
     zh: {
         app_title: "技能交换市场",
@@ -234,7 +347,45 @@ const TRANSLATIONS = {
         matched_text: "你和 {name} 互相喜欢了！",
         empty_matches: "尚无活跃的配对。",
         empty_incoming: "没有收到配对请求。",
-        upload_photo: "上传自定义照片"
+        upload_photo: "上传自定义照片",
+        label_language: "语言",
+        chat_translate_to: "翻译为:",
+        lang_original: "原文",
+        lang_id: "印尼语",
+        lang_jp: "日语",
+        lang_en: "英语",
+        lang_zh: "中文",
+        chat_input_placeholder: "给你的伙伴写条信息...",
+        profile_dept_placeholder: "资讯工程、文学、工学...",
+        profile_bio_placeholder: "我喜欢编程...",
+        input_teach_skill_placeholder: "Python，烹饪，摄影",
+        input_learn_skill_placeholder: "Laravel，Photoshop，中文",
+        cat_design: "设计",
+        cat_business: "商业",
+        cat_language: "语言",
+        cat_other: "其他",
+        no_chat_partner: "还没有聊天伙伴。",
+        no_conversations: "暂无对话",
+        start_conversation: "开始你们的对话吧！",
+        no_skills: "尚未添加技能",
+        no_learning_needs: "尚未添加学习需求",
+        no_skills_teach_fallback: "没有可教授的技能",
+        no_skills_learn_fallback: "没有要学习的技能",
+        toast_match_accepted: "接受配对！",
+        toast_match_removed: "配对请求已移除。",
+        toast_match_sent: "已发送配对请求！",
+        toast_skipped: "已跳过",
+        toast_profile_updated: "个人资料已更新！",
+        toast_photo_loaded: "照片加载成功。点击保存资料！",
+        toast_skill_exists: "已添加此技能！",
+        toast_skill_added: "技能已添加！",
+        toast_skill_removed: "技能已删除！",
+        toast_network_error: "发生网络错误！",
+        toast_photo_limit: "照片大小最大为2MB！",
+        toast_logout: "已成功退出登录。",
+        toast_registration_success: "注册成功！请登录。",
+        toast_password_length: "密码长度必须至少为6位！",
+        toast_opening_deck: "正在打开卡片组..."
     }
 };
 
@@ -267,85 +418,56 @@ const CHAT_TRANSLATIONS = {
 };
 
 // ================= STATE & DATA INITIALIZATION =================
-const DUMMY_USERS = [
-    {
-        id: "user_dika",
-        username: "dika_pratama",
-        email: "dika@kampus.ac.id",
-        passwordHash: "pass123",
-        displayName: "Dika Pratama",
-        department: "Teknik Informatika",
-        grade: "2023",
-        bio: "Suka programming backend, terutama Python dan Node.js. Ingin belajar desain antarmuka pengguna agar web buatan sendiri terlihat lebih rapi.",
-        avatarSeed: "Felix",
-        teachSkills: [
-            { name: "Python", category: "IT" },
-            { name: "JavaScript", category: "IT" },
-            { name: "Database MySQL", category: "IT" }
-        ],
-        learning: [
-            { name: "UI/UX Design", category: "Design" },
-            { name: "Figma", category: "Design" }
-        ]
-    },
-    {
-        id: "user_risa",
-        username: "risa_putri",
-        email: "risa@kampus.ac.id",
-        passwordHash: "pass123",
-        displayName: "Risa Putri",
-        department: "Desain Komunikasi Visual",
-        grade: "2023",
-        bio: "Saya desainer grafis lepas yang biasa menggunakan Figma dan Illustrator. Sedang mencari teman untuk belajar dasar-dasar pemrograman Python.",
-        avatarSeed: "Aneka",
-        teachSkills: [
-            { name: "UI/UX Design", category: "Design" },
-            { name: "Figma", category: "Design" },
-            { name: "Adobe Illustrator", category: "Design" }
-        ],
-        learning: [
-            { name: "Python", category: "IT" },
-            { name: "Dasar Logika Coding", category: "IT" }
-        ]
-    },
-    {
-        id: "user_kevin",
-        username: "kevin_anggara",
-        email: "kevin@kampus.ac.id",
-        passwordHash: "pass123",
-        displayName: "Kevin Anggara",
-        department: "Manajemen Bisnis",
-        grade: "2022",
-        bio: "Fokus belajar di bidang kewirausahaan dan pitching ide bisnis. Ingin belajar Photoshop untuk membuat poster promo produk digital.",
-        avatarSeed: "Milo",
-        teachSkills: [
-            { name: "Pitching Ide Bisnis", category: "Business" },
-            { name: "Akuntansi Dasar", category: "Business" }
-        ],
-        learning: [
-            { name: "Adobe Photoshop", category: "Design" },
-            { name: "Bahasa Inggris Bisnis", category: "Language" }
-        ]
-    },
-    {
-        id: "user_sarah",
-        username: "sarah_tan",
-        email: "sarah@kampus.ac.id",
-        passwordHash: "pass123",
-        displayName: "Sarah Tan",
-        department: "Sastra Inggris",
-        grade: "2024",
-        bio: "Native speaker level English. Menawarkan sesi conversation practice. Sangat ingin belajar JavaScript dasar untuk proyek hobi.",
-        avatarSeed: "Aneka",
-        teachSkills: [
-            { name: "English Conversation", category: "Language" },
-            { name: "Grammar & TOEFL", category: "Language" }
-        ],
-        learning: [
-            { name: "JavaScript", category: "IT" }
-        ]
+const DUMMY_USERS = [];
+
+function isUserOnline(user) {
+    if (!user) return false;
+    if (!user.lastActive) return false;
+    const lastActiveDate = new Date(user.lastActive);
+    const now = new Date();
+    return (now - lastActiveDate) < 10000;
+}
+
+function getLocalizedDept(dept) {
+    if (!dept || dept === "Fakultas Belum Diisi" || dept === "Fakultas...") {
+        const dict = {
+            id: "Fakultas Belum Diisi",
+            jp: "学部未設定",
+            en: "Department Not Set",
+            zh: "科系未设置"
+        };
+        return dict[currentLanguage] || dict.en;
     }
-];
+    return dept;
+}
+
+function getLocalizedBio(bio) {
+    if (!bio || bio === "Mahasiswa baru di Skill Exchange Market.") {
+        const dict = {
+            id: "Mahasiswa baru di Skill Exchange Market.",
+            jp: "スキルエクスチェンジの新メンバー。",
+            en: "New student at Skill Exchange Market.",
+            zh: "技能交换市场的新成员。"
+        };
+        return dict[currentLanguage] || dict.en;
+    }
+    return bio;
+}
+
+function formatDeptGrade(user) {
+    if (!user) return "";
+    let dept = getLocalizedDept(user.department);
+    let grade = user.grade || "-";
+    if (currentLanguage === "jp") {
+        return `${dept} (${grade}年入学)`;
+    } else if (currentLanguage === "en") {
+        return `${dept} (Class of ${grade})`;
+    } else if (currentLanguage === "zh") {
+        return `${dept} (${grade}级)`;
+    } else {
+        return `${dept} (Angkatan ${grade})`;
+    }
+}
 
 let users = [];
 let matches = [];
@@ -363,7 +485,8 @@ function getUserAvatarUrl(user) {
 
 async function syncData() {
     try {
-        const res = await fetch('/api/sync');
+        const url = currentUser ? `/api/sync?userId=${currentUser.id}` : '/api/sync';
+        const res = await fetch(url);
         if (!res.ok) throw new Error("Sync failed");
         const data = await res.json();
         users = data.users || [];
@@ -486,6 +609,7 @@ const elChatNoSelection = document.getElementById("chat-no-selection");
 const elChatActive = document.getElementById("chat-active");
 const elChatPartnerAvatar = document.getElementById("chat-partner-avatar");
 const elChatPartnerName = document.getElementById("chat-partner-name");
+const elChatPartnerStatus = document.getElementById("chat-partner-status");
 const elChatMessagesContainer = document.getElementById("chat-messages-container");
 const elChatSendForm = document.getElementById("chat-send-form");
 const elChatInput = document.getElementById("chat-input");
@@ -513,7 +637,12 @@ const elManageLearnList = document.getElementById("manage-learn-list");
 // ================= TOAST NOTIFICATION =================
 function showToast(message, type = "success") {
     const elToast = document.getElementById("toast");
-    elToast.innerText = message;
+    const dict = TRANSLATIONS[currentLanguage];
+    let displayMessage = message;
+    if (dict && dict[message]) {
+        displayMessage = dict[message];
+    }
+    elToast.innerText = displayMessage;
     elToast.className = `toast ${type}`;
     elToast.classList.remove("hidden");
     
@@ -653,7 +782,7 @@ elLoginForm.addEventListener("submit", async (e) => {
         loginSuccess();
         startSyncInterval();
     } catch (err) {
-        showToast("Terjadi kesalahan jaringan!", "danger");
+        showToast("toast_network_error", "danger");
         console.error(err);
     }
 });
@@ -665,7 +794,7 @@ elRegisterForm.addEventListener("submit", async (e) => {
     const password = document.getElementById("reg-password").value;
 
     if (password.length < 6) {
-        showToast("Password minimal harus 6 karakter!", "danger");
+        showToast("toast_password_length", "danger");
         return;
     }
 
@@ -688,11 +817,11 @@ elRegisterForm.addEventListener("submit", async (e) => {
         messages = data.messages || [];
 
         localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-        showToast("Pendaftaran berhasil!");
+        showToast("toast_registration_success");
         loginSuccess();
         startSyncInterval();
     } catch (err) {
-        showToast("Terjadi kesalahan jaringan!", "danger");
+        showToast("toast_network_error", "danger");
         console.error(err);
     }
 });
@@ -701,7 +830,7 @@ elBtnLogout.addEventListener("click", () => {
     currentUser = null;
     localStorage.removeItem("sem_current_user");
     stopSyncInterval();
-    showToast("Berhasil keluar.", "success");
+    showToast("toast_logout", "success");
     logoutSuccess();
 });
 
@@ -711,7 +840,7 @@ function loginSuccess() {
     
     // Set Sidebar User Info
     elUserDisplayName.innerText = currentUser.displayName || currentUser.username;
-    elUserDisplayDept.innerText = `${currentUser.department || 'Jurusan'} (${currentUser.grade || 'Angkatan'})`;
+    elUserDisplayDept.innerText = formatDeptGrade(currentUser);
     elUserAvatar.src = getUserAvatarUrl(currentUser);
 
     updateLanguageUI();
@@ -826,11 +955,11 @@ function renderDashboard() {
 
     elPreviewAvatar.src = getUserAvatarUrl(currentUser);
     elPreviewName.innerText = currentUser.displayName || currentUser.username;
-    elPreviewDeptGrade.innerText = `${currentUser.department || 'Jurusan'} - Angkatan ${currentUser.grade || '-'}`;
+    elPreviewDeptGrade.innerText = formatDeptGrade(currentUser);
 
     elPreviewTeachSkills.innerHTML = "";
     if (currentUser.teachSkills.length === 0) {
-        elPreviewTeachSkills.innerHTML = `<span class="subtitle">Belum ada skill</span>`;
+        elPreviewTeachSkills.innerHTML = `<span class="subtitle" data-i18n="no_skills">Belum ada skill</span>`;
     } else {
         currentUser.teachSkills.forEach(s => {
             elPreviewTeachSkills.innerHTML += `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`;
@@ -839,7 +968,7 @@ function renderDashboard() {
 
     elPreviewLearnNeeds.innerHTML = "";
     if (currentUser.learning.length === 0) {
-        elPreviewLearnNeeds.innerHTML = `<span class="subtitle">Belum ada kebutuhan</span>`;
+        elPreviewLearnNeeds.innerHTML = `<span class="subtitle" data-i18n="no_learning_needs">Belum ada kebutuhan</span>`;
     } else {
         currentUser.learning.forEach(s => {
             elPreviewLearnNeeds.innerHTML += `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`;
@@ -861,14 +990,15 @@ function renderDashboard() {
         `;
     } else {
         filteredRecs.forEach(r => {
-            const teachList = r.user.teachSkills.map(s => s.name).join(", ") || "Tidak ada";
+            const fallbackText = currentLanguage === "jp" ? "なし" : "None";
+            const teachList = r.user.teachSkills.map(s => s.name).join(", ") || fallbackText;
             
             elRecommendedList.innerHTML += `
                 <div class="recommended-item">
                     <img src="${getUserAvatarUrl(r.user)}" alt="Avatar" class="avatar-small">
                     <div class="rec-info">
                         <h4>${r.user.displayName} <span class="match-percentage">${r.score}% Match</span></h4>
-                        <p>${r.user.department} (${r.user.grade})</p>
+                        <p>${formatDeptGrade(r.user)}</p>
                         <p class="subtitle" style="margin-bottom:0; font-size:0.75rem;">Mengajar: <strong>${teachList}</strong></p>
                     </div>
                     <button class="btn btn-primary" onclick="triggerCardSwipeRight('${r.user.id}')">Kirim Match</button>
@@ -922,11 +1052,11 @@ function renderSearch() {
     usersToRender.forEach((r, idx) => {
         const teachChips = r.user.teachSkills.map(s => 
             `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`
-        ).join("") || `<span class="subtitle">Belum ada skill diajarkan</span>`;
+        ).join("") || `<span class="subtitle" data-i18n="no_skills_teach_fallback">Belum ada skill diajarkan</span>`;
 
         const learnChips = r.user.learning.map(s => 
             `<span class="skill-chip ${getCategoryClass(s.category)}">${s.name}</span>`
-        ).join("") || `<span class="subtitle">Belum ada skill dipelajari</span>`;
+        ).join("") || `<span class="subtitle" data-i18n="no_skills_learn_fallback">Belum ada skill dipelajari</span>`;
 
         const cardEl = document.createElement("div");
         cardEl.className = "swipe-card";
@@ -937,9 +1067,9 @@ function renderSearch() {
                 <img src="${getUserAvatarUrl(r.user)}" alt="Avatar" class="card-avatar">
                 <div class="card-details">
                     <h2>${r.user.displayName} <span class="match-percentage">${r.score}%</span></h2>
-                    <span class="dept">${r.user.department} (${r.user.grade})</span>
+                    <span class="dept">${formatDeptGrade(r.user)}</span>
                 </div>
-                <div class="card-bio">${r.user.bio}</div>
+                <div class="card-bio">${getLocalizedBio(r.user.bio)}</div>
                 <div class="card-skills-section">
                     <h4 data-i18n="profile_can_teach">Bisa Mengajar:</h4>
                     <div class="skills-wrapper" style="margin-bottom: 10px;">${teachChips}</div>
@@ -1062,7 +1192,7 @@ elSwipeBtnRight.addEventListener("click", () => {
 
 // Pemicu Like dari Rekomendasi di Dashboard
 window.triggerCardSwipeRight = function(userId) {
-    showToast("Membuka kartu pencarian...");
+    showToast("toast_opening_deck");
     document.querySelector('[data-target="view-search"]').click();
     
     setTimeout(() => {
@@ -1103,7 +1233,7 @@ async function handleLike(partnerId) {
         if (data.isMatch) {
             triggerMatchModal(partner);
         } else {
-            showToast("Match request sent!");
+            showToast("toast_match_sent");
         }
 
         renderDashboard();
@@ -1129,7 +1259,7 @@ async function handlePass(partnerId) {
         
         if (res.ok) {
             matches = data.matches || [];
-            showToast("Skipped");
+            showToast("toast_skipped");
             renderDashboard();
             renderSearch();
             renderMatches();
@@ -1179,7 +1309,7 @@ function renderMatches() {
                             <img src="${getUserAvatarUrl(sender)}" alt="Avatar" class="avatar-small">
                             <div class="match-user-details">
                                 <h4>${sender.displayName}</h4>
-                                <p>${sender.department} (${sender.grade})</p>
+                                <p>${formatDeptGrade(sender)}</p>
                             </div>
                         </div>
                         <div class="match-actions">
@@ -1202,7 +1332,7 @@ function renderMatches() {
                             <img src="${getUserAvatarUrl(partner)}" alt="Avatar" class="avatar-small">
                             <div class="match-user-details">
                                 <h4>${partner.displayName}</h4>
-                                <p>${partner.department} (${partner.grade})</p>
+                                <p>${formatDeptGrade(partner)}</p>
                             </div>
                         </div>
                         <div class="match-actions">
@@ -1235,30 +1365,59 @@ function renderMatches() {
     }
 }
 
-window.acceptMatchRequest = function(matchId) {
-    const match = matches.find(m => m.id === matchId);
-    if (!match) return;
+window.acceptMatchRequest = async function(matchId) {
+    try {
+        const res = await fetch('/api/matches/accept', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ matchId })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            matches = data.matches || [];
+            localStorage.setItem("sem_matches", JSON.stringify(matches));
+            showToast("toast_match_accepted");
 
-    match.status = "ACTIVE";
-    localStorage.setItem("sem_matches", JSON.stringify(matches));
-    showToast("Match accepted!");
-
-    const partner = users.find(u => u.id === (match.userAId === currentUser.id ? match.userBId : match.userAId));
-    if (partner) {
-        triggerMatchModal(partner);
+            const match = matches.find(m => m.id === matchId);
+            if (match) {
+                const partner = users.find(u => u.id === (match.userAId === currentUser.id ? match.userBId : match.userAId));
+                if (partner) {
+                    triggerMatchModal(partner);
+                }
+            }
+            renderMatches();
+            renderDashboard();
+        } else {
+            showToast(data.error || "Gagal menyetujui match", "danger");
+        }
+    } catch (err) {
+        console.error("Error accepting match request:", err);
+        showToast("toast_network_error", "danger");
     }
-
-    renderMatches();
-    renderDashboard();
 };
 
-window.rejectMatchRequest = function(matchId) {
-    matches = matches.filter(m => m.id !== matchId);
-    localStorage.setItem("sem_matches", JSON.stringify(matches));
-    showToast("Match request removed.", "danger");
+window.rejectMatchRequest = async function(matchId) {
+    try {
+        const res = await fetch('/api/matches/reject', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ matchId })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            matches = data.matches || [];
+            localStorage.setItem("sem_matches", JSON.stringify(matches));
+            showToast("toast_match_removed", "danger");
 
-    renderMatches();
-    renderDashboard();
+            renderMatches();
+            renderDashboard();
+        } else {
+            showToast(data.error || "Gagal menolak match", "danger");
+        }
+    } catch (err) {
+        console.error("Error rejecting match request:", err);
+        showToast("toast_network_error", "danger");
+    }
 };
 
 // ================= CHAT LOGIC & TRANSLATOR TOOL =================
@@ -1277,8 +1436,11 @@ function renderChat() {
         m.status === "ACTIVE" && (m.userAId === currentUser.id || m.userBId === currentUser.id)
     );
 
+    const dict = TRANSLATIONS[currentLanguage];
+
     if (activeMatches.length === 0) {
-        elChatUsersList.innerHTML = `<span class="subtitle" style="padding: 1.5rem; display:block; text-align:center;">Belum memiliki partner chat.</span>`;
+        const fallbackText = dict["no_chat_partner"] || "Belum memiliki partner chat.";
+        elChatUsersList.innerHTML = `<span class="subtitle" style="padding: 1.5rem; display:block; text-align:center;" data-i18n="no_chat_partner">${fallbackText}</span>`;
         elChatNoSelection.classList.remove("hidden");
         elChatActive.classList.add("hidden");
         return;
@@ -1293,7 +1455,8 @@ function renderChat() {
                 (msg.senderId === currentUser.id && msg.receiverId === partner.id) ||
                 (msg.senderId === partner.id && msg.receiverId === currentUser.id)
             );
-            const lastMsgText = partnerMsgs.length > 0 ? partnerMsgs[partnerMsgs.length - 1].body : "Belum ada obrolan";
+            const fallbackText = dict["no_conversations"] || "Belum ada obrolan";
+            const lastMsgText = partnerMsgs.length > 0 ? partnerMsgs[partnerMsgs.length - 1].body : fallbackText;
 
             const isActiveClass = partner.id === activeChatPartnerId ? "active" : "";
 
@@ -1320,6 +1483,14 @@ function renderChat() {
         elChatPartnerName.innerText = partner.displayName;
         elChatPartnerAvatar.src = getUserAvatarUrl(partner);
 
+        // Update online/offline presence indicator dynamically
+        const online = isUserOnline(partner);
+        const statusText = online ? (currentLanguage === "jp" ? "オンライン" : "Online") : (currentLanguage === "jp" ? "オフライン" : "Offline");
+        const statusClass = online ? "status-online" : "status-offline";
+        
+        elChatPartnerStatus.className = `chat-partner-status ${statusClass}`;
+        elChatPartnerStatus.innerHTML = `<i class="fa-solid fa-circle"></i> ${statusText}`;
+
         // Render Messages dengan Terjemahan Real-time (jika dipilih)
         elChatMessagesContainer.innerHTML = "";
         const conversation = messages.filter(msg => 
@@ -1332,24 +1503,38 @@ function renderChat() {
         if (conversation.length === 0) {
             elChatMessagesContainer.innerHTML = `
                 <div class="empty-state">
-                    <p>Mulai percakapan Anda!</p>
+                    <p data-i18n="start_conversation">Mulai percakapan Anda!</p>
                 </div>
             `;
         } else {
-            conversation.forEach(msg => {
+             conversation.forEach(msg => {
                 const isSent = msg.senderId === currentUser.id;
                 
-                // Cari terjemahan di database kamus chat simulasi
+                // Cari terjemahan di database kamus chat atau cache real-time
                 let translationText = "";
-                if (targetLang !== "none" && CHAT_TRANSLATIONS[msg.body] && CHAT_TRANSLATIONS[msg.body][targetLang]) {
-                    translationText = CHAT_TRANSLATIONS[msg.body][targetLang];
-                } else if (targetLang !== "none" && !isSent) {
-                    // Fallback translate untuk teks lain
-                    translationText = mockTranslation(msg.body, targetLang);
+                let isLoadingTranslate = false;
+                if (targetLang !== "none") {
+                    if (CHAT_TRANSLATIONS[msg.body] && CHAT_TRANSLATIONS[msg.body][targetLang]) {
+                        translationText = CHAT_TRANSLATIONS[msg.body][targetLang];
+                    } else if (!isSent) {
+                        const cacheKey = `${msg.body}_${targetLang}`;
+                        if (translationCache[cacheKey]) {
+                            if (translationCache[cacheKey] === "...") {
+                                isLoadingTranslate = true;
+                            } else {
+                                translationText = translationCache[cacheKey];
+                            }
+                        } else {
+                            translationCache[cacheKey] = "..."; // set loading state
+                            isLoadingTranslate = true;
+                            fetchRealTranslation(msg.body, targetLang);
+                        }
+                    }
                 }
 
-                const translationHtml = translationText ? 
-                    `<div class="translate-subtext"><i class="fa-solid fa-language"></i> ${targetLang.toUpperCase()}: ${translationText}</div>` : "";
+                const translationHtml = isLoadingTranslate ?
+                    `<div class="translate-subtext"><i class="fa-solid fa-spinner fa-spin"></i> Translating...</div>` :
+                    (translationText ? `<div class="translate-subtext"><i class="fa-solid fa-language"></i> ${targetLang.toUpperCase()}: ${translationText}</div>` : "");
 
                 elChatMessagesContainer.innerHTML += `
                     <div class="message-wrapper ${isSent ? 'wrapper-sent' : 'wrapper-received'}">
@@ -1373,21 +1558,34 @@ window.selectChatPartner = function(partnerId) {
 // Deteksi perubahan bahasa dropdown terjemahan di chat
 elChatTranslateLang.addEventListener("change", renderChat);
 
-// Fungsi mock terjemahan untuk pesan non-dictionary
-function mockTranslation(text, lang) {
-    const jpTemplates = ["はい、分かりました！", "素晴らしいですね！一緒に勉強しましょう。", "Zoomリンクを送ってください。"];
-    const enTemplates = ["Alright, got it!", "That's awesome! Let's study together.", "Send me the Zoom link."];
-    const zhTemplates = ["好的，明白了！", "太棒了！我们一起学习吧。", "把Zoom链接发给我吧。"];
-    const idTemplates = ["Baik, saya paham!", "Hebat sekali! Mari belajar bersama.", "Kirimkan link Zoom-nya ke saya."];
+const translationCache = {};
 
-    const hash = text.length % 3;
-    switch(lang) {
-        case "jp": return jpTemplates[hash];
-        case "en": return enTemplates[hash];
-        case "zh": return zhTemplates[hash];
-        case "id": return idTemplates[hash];
-        default: return "";
+// Fungsi terjemahan asli menggunakan API MyMemory
+async function fetchRealTranslation(text, lang) {
+    const langMap = {
+        id: "id",
+        jp: "ja",
+        en: "en",
+        zh: "zh"
+    };
+    const targetLangCode = langMap[lang] || lang;
+    const cacheKey = `${text}_${lang}`;
+    
+    try {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=auto|${targetLangCode}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data && data.responseData && data.responseData.translatedText) {
+            translationCache[cacheKey] = data.responseData.translatedText;
+        } else {
+            translationCache[cacheKey] = "[Gagal menerjemahkan]";
+        }
+    } catch (err) {
+        console.error("Translation API error:", err);
+        translationCache[cacheKey] = "[Error]";
     }
+    // Re-render chat to show the translation
+    renderChat();
 }
 
 elChatSendForm.addEventListener("submit", async (e) => {
@@ -1471,13 +1669,13 @@ elProfileForm.addEventListener("submit", async (e) => {
         currentUser = data.user;
         users = data.users || [];
         localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-        showToast("Profile updated!");
+        showToast("toast_profile_updated");
         
         elUserDisplayName.innerText = currentUser.displayName;
-        elUserDisplayDept.innerText = `${currentUser.department} (${currentUser.grade})`;
+        elUserDisplayDept.innerText = formatDeptGrade(currentUser);
         elUserAvatar.src = getUserAvatarUrl(currentUser);
     } catch (err) {
-        showToast("Terjadi kesalahan jaringan!", "danger");
+        showToast("toast_network_error", "danger");
         console.error(err);
     }
 });
@@ -1488,7 +1686,7 @@ if (elProfileAvatarFile) {
         const file = e.target.files[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
-                showToast("Ukuran foto maksimal 2MB!", "danger");
+                showToast("toast_photo_limit", "danger");
                 elProfileAvatarFile.value = "";
                 return;
             }
@@ -1496,7 +1694,7 @@ if (elProfileAvatarFile) {
             reader.onloadend = () => {
                 customAvatarBase64 = reader.result;
                 elPreviewAvatar.src = customAvatarBase64;
-                showToast("Foto berhasil dimuat. Klik Simpan Profil!", "success");
+                showToast("toast_photo_loaded", "success");
             };
             reader.readAsDataURL(file);
         }
@@ -1540,7 +1738,7 @@ elBtnAddTeach.addEventListener("click", async () => {
 
     const exists = currentUser.teachSkills.some(s => s.name.toLowerCase() === name.toLowerCase());
     if (exists) {
-        showToast("Skill already added!", "danger");
+        showToast("toast_skill_exists", "danger");
         return;
     }
 
@@ -1561,7 +1759,7 @@ elBtnAddTeach.addEventListener("click", async () => {
             localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
             elInputTeachSkill.value = "";
             renderManageSkills();
-            showToast("Skill added!");
+            showToast("toast_skill_added");
         }
     } catch (err) {
         console.error("Error adding skill:", err);
@@ -1576,7 +1774,7 @@ elBtnAddLearn.addEventListener("click", async () => {
 
     const exists = currentUser.learning.some(s => s.name.toLowerCase() === name.toLowerCase());
     if (exists) {
-        showToast("Learning need already added!", "danger");
+        showToast("toast_skill_exists", "danger");
         return;
     }
 
@@ -1597,7 +1795,7 @@ elBtnAddLearn.addEventListener("click", async () => {
             localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
             elInputLearnSkill.value = "";
             renderManageSkills();
-            showToast("Skill added!");
+            showToast("toast_skill_added");
         }
     } catch (err) {
         console.error("Error adding skill:", err);
@@ -1625,7 +1823,7 @@ window.removeSkill = async function(type, index) {
             users = data.users || [];
             localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
             renderManageSkills();
-            showToast("Skill removed!");
+            showToast("toast_skill_removed");
         }
     } catch (err) {
         console.error("Error removing skill:", err);

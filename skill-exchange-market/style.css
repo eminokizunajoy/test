@@ -1125,10 +1125,17 @@ select option {
 
 .chat-partner-status {
     font-size: 0.75rem;
-    color: var(--success);
     display: flex;
     align-items: center;
     gap: 4px;
+}
+
+.chat-partner-status.status-online {
+    color: var(--success);
+}
+
+.chat-partner-status.status-offline {
+    color: var(--danger);
 }
 
 .chat-partner-status i {

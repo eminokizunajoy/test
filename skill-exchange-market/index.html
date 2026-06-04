@@ -121,7 +121,7 @@
 
             <!-- Language Selector -->
             <div class="lang-selector-box">
-                <label for="lang-select"><i class="fa-solid fa-globe"></i> Language</label>
+                <label for="lang-select"><i class="fa-solid fa-globe"></i> <span data-i18n="label_language">Language</span></label>
                 <select id="lang-select">
                     <option value="id">Bahasa Indonesia</option>
                     <option value="jp">日本語 (Japanese)</option>
@@ -309,19 +309,19 @@
                                     <img id="chat-partner-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=partner" alt="Avatar" class="avatar-small">
                                     <div>
                                         <h4 id="chat-partner-name">Nama Partner</h4>
-                                        <span id="chat-partner-status"><i class="fa-solid fa-circle"></i> Online (Simulasi)</span>
+                                        <span id="chat-partner-status" class="chat-partner-status"><i class="fa-solid fa-circle"></i> Online</span>
                                     </div>
                                 </div>
                                 
                                 <!-- Real-time Translation Control -->
                                 <div class="chat-translate-selector">
-                                    <label for="chat-translate-lang"><i class="fa-solid fa-language"></i> Translate to:</label>
+                                    <label for="chat-translate-lang"><i class="fa-solid fa-language"></i> <span data-i18n="chat_translate_to">Translate to:</span></label>
                                     <select id="chat-translate-lang">
-                                        <option value="none">Original</option>
-                                        <option value="id">Bahasa Indonesia</option>
-                                        <option value="jp">日本語</option>
-                                        <option value="en">English</option>
-                                        <option value="zh">中文</option>
+                                        <option value="none" data-i18n="lang_original">Original</option>
+                                        <option value="id" data-i18n="lang_id">Bahasa Indonesia</option>
+                                        <option value="jp" data-i18n="lang_jp">日本語</option>
+                                        <option value="en" data-i18n="lang_en">English</option>
+                                        <option value="zh" data-i18n="lang_zh">中文</option>
                                     </select>
                                 </div>
                             </div>
@@ -329,7 +329,7 @@
                                 <!-- Messages list -->
                             </div>
                             <form id="chat-send-form" class="chat-footer">
-                                <input type="text" id="chat-input" placeholder="Tulis pesan untuk partner Anda..." required autocomplete="off">
+                                <input type="text" id="chat-input" data-i18n="chat_input_placeholder" placeholder="Tulis pesan untuk partner Anda..." required autocomplete="off">
                                 <button type="submit" class="btn btn-primary btn-round"><i class="fa-solid fa-paper-plane"></i></button>
                             </form>
                         </div>
@@ -373,7 +373,7 @@
                             <div class="form-row">
                                 <div class="form-group col-6">
                                     <label for="profile-dept" data-i18n="department">Jurusan / Program Studi</label>
-                                    <input type="text" id="profile-dept" placeholder="Informatika, Sastra, Teknik..." required>
+                                    <input type="text" id="profile-dept" data-i18n="profile_dept_placeholder" placeholder="Informatika, Sastra, Teknik..." required>
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="profile-grade" data-i18n="grade">Angkatan</label>
@@ -382,7 +382,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="profile-bio" data-i18n="bio">Bio Diri (Deskripsi singkat)</label>
-                                <textarea id="profile-bio" rows="4" placeholder="Saya menyukai programming..."></textarea>
+                                <textarea id="profile-bio" rows="4" data-i18n="profile_bio_placeholder" placeholder="Saya menyukai programming..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary" data-i18n="save_profile">Simpan Profil</button>
                         </form>
@@ -396,13 +396,13 @@
                         <div class="skills-manage-section">
                             <h4 data-i18n="skills_to_teach">Keahlian yang Bisa Saya Ajarkan</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-teach-skill" placeholder="Python, Masak, Fotografi">
+                                <input type="text" id="input-teach-skill" data-i18n="input_teach_skill_placeholder" placeholder="Python, Masak, Fotografi">
                                 <select id="select-teach-cat">
                                     <option value="IT">IT</option>
-                                    <option value="Design">Desain</option>
-                                    <option value="Business">Bisnis</option>
-                                    <option value="Language">Bahasa</option>
-                                    <option value="Other">Lain-lain</option>
+                                    <option value="Design" data-i18n="cat_design">Desain</option>
+                                    <option value="Business" data-i18n="cat_business">Bisnis</option>
+                                    <option value="Language" data-i18n="cat_language">Bahasa</option>
+                                    <option value="Other" data-i18n="cat_other">Lain-lain</option>
                                 </select>
                                 <button type="button" id="btn-add-teach" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
                             </div>
@@ -415,13 +415,13 @@
                         <div class="skills-manage-section margin-top">
                             <h4 data-i18n="skills_to_learn">Keahlian yang Ingin Saya Pelajari</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-learn-skill" placeholder="Laravel, Photoshop, Mandarin">
+                                <input type="text" id="input-learn-skill" data-i18n="input_learn_skill_placeholder" placeholder="Laravel, Photoshop, Mandarin">
                                 <select id="select-learn-cat">
                                     <option value="IT">IT</option>
-                                    <option value="Design">Desain</option>
-                                    <option value="Business">Bisnis</option>
-                                    <option value="Language">Bahasa</option>
-                                    <option value="Other">Lain-lain</option>
+                                    <option value="Design" data-i18n="cat_design">Desain</option>
+                                    <option value="Business" data-i18n="cat_business">Bisnis</option>
+                                    <option value="Language" data-i18n="cat_language">Bahasa</option>
+                                    <option value="Other" data-i18n="cat_other">Lain-lain</option>
                                 </select>
                                 <button type="button" id="btn-add-learn" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
                             </div>
