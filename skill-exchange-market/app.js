@@ -91,7 +91,55 @@ const TRANSLATIONS = {
         toast_skill_removed: "Skill berhasil dihapus!",
         toast_network_error: "Terjadi kesalahan jaringan!",
         toast_photo_limit: "Ukuran foto maksimal 2MB!",
-        toast_logout: "Berhasil keluar.",
+                toast_logout: "Berhasil keluar.",
+        toast_registration_success: "Pendaftaran berhasil! Silakan masuk.",
+        toast_password_length: "Password harus minimal 6 karakter!",
+        toast_opening_deck: "Membuka deck kartu...",
+        menu_forum: "Forum Q&A",
+        menu_study: "Study Room",
+        menu_leaderboard: "Leaderboard",
+        notifications_title: "Notifikasi",
+        clear: "Bersihkan",
+        no_notifications: "Tidak ada notifikasi baru",
+        rate_partner: "Beri Ulasan",
+        schedule_study: "Jadwal Belajar",
+        set_meeting: "Atur Pertemuan",
+        no_sessions: "Belum ada pertemuan terjadwal",
+        forum_title: "Forum Diskusi & Q&A",
+        forum_subtitle: "Tanyakan hal kecil dan temukan teman belajar sebelum mencocokkan.",
+        btn_ask: "Tanya Sesuatu",
+        forum_search_placeholder: "Cari pertanyaan...",
+        answers_title: "Jawaban",
+        your_answer: "Tulis Jawaban Anda",
+        forum_answer_placeholder: "Bagikan pengetahuan Anda...",
+        btn_submit_answer: "Kirim Jawaban",
+        study_title: "Virtual Study Room (Pomodoro)",
+        study_subtitle: "Belajar produktif bersama teman secara visual tanpa gangguan.",
+        pomodoro_session: "Fokus Sesi",
+        study_info_title: "Status Co-Working",
+        study_desc: "Mulai timer Pomodoro Anda sekarang untuk mengaktifkan sesi belajar fokus.",
+        leaderboard_title: "Papan Peringkat (Leaderboard)",
+        leaderboard_subtitle: "Aktivitas mengajar dan belajar terbaik mahasiswa bulan ini.",
+        rank: "Peringkat",
+        modal_ask_title: "Tanyakan Sesuatu",
+        modal_schedule_title: "Atur Jadwal Belajar",
+        modal_review_title: "Ulasan Partner Belajar",
+        modal_flash_title: "Buat Tugas Darurat (Flash Match)",
+        flash_board_title: "Papan Tugas Darurat (Flash Match)",
+        btn_create_flash: "Buat Tugas Darurat",
+        filters: "Filter",
+        filter_skill_level: "Level Keahlian",
+        filter_study_method: "Metode Belajar",
+        filter_availability: "Ketersediaan Waktu",
+        all: "Semua",
+        reset: "Reset",
+        apply: "Terapkan",
+        cancel: "Batal",
+        profile_method: "Metode Belajar Utama",
+        profile_availability: "Ketersediaan Waktu",
+        level_beginner: "Beginner (Pemula)",
+        level_intermediate: "Intermediate (Menengah)",
+        level_advanced: "Advanced (Ahli)",
         toast_registration_success: "Pendaftaran berhasil! Silakan masuk.",
         toast_password_length: "Password harus minimal 6 karakter!",
         toast_opening_deck: "Membuka deck kartu..."
@@ -188,7 +236,55 @@ const TRANSLATIONS = {
         toast_skill_removed: "スキルを削除しました！",
         toast_network_error: "ネットワークエラーが発生しました！",
         toast_photo_limit: "写真のサイズは最大2MBまでです！",
-        toast_logout: "ログアウトしました。",
+                toast_logout: "ログアウトしました。",
+        toast_registration_success: "登録が完了しました！",
+        toast_password_length: "パスワードは6文字以上で入力してください！",
+        toast_opening_deck: "探索カードを開いています...",
+        menu_forum: "Q&Aフォーラム",
+        menu_study: "自習室",
+        menu_leaderboard: "リーダーボード",
+        notifications_title: "通知",
+        clear: "クリア",
+        no_notifications: "新しい通知はありません",
+        rate_partner: "評価する",
+        schedule_study: "学習スケジュール",
+        set_meeting: "ミーティング設定",
+        no_sessions: "予定されたミーティングはありません",
+        forum_title: "ディスカッション＆Q&Aフォーラム",
+        forum_subtitle: "ディスカッションで疑問を解決し、マッチングパートナーを見つけましょう。",
+        btn_ask: "質問する",
+        forum_search_placeholder: "質問を検索...",
+        answers_title: "回答",
+        your_answer: "回答を入力する",
+        forum_answer_placeholder: "知識を共有しましょう...",
+        btn_submit_answer: "回答を送信",
+        study_title: "バーチャル自習室 (ポモドーロ)",
+        study_subtitle: "ポモドーロタイマーとWebカメラ共有で、他の学生と一緒に集中して勉強しましょう。",
+        pomodoro_session: "集中セッション",
+        study_info_title: "コワーキングステータス",
+        study_desc: "ポモドーロタイマーを開始して、集中学習セッションを始めましょう。",
+        leaderboard_title: "リーダーボード",
+        leaderboard_subtitle: "今月の最もアクティブな学生のランキング。",
+        rank: "順位",
+        modal_ask_title: "質問を投稿する",
+        modal_schedule_title: "ミーティング設定",
+        modal_review_title: "パートナー評価",
+        modal_flash_title: "緊急リクエスト (Flash Match)",
+        flash_board_title: "緊急リクエストボード (Flash Match)",
+        btn_create_flash: "緊急リクエスト作成",
+        filters: "フィルター",
+        filter_skill_level: "スキルレベル",
+        filter_study_method: "学習方法",
+        filter_availability: "時間帯",
+        all: "すべて",
+        reset: "リセット",
+        apply: "適用",
+        cancel: "キャンセル",
+        profile_method: "主な学習方法",
+        profile_availability: "都合の良い時間帯",
+        level_beginner: "Beginner (初心者)",
+        level_intermediate: "Intermediate (中級者)",
+        level_advanced: "Advanced (上級者)",
         toast_registration_success: "登録が完了しました！",
         toast_password_length: "パスワードは6文字以上で入力してください！",
         toast_opening_deck: "探索カードを開いています..."
@@ -285,7 +381,55 @@ const TRANSLATIONS = {
         toast_skill_removed: "Skill removed!",
         toast_network_error: "Network error occurred!",
         toast_photo_limit: "Max photo size is 2MB!",
-        toast_logout: "Logged out successfully.",
+                toast_logout: "Logged out successfully.",
+        toast_registration_success: "Registration successful! Please login.",
+        toast_password_length: "Password must be at least 6 characters!",
+        toast_opening_deck: "Opening card deck...",
+        menu_forum: "Forum Q&A",
+        menu_study: "Study Room",
+        menu_leaderboard: "Leaderboard",
+        notifications_title: "Notifications",
+        clear: "Clear",
+        no_notifications: "No new notifications",
+        rate_partner: "Rate Partner",
+        schedule_study: "Study Schedule",
+        set_meeting: "Set Meeting",
+        no_sessions: "No study sessions scheduled",
+        forum_title: "Forum Discussion & Q&A",
+        forum_subtitle: "Ask questions and find study buddies before matching.",
+        btn_ask: "Ask Question",
+        forum_search_placeholder: "Search questions...",
+        answers_title: "Answers",
+        your_answer: "Write Your Answer",
+        forum_answer_placeholder: "Share your knowledge...",
+        btn_submit_answer: "Submit Answer",
+        study_title: "Virtual Study Room (Pomodoro)",
+        study_subtitle: "Study productively with others using Pomodoro and Webcams.",
+        pomodoro_session: "Focus Session",
+        study_info_title: "Co-Working Status",
+        study_desc: "Start Pomodoro timer to begin your focus session.",
+        leaderboard_title: "Leaderboard",
+        leaderboard_subtitle: "Rankings of the most active learning students this month.",
+        rank: "Rank",
+        modal_ask_title: "Ask a Question",
+        modal_schedule_title: "Set Study Schedule",
+        modal_review_title: "Rate Study Partner",
+        modal_flash_title: "Create Emergency Request (Flash Match)",
+        flash_board_title: "Emergency Task Board (Flash Match)",
+        btn_create_flash: "Create Emergency Request",
+        filters: "Filters",
+        filter_skill_level: "Skill Level",
+        filter_study_method: "Study Method",
+        filter_availability: "Availability",
+        all: "All",
+        reset: "Reset",
+        apply: "Apply",
+        cancel: "Cancel",
+        profile_method: "Preferred Study Method",
+        profile_availability: "Time Availability",
+        level_beginner: "Beginner",
+        level_intermediate: "Intermediate",
+        level_advanced: "Advanced",
         toast_registration_success: "Registration successful! Please login.",
         toast_password_length: "Password must be at least 6 characters!",
         toast_opening_deck: "Opening card deck..."
@@ -382,7 +526,55 @@ const TRANSLATIONS = {
         toast_skill_removed: "技能已删除！",
         toast_network_error: "发生网络错误！",
         toast_photo_limit: "照片大小最大为2MB！",
-        toast_logout: "已成功退出登录。",
+                toast_logout: "已成功退出登录。",
+        toast_registration_success: "注册成功！请登录。",
+        toast_password_length: "密码长度必须至少为6位！",
+        toast_opening_deck: "正在打开卡片组...",
+        menu_forum: "论坛与问答",
+        menu_study: "自习室",
+        menu_leaderboard: "排行榜",
+        notifications_title: "通知",
+        clear: "清除",
+        no_notifications: "没有新通知",
+        rate_partner: "评价伙伴",
+        schedule_study: "学习计划",
+        set_meeting: "设置会议",
+        no_sessions: "暂无安排的学习会议",
+        forum_title: "论坛与问答交流",
+        forum_subtitle: "在配对之前先发帖询问小问题并寻找学习伙伴。",
+        btn_ask: "我要发帖",
+        forum_search_placeholder: "搜索帖子...",
+        answers_title: "回答列表",
+        your_answer: "撰写你的回答",
+        forum_answer_placeholder: "分享你的知识...",
+        btn_submit_answer: "提交回答",
+        study_title: "虚拟自习室 (番茄钟)",
+        study_subtitle: "使用番茄钟和摄像头同步，与其他同学高效静音自习。",
+        pomodoro_session: "专注时间",
+        study_info_title: "自习状态",
+        study_desc: "启动番茄计时器，开启你的专注学习之旅。",
+        leaderboard_title: "排行榜",
+        leaderboard_subtitle: "本月最活跃的学生光荣榜。",
+        rank: "排名",
+        modal_ask_title: "发布提问",
+        modal_schedule_title: "安排自习日程",
+        modal_review_title: "评价你的学习伙伴",
+        modal_flash_title: "发布紧急辅导求助 (Flash Match)",
+        flash_board_title: "紧急求助告示板 (Flash Match)",
+        btn_create_flash: "发布求助",
+        filters: "筛选",
+        filter_skill_level: "技能级别",
+        filter_study_method: "学习方式",
+        filter_availability: "空闲时间",
+        all: "全部",
+        reset: "重置",
+        apply: "应用",
+        cancel: "取消",
+        profile_method: "主要自习方式",
+        profile_availability: "空闲时间段",
+        level_beginner: "Beginner (初学者)",
+        level_intermediate: "Intermediate (中等)",
+        level_advanced: "Advanced (熟练)",
         toast_registration_success: "注册成功！请登录。",
         toast_password_length: "密码长度必须至少为6位！",
         toast_opening_deck: "正在打开卡片组..."
@@ -459,7 +651,7 @@ function formatDeptGrade(user) {
     let dept = getLocalizedDept(user.department);
     let grade = user.grade || "-";
     if (currentLanguage === "jp") {
-        return `${dept} (${grade}年入学)`;
+        return `${dept} (${grade}年度)`;
     } else if (currentLanguage === "en") {
         return `${dept} (Class of ${grade})`;
     } else if (currentLanguage === "zh") {
@@ -470,6 +662,12 @@ function formatDeptGrade(user) {
 }
 
 let users = [];
+let reviews = [];
+let schedules = [];
+let notifications = [];
+let questions = [];
+let flashRequests = [];
+let activeFilters = { level: 'all', method: 'all', availability: 'all' };
 let matches = [];
 let messages = [];
 let currentUser = JSON.parse(localStorage.getItem("sem_current_user")) || null;
@@ -492,6 +690,11 @@ async function syncData() {
         users = data.users || [];
         matches = data.matches || [];
         messages = data.messages || [];
+        reviews = data.reviews || [];
+        schedules = data.schedules || [];
+        notifications = data.notifications || [];
+        questions = data.questions || [];
+        flashRequests = data.flashRequests || [];
 
         if (currentUser) {
             const updatedMe = users.find(u => u.id === currentUser.id);
@@ -518,6 +721,19 @@ function startSyncInterval() {
         if (success) {
             updateChatBadge();
             const activeView = document.querySelector(".app-view:not(.hidden)");
+        updateNotificationsBell();
+        if (activeView) {
+            const viewId = activeView.id;
+            if (viewId === "view-forum" && !document.getElementById("forum-detail-view").classList.contains("hidden")) {
+                // Keep forum detail updated if open
+            } else if (viewId === "view-forum") {
+                renderForum();
+            } else if (viewId === "view-search") {
+                renderFlashRequests();
+            } else if (viewId === "view-leaderboard") {
+                renderLeaderboard();
+            }
+        }
             if (activeView) {
                 const viewId = activeView.id;
                 if (viewId === "view-chat" && activeChatPartnerId) {
@@ -1635,6 +1851,8 @@ function loadProfileFields() {
     elProfileGrade.value = currentUser.grade || "";
     elProfileBio.value = currentUser.bio || "";
     customAvatarBase64 = currentUser.avatarUrl || null;
+    document.getElementById("profile-method").value = currentUser.studyMethod || "Both";
+    document.getElementById("profile-availability").value = currentUser.availability || "Both";
 
     renderManageSkills();
 }
@@ -1650,7 +1868,9 @@ elProfileForm.addEventListener("submit", async (e) => {
         department: elProfileDept.value.trim(),
         grade: elProfileGrade.value.trim(),
         bio: elProfileBio.value.trim(),
-        avatarUrl: customAvatarBase64 || currentUser.avatarUrl || null
+        avatarUrl: customAvatarBase64 || currentUser.avatarUrl || null,
+        studyMethod: document.getElementById("profile-method").value,
+        availability: document.getElementById("profile-availability").value
     };
 
     try {
@@ -1711,6 +1931,7 @@ if (elProfileAvatarSeed) {
 function renderManageSkills() {
     elManageTeachList.innerHTML = "";
     currentUser.teachSkills.forEach((s, i) => {
+        const levelBadge = s.level ? `<span class="skill-level-indicator">${s.level}</span>` : "";
         elManageTeachList.innerHTML += `
             <span class="skill-chip ${getCategoryClass(s.category)}">
                 ${s.name}
@@ -1721,6 +1942,7 @@ function renderManageSkills() {
 
     elManageLearnList.innerHTML = "";
     currentUser.learning.forEach((s, i) => {
+        const levelBadge = s.level ? `<span class="skill-level-indicator">${s.level}</span>` : "";
         elManageLearnList.innerHTML += `
             <span class="skill-chip ${getCategoryClass(s.category)}">
                 ${s.name}
@@ -1749,7 +1971,7 @@ elBtnAddTeach.addEventListener("click", async () => {
             body: JSON.stringify({
                 userId: currentUser.id,
                 type: 'teach',
-                skill: { name, category }
+                skill: { name, category, level: document.getElementById('select-teach-level').value }
             })
         });
         const data = await res.json();
@@ -1785,7 +2007,7 @@ elBtnAddLearn.addEventListener("click", async () => {
             body: JSON.stringify({
                 userId: currentUser.id,
                 type: 'learn',
-                skill: { name, category }
+                skill: { name, category, level: document.getElementById('select-learn-level').value }
             })
         });
         const data = await res.json();
@@ -1829,3 +2051,982 @@ window.removeSkill = async function(type, index) {
         console.error("Error removing skill:", err);
     }
 };
+
+// ============================================================================
+// ======================== PHASE 2 IMPLEMENTATION CODE ========================
+// ============================================================================
+
+// --- UI Helper: Modals ---
+window.openModal = function(modalId) {
+    document.getElementById(modalId).classList.remove("hidden");
+};
+
+window.closeModal = function(modalId) {
+    document.getElementById(modalId).classList.add("hidden");
+};
+
+// --- Gamification Dashboard Render ---
+const originalRenderDashboard = renderDashboard;
+renderDashboard = function() {
+    if (typeof originalRenderDashboard === "function") {
+        originalRenderDashboard();
+    }
+    
+    if (!currentUser) return;
+    
+    // XP & Level calculation
+    const xp = currentUser.xp || 0;
+    const level = currentUser.level || 1;
+    const xpInCurrentLevel = xp % 300;
+    const progressPercent = Math.min((xpInCurrentLevel / 300) * 100, 100);
+    
+    let rankName = "Novice";
+    if (level >= 3 && level < 6) rankName = "Scholar";
+    else if (level >= 6) rankName = "Grandmaster";
+    
+    document.getElementById("dash-user-level").innerText = level;
+    document.getElementById("dash-user-rank").innerText = rankName;
+    document.getElementById("dash-xp-progress-fill").style.width = progressPercent + "%";
+    document.getElementById("dash-xp-progress-text").innerText = `${xpInCurrentLevel} / 300 XP`;
+    
+    const badgeCount = (currentUser.badges || []).length;
+    document.getElementById("dash-xp-badges-count").innerText = `${badgeCount} Lencana`;
+    
+    // Show level and badges on Profile Summary Card
+    const previewHeader = document.querySelector(".preview-header");
+    if (previewHeader) {
+        // Clear old badge container if exists
+        const oldBadges = previewHeader.querySelector(".user-badges-list");
+        if (oldBadges) oldBadges.remove();
+        
+        // Add badges
+        const badgesHtml = (currentUser.badges || []).map(b => `<span class="user-badge-item"><i class="fa-solid fa-award"></i> ${b}</span>`).join("");
+        const badgeContainer = document.createElement("div");
+        badgeContainer.className = "user-badges-list";
+        badgeContainer.innerHTML = badgesHtml;
+        previewHeader.appendChild(badgeContainer);
+    }
+};
+
+// --- XP Podium & Leaderboard ---
+async function renderLeaderboard() {
+    try {
+        const res = await fetch('/api/leaderboard');
+        const data = await res.json();
+        const topUsers = data.leaderboard || [];
+        
+        const podiumContainer = document.getElementById("leaderboard-podium");
+        const listRowsContainer = document.getElementById("leaderboard-list-rows");
+        
+        // Render Top 3 Podium
+        podiumContainer.innerHTML = "";
+        
+        // 2nd Place (Left)
+        const secondUser = topUsers[1];
+        if (secondUser) {
+            podiumContainer.innerHTML += `
+                <div class="podium-card second">
+                    <div class="podium-rank">2</div>
+                    <img class="podium-avatar" src="${getUserAvatarUrl(secondUser)}">
+                    <h4 style="font-size: 0.95rem; font-weight: 700;">${secondUser.displayName}</h4>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">${secondUser.department}</span>
+                    <span class="user-badge-item" style="margin-top: 8px;">Level ${secondUser.level}</span>
+                    <small style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">${secondUser.xp} XP</small>
+                </div>
+            `;
+        } else {
+            podiumContainer.innerHTML += `<div></div>`;
+        }
+        
+        // 1st Place (Center)
+        const firstUser = topUsers[0];
+        if (firstUser) {
+            podiumContainer.innerHTML += `
+                <div class="podium-card first">
+                    <div class="podium-rank">1</div>
+                    <img class="podium-avatar" src="${getUserAvatarUrl(firstUser)}">
+                    <h4 style="font-size: 1.1rem; font-weight: 800; color: #f59e0b;">${firstUser.displayName}</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">${firstUser.department}</span>
+                    <span class="user-badge-item" style="margin-top: 8px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.15)); border-color: #f59e0b;">Level ${firstUser.level}</span>
+                    <small style="font-size: 0.75rem; font-weight: 700; color: #f59e0b; margin-top: 4px;">${firstUser.xp} XP</small>
+                </div>
+            `;
+        } else {
+            podiumContainer.innerHTML += `<div></div>`;
+        }
+        
+        // 3rd Place (Right)
+        const thirdUser = topUsers[2];
+        if (thirdUser) {
+            podiumContainer.innerHTML += `
+                <div class="podium-card third">
+                    <div class="podium-rank">3</div>
+                    <img class="podium-avatar" src="${getUserAvatarUrl(thirdUser)}">
+                    <h4 style="font-size: 0.9rem; font-weight: 700;">${thirdUser.displayName}</h4>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">${thirdUser.department}</span>
+                    <span class="user-badge-item" style="margin-top: 8px;">Level ${thirdUser.level}</span>
+                    <small style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px;">${thirdUser.xp} XP</small>
+                </div>
+            `;
+        } else {
+            podiumContainer.innerHTML += `<div></div>`;
+        }
+        
+        // Render 4-10 position rows
+        listRowsContainer.innerHTML = "";
+        if (topUsers.length <= 3) {
+            listRowsContainer.innerHTML = `<div class="empty-state" style="padding: 1.5rem;"><p data-i18n="no_records">Belum ada peringkat lainnya</p></div>`;
+        } else {
+            for (let i = 3; i < topUsers.length; i++) {
+                const u = topUsers[i];
+                listRowsContainer.innerHTML += `
+                    <div class="leaderboard-row">
+                        <span style="font-weight: 800; font-size: 1rem; color: var(--text-muted);">#${i+1}</span>
+                        <img src="${getUserAvatarUrl(u)}" class="avatar-small" style="width: 32px; height: 32px;">
+                        <span style="font-weight: 600;">${u.displayName} <small style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal; margin-left: 6px;">${u.department}</small></span>
+                        <span>Level ${u.level}</span>
+                        <span style="font-weight: 700;">${u.xp} XP</span>
+                    </div>
+                `;
+            }
+        }
+    } catch (err) {
+        console.error("Error loading leaderboard:", err);
+    }
+}
+
+// --- Notifications Management ---
+function updateNotificationsBell() {
+    if (!currentUser) return;
+    const unread = notifications.filter(n => n.userId === currentUser.id && !n.read);
+    const badge = document.getElementById("notif-badge");
+    if (unread.length > 0) {
+        badge.classList.remove("hidden");
+    } else {
+        badge.classList.add("hidden");
+    }
+}
+
+async function renderNotificationsDropdown() {
+    const list = document.getElementById("notif-list-box");
+    const userNotifs = notifications.filter(n => n.userId === currentUser.id).reverse(); // Newest first
+    
+    if (userNotifs.length === 0) {
+        list.innerHTML = `<div class="empty-state" style="padding: 1.5rem; text-align: center;"><p style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada notifikasi baru</p></div>`;
+        return;
+    }
+    
+    list.innerHTML = "";
+    userNotifs.forEach(n => {
+        let icon = "fa-bell";
+        if (n.type === "match") icon = "fa-handshake";
+        else if (n.type === "badge") icon = "fa-award";
+        else if (n.type === "forum") icon = "fa-comments";
+        else if (n.type === "review") icon = "fa-star";
+        else if (n.type === "schedule") icon = "fa-calendar";
+        
+        list.innerHTML += `
+            <div class="notif-item ${n.read ? '' : 'unread'}">
+                <span><i class="fa-solid ${icon}" style="margin-right: 6px; color: var(--primary-color);"></i> ${n.content}</span>
+                <small>${new Date(n.createdAt).toLocaleDateString()} ${new Date(n.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+            </div>
+        `;
+    });
+}
+
+// Toggle notification bell dropdown
+document.getElementById("notif-bell-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    const dropdown = document.getElementById("notif-dropdown");
+    dropdown.classList.toggle("hidden");
+    if (!dropdown.classList.contains("hidden")) {
+        renderNotificationsDropdown();
+    }
+});
+
+document.addEventListener("click", () => {
+    document.getElementById("notif-dropdown").classList.add("hidden");
+});
+
+document.getElementById("notif-dropdown").addEventListener("click", (e) => {
+    e.stopPropagation();
+});
+
+document.getElementById("btn-clear-notif").addEventListener("click", async () => {
+    if (!currentUser) return;
+    try {
+        const res = await fetch('/api/notifications/read', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: currentUser.id })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            notifications = data.notifications || [];
+            updateNotificationsBell();
+            renderNotificationsDropdown();
+        }
+    } catch (err) {
+        console.error("Error clearing notifications:", err);
+    }
+});
+
+// --- Search Filter Logic ---
+document.getElementById("btn-toggle-filters").addEventListener("click", () => {
+    document.getElementById("search-filters-panel").classList.toggle("hidden");
+});
+
+document.getElementById("btn-reset-filters").addEventListener("click", () => {
+    document.getElementById("filter-skill-level").value = "all";
+    document.getElementById("filter-study-method").value = "all";
+    document.getElementById("filter-availability").value = "all";
+    activeFilters = { level: 'all', method: 'all', availability: 'all' };
+    renderSearch();
+});
+
+document.getElementById("btn-apply-filters").addEventListener("click", () => {
+    activeFilters = {
+        level: document.getElementById("filter-skill-level").value,
+        method: document.getElementById("filter-study-method").value,
+        availability: document.getElementById("filter-availability").value
+    };
+    renderSearch();
+});
+
+// Override card swiper recomendations to support detailed filtering & Give/Take Contrast
+const originalRenderSearch = renderSearch;
+renderSearch = function() {
+    if (!currentUser) return;
+    
+    // XP board updates
+    renderFlashRequests();
+    
+    const stack = document.getElementById("card-stack");
+    stack.innerHTML = "";
+    
+    // Get users that are not the current user and not already matched/passed
+    const partnerIdsDone = matches.filter(m => m.userAId === currentUser.id || m.userBId === currentUser.id)
+        .map(m => m.userAId === currentUser.id ? m.userBId : m.userAId);
+        
+    let deck = users.filter(u => u.id !== currentUser.id && !partnerIdsDone.includes(u.id));
+    
+    // Apply filters
+    if (activeFilters.level !== "all") {
+        deck = deck.filter(u => 
+            u.teachSkills.some(s => s.level === activeFilters.level) || 
+            u.learning.some(s => s.level === activeFilters.level)
+        );
+    }
+    if (activeFilters.method !== "all") {
+        deck = deck.filter(u => u.studyMethod === activeFilters.method || u.studyMethod === "Both");
+    }
+    if (activeFilters.availability !== "all") {
+        deck = deck.filter(u => u.availability === activeFilters.availability || u.availability === "Both");
+    }
+    
+    if (deck.length === 0) {
+        stack.innerHTML = `
+            <div class="empty-deck-message">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <h3 data-i18n="no_cards_title">Semua Kartu Sudah Habis!</h3>
+                <p data-i18n="no_cards_sub">Coba ubah filter pencarian Anda atau tambahkan skill lainnya.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Render deck top card (we only show the first card and style it gorgeously)
+    const topUser = deck[0];
+    
+    // Calculate Average stars
+    const userReviews = reviews.filter(r => r.revieweeId === topUser.id);
+    const avgRating = userReviews.length > 0 ? (userReviews.reduce((sum, r) => sum + r.rating, 0) / userReviews.length).toFixed(1) : "Baru";
+    
+    const teachHtml = topUser.teachSkills.map(s => `<span class="badge-teach"><i class="fa-solid fa-hand-holding-hand"></i> ${s.name} <small class="skill-level-indicator">${s.level || 'Intermediate'}</small></span>`).join("");
+    const learnHtml = topUser.learning.map(s => `<span class="badge-learn"><i class="fa-solid fa-book-open"></i> ${s.name} <small class="skill-level-indicator">${s.level || 'Intermediate'}</small></span>`).join("");
+    
+    const methodText = topUser.studyMethod === "Both" ? "Online & Offline" : topUser.studyMethod || "Online";
+    const availText = topUser.availability === "Both" ? "Weekday & Weekend" : topUser.availability || "Weekday";
+    
+    const badgesHtml = (topUser.badges || []).map(b => `<span class="user-badge-item"><i class="fa-solid fa-award"></i> ${b}</span>`).join("");
+    
+    stack.innerHTML = `
+        <div class="swipe-card active-card" data-partner-id="${topUser.id}">
+            <div class="card-avatar-box">
+                <img class="card-avatar" src="${getUserAvatarUrl(topUser)}">
+                <div class="card-rating-badge"><i class="fa-solid fa-star"></i> ${avgRating} (${userReviews.length})</div>
+            </div>
+            <div class="card-content">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>${topUser.displayName} <small style="font-size: 0.8rem; color: var(--text-muted);">Level ${topUser.level || 1}</small></h2>
+                    <span class="status-indicator-dot ${isUserOnline(topUser) ? 'online' : 'offline'}"></span>
+                </div>
+                <p class="dept-grade" style="margin-top: 4px; font-weight: 700; color: var(--primary-color);">${formatDeptGrade(topUser)}</p>
+                <div class="user-badges-list" style="margin: 6px 0;">${badgesHtml}</div>
+                <p class="bio" style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; max-height: 60px; overflow-y: auto;">${topUser.bio || 'Mahasiswa ini belum mengisi bio.'}</p>
+                
+                <hr class="preview-divider">
+                <div class="preview-section">
+                    <h5 style="color: #10b981; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-hand-holding-hand"></i> Can Teach (Bisa Mengajar):</h5>
+                    <div class="skills-wrapper">${teachHtml || '<small class="text-muted">Tidak ada skill</small>'}</div>
+                </div>
+                <div class="preview-section" style="margin-top: 10px;">
+                    <h5 style="color: #8b5cf6; font-weight: 700; margin-bottom: 4px;"><i class="fa-solid fa-book-open"></i> Wants to Learn (Ingin Belajar):</h5>
+                    <div class="skills-wrapper">${learnHtml || '<small class="text-muted">Tidak ada kebutuhan</small>'}</div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 12px; background: rgba(255,255,255,0.02); padding: 6px 10px; border-radius: 6px;">
+                    <span><i class="fa-solid fa-laptop"></i> ${methodText}</span>
+                    <span><i class="fa-solid fa-calendar-day"></i> ${availText}</span>
+                </div>
+            </div>
+        </div>
+    `;
+};
+
+// --- Reviews & Stars submit ---
+document.getElementById("btn-chat-review").addEventListener("click", () => {
+    openModal("modal-review");
+});
+
+const starBtns = document.querySelectorAll(".star-btn");
+starBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const rating = Number(btn.getAttribute("data-value"));
+        document.getElementById("review-stars-val").value = rating;
+        starBtns.forEach(b => {
+            const val = Number(b.getAttribute("data-value"));
+            if (val <= rating) {
+                b.style.color = "#f59e0b"; // Golden
+            } else {
+                b.style.color = "#cbd5e0"; // Gray
+            }
+        });
+    });
+});
+
+document.getElementById("form-submit-review").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser || !activeChatPartnerId) return;
+    
+    const rating = document.getElementById("review-stars-val").value;
+    const comment = document.getElementById("review-comment").value;
+    
+    try {
+        const res = await fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reviewerId: currentUser.id,
+                revieweeId: activeChatPartnerId,
+                rating,
+                comment
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            reviews = data.reviews || [];
+            showToast("Ulasan berhasil dikirim!");
+            closeModal("modal-review");
+            document.getElementById("review-comment").value = "";
+        }
+    } catch (err) {
+        console.error("Error submitting review:", err);
+    }
+});
+
+// --- Schedules Management ---
+document.getElementById("btn-create-schedule").addEventListener("click", () => {
+    openModal("modal-schedule");
+});
+
+document.getElementById("form-create-schedule").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser || !activeChatPartnerId) return;
+    
+    // Find matching ID
+    const activeMatch = matches.find(m => 
+        (m.userAId === currentUser.id && m.userBId === activeChatPartnerId) ||
+        (m.userAId === activeChatPartnerId && m.userBId === currentUser.id)
+    );
+    
+    if (!activeMatch) return;
+    
+    const title = document.getElementById("schedule-title").value;
+    const date = document.getElementById("schedule-date").value;
+    const time = document.getElementById("schedule-time").value;
+    const link = document.getElementById("schedule-link").value;
+    
+    try {
+        const res = await fetch('/api/schedules', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                matchId: activeMatch.id,
+                title,
+                date,
+                time,
+                link,
+                createdById: currentUser.id
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            schedules = data.schedules || [];
+            showToast("Pertemuan berhasil dijadwalkan!");
+            closeModal("modal-schedule");
+            
+            document.getElementById("schedule-title").value = "";
+            document.getElementById("schedule-date").value = "";
+            document.getElementById("schedule-time").value = "";
+            document.getElementById("schedule-link").value = "";
+            
+            renderChatSchedules();
+        }
+    } catch (err) {
+        console.error("Error creating schedule:", err);
+    }
+});
+
+function renderChatSchedules() {
+    const list = document.getElementById("chat-schedules-list");
+    if (!activeChatPartnerId) return;
+    
+    const activeMatch = matches.find(m => 
+        (m.userAId === currentUser.id && m.userBId === activeChatPartnerId) ||
+        (m.userAId === activeChatPartnerId && m.userBId === currentUser.id)
+    );
+    
+    if (!activeMatch) return;
+    
+    const matchSchedules = schedules.filter(s => s.matchId === activeMatch.id);
+    
+    if (matchSchedules.length === 0) {
+        list.innerHTML = `<div class="schedule-mini-card" style="border: none; background: none; color: var(--text-muted); padding: 0;"><small data-i18n="no_sessions">Belum ada pertemuan terjadwal</small></div>`;
+        return;
+    }
+    
+    list.innerHTML = "";
+    matchSchedules.forEach(s => {
+        const linkHtml = s.link ? `<a href="${s.link}" target="_blank" style="color: var(--primary-color); text-decoration: underline;"><i class="fa-solid fa-up-right-from-square"></i> Join</a>` : "";
+        list.innerHTML += `
+            <div class="schedule-mini-card">
+                <i class="fa-regular fa-calendar-check"></i>
+                <span><strong>${s.title}</strong> &bull; ${s.date} Pukul ${s.time} ${linkHtml}</span>
+            </div>
+        `;
+    });
+}
+
+// Hook render schedules into chat render
+const originalRenderChat = renderChat;
+renderChat = function() {
+    if (typeof originalRenderChat === "function") {
+        originalRenderChat();
+    }
+    renderChatSchedules();
+};
+
+// --- Q&A Forum Hub ---
+async function renderForum() {
+    const list = document.getElementById("forum-list-view");
+    list.innerHTML = "";
+    
+    if (questions.length === 0) {
+        list.innerHTML = `<div class="empty-state" style="padding: 2rem;"><p>Belum ada pertanyaan di forum ini. Jadilah yang pertama bertanya!</p></div>`;
+        return;
+    }
+    
+    const searchQuery = document.getElementById("forum-search-input").value.toLowerCase();
+    
+    questions.forEach(q => {
+        if (searchQuery && !q.title.toLowerCase().includes(searchQuery) && !q.body.toLowerCase().includes(searchQuery)) {
+            return;
+        }
+        
+        const asker = users.find(u => u.id === q.userId) || { displayName: "User" };
+        const ansCount = (q.answers || []).length;
+        
+        list.innerHTML += `
+            <div class="question-card" onclick="viewQuestionDetail('${q.id}')">
+                <div class="question-header">
+                    <span class="skill-chip ${getCategoryClass(q.category)}">${q.category}</span>
+                    <small>${new Date(q.createdAt).toLocaleDateString()}</small>
+                </div>
+                <div class="question-title">${q.title}</div>
+                <p class="question-body">${q.body.substring(0, 100)}...</p>
+                <div class="question-footer">
+                    <div class="question-meta-left">
+                        <img src="${getUserAvatarUrl(asker)}" class="avatar-small" style="width: 20px; height: 20px;">
+                        <span>Ditanyakan oleh <strong>${asker.displayName}</strong></span>
+                    </div>
+                    <span><i class="fa-regular fa-comment-dots"></i> ${ansCount} Jawaban</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+document.getElementById("forum-search-input").addEventListener("input", renderForum);
+
+document.getElementById("btn-ask-question").addEventListener("click", () => {
+    openModal("modal-ask");
+});
+
+document.getElementById("form-ask-question").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+    
+    const title = document.getElementById("ask-title").value;
+    const body = document.getElementById("ask-body").value;
+    const category = document.getElementById("ask-category").value;
+    
+    try {
+        const res = await fetch('/api/forum/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                title,
+                body,
+                category
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            questions = data.questions || [];
+            showToast("Pertanyaan Anda berhasil diterbitkan!");
+            closeModal("modal-ask");
+            
+            document.getElementById("ask-title").value = "";
+            document.getElementById("ask-body").value = "";
+            renderForum();
+        }
+    } catch (err) {
+        console.error("Error posting question:", err);
+    }
+});
+
+let activeQuestionId = null;
+
+window.viewQuestionDetail = function(qId) {
+    activeQuestionId = qId;
+    document.getElementById("forum-list-panel").classList.add("hidden");
+    document.getElementById("forum-detail-view").classList.remove("hidden");
+    renderQuestionDetail();
+};
+
+document.getElementById("btn-forum-back").addEventListener("click", () => {
+    activeQuestionId = null;
+    document.getElementById("forum-detail-view").classList.add("hidden");
+    document.getElementById("forum-list-panel").classList.remove("hidden");
+    renderForum();
+});
+
+function renderQuestionDetail() {
+    if (!activeQuestionId) return;
+    const q = questions.find(item => item.id === activeQuestionId);
+    if (!q) return;
+    
+    const asker = users.find(u => u.id === q.userId) || { displayName: "User" };
+    
+    const detailContent = document.getElementById("forum-detail-content");
+    detailContent.innerHTML = `
+        <div class="question-header" style="margin-top: 10px;">
+            <span class="skill-chip ${getCategoryClass(q.category)}">${q.category}</span>
+            <small>${new Date(q.createdAt).toLocaleDateString()} ${new Date(q.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-light); margin: 10px 0;">${q.title}</h2>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            <img src="${getUserAvatarUrl(asker)}" class="avatar-small" style="width: 24px; height: 24px;">
+            <span>Ditanyakan oleh <strong>${asker.displayName}</strong></span>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-light); white-space: pre-line; background: rgba(255,255,255,0.01); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color);">${q.body}</p>
+    `;
+    
+    // Render answers list
+    const answersList = document.getElementById("forum-answers-list");
+    answersList.innerHTML = "";
+    
+    const qAnswers = q.answers || [];
+    if (qAnswers.length === 0) {
+        answersList.innerHTML = `<div class="empty-state" style="padding: 1rem;"><p style="font-size: 0.8rem; color: var(--text-muted);">Belum ada jawaban. Tulis jawaban pertama Anda di bawah!</p></div>`;
+        return;
+    }
+    
+    qAnswers.forEach(ans => {
+        const replier = users.find(u => u.id === ans.userId) || { displayName: "User" };
+        
+        // Show match invite button if not self and not already matched
+        const isSelf = ans.userId === currentUser.id;
+        const alreadyMatched = matches.some(m => 
+            (m.userAId === currentUser.id && m.userBId === ans.userId && m.status === "ACTIVE") ||
+            (m.userAId === ans.userId && m.userBId === currentUser.id && m.status === "ACTIVE")
+        );
+        
+        const inviteBtn = (!isSelf && !alreadyMatched) ? 
+            `<button class="btn btn-secondary btn-sm" onclick="inviteFromForum('${ans.userId}')" style="font-size: 0.7rem; padding: 4px 8px;"><i class="fa-solid fa-heart"></i> Ajak Match</button>` : "";
+            
+        answersList.innerHTML += `
+            <div class="answer-card">
+                <div class="answer-header">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <img src="${getUserAvatarUrl(replier)}" class="avatar-small" style="width: 18px; height: 18px;">
+                        <strong>${replier.displayName}</strong>
+                    </div>
+                    <span>${new Date(ans.createdAt).toLocaleDateString()}</span>
+                </div>
+                <p class="answer-body">${ans.body}</p>
+                <div class="text-right">${inviteBtn}</div>
+            </div>
+        `;
+    });
+}
+
+document.getElementById("forum-answer-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser || !activeQuestionId) return;
+    
+    const body = document.getElementById("forum-answer-input").value;
+    
+    try {
+        const res = await fetch('/api/forum/answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                questionId: activeQuestionId,
+                userId: currentUser.id,
+                body
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            
+            // Sync local question list
+            const qIndex = questions.findIndex(item => item.id === activeQuestionId);
+            if (qIndex !== -1) {
+                questions[qIndex] = data.question;
+            }
+            
+            showToast("Jawaban Anda berhasil dikirim!");
+            document.getElementById("forum-answer-input").value = "";
+            renderQuestionDetail();
+        }
+    } catch (err) {
+        console.error("Error submitting answer:", err);
+    }
+});
+
+window.inviteFromForum = async function(partnerId) {
+    if (!currentUser) return;
+    try {
+        const res = await fetch('/api/swipe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                partnerId,
+                action: 'like'
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            matches = data.matches || [];
+            if (data.isMatch) {
+                showToast("Match terbentuk! Obrolan diaktifkan.", "success");
+            } else {
+                showToast("Undangan match dikirim!", "success");
+            }
+            renderQuestionDetail();
+        }
+    } catch (err) {
+        console.error("Error swiping from forum:", err);
+    }
+};
+
+// --- Open Study Room (Pomodoro & WebRTC Mock Camera) ---
+let pomodoroTimer = null;
+let pomodoroSeconds = 25 * 60;
+let isTimerRunning = false;
+let localStream = null;
+
+function initStudyRoom() {
+    // Reset room elements
+    updatePomodoroDisplay();
+    document.getElementById("study-partner-label").innerText = "Partner Belajar (Simulasi)";
+}
+
+function updatePomodoroDisplay() {
+    const min = Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0');
+    const sec = (pomodoroSeconds % 60).toString().padStart(2, '0');
+    document.getElementById("pomodoro-timer").innerText = `${min}:${sec}`;
+}
+
+document.getElementById("btn-pomodoro-start").addEventListener("click", () => {
+    if (isTimerRunning) return;
+    isTimerRunning = true;
+    document.getElementById("btn-pomodoro-start").classList.add("hidden");
+    document.getElementById("btn-pomodoro-pause").classList.remove("hidden");
+    document.getElementById("study-status-desc").innerText = "Fokus Belajar Aktif! Tetap fokus pada tugas Anda.";
+    
+    pomodoroTimer = setInterval(() => {
+        if (pomodoroSeconds > 0) {
+            pomodoroSeconds--;
+            updatePomodoroDisplay();
+        } else {
+            clearInterval(pomodoroTimer);
+            isTimerRunning = false;
+            showToast("Sesi Pomodoro selesai! Waktunya istirahat.", "success");
+            document.getElementById("btn-pomodoro-start").classList.remove("hidden");
+            document.getElementById("btn-pomodoro-pause").classList.add("hidden");
+            document.getElementById("study-status-desc").innerText = "Waktunya Istirahat! Nikmati 5 menit waktu senggang Anda.";
+            pomodoroSeconds = 5 * 60; // Set to short break
+            updatePomodoroDisplay();
+        }
+    }, 1000);
+});
+
+document.getElementById("btn-pomodoro-pause").addEventListener("click", () => {
+    clearInterval(pomodoroTimer);
+    isTimerRunning = false;
+    document.getElementById("btn-pomodoro-start").classList.remove("hidden");
+    document.getElementById("btn-pomodoro-pause").classList.add("hidden");
+    document.getElementById("study-status-desc").innerText = "Sesi ditunda. Klik putar untuk melanjutkan kembali.";
+});
+
+document.getElementById("btn-pomodoro-reset").addEventListener("click", () => {
+    clearInterval(pomodoroTimer);
+    isTimerRunning = false;
+    document.getElementById("btn-pomodoro-start").classList.remove("hidden");
+    document.getElementById("btn-pomodoro-pause").classList.add("hidden");
+    document.getElementById("study-status-desc").innerText = "Timer Pomodoro di-reset. Siap belajar kembali?";
+    pomodoroSeconds = 25 * 60;
+    updatePomodoroDisplay();
+});
+
+// Webcam access handling
+let isCamOn = false;
+let isMicOn = false;
+
+document.getElementById("btn-toggle-cam").addEventListener("click", async () => {
+    const video = document.getElementById("local-video");
+    const placeholder = document.getElementById("local-video-placeholder");
+    const btn = document.getElementById("btn-toggle-cam");
+    
+    if (!isCamOn) {
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            video.srcObject = localStream;
+            placeholder.classList.add("hidden");
+            video.classList.remove("hidden");
+            isCamOn = true;
+            btn.innerHTML = `<i class="fa-solid fa-video-slash"></i> Kamera Off`;
+            btn.className = "btn btn-danger";
+        } catch (err) {
+            console.error("Camera access denied:", err);
+            showToast("Gagal mengakses kamera!", "danger");
+        }
+    } else {
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+        }
+        video.srcObject = null;
+        placeholder.classList.remove("hidden");
+        isCamOn = false;
+        btn.innerHTML = `<i class="fa-solid fa-video"></i> Kamera On`;
+        btn.className = "btn btn-secondary";
+    }
+});
+
+document.getElementById("btn-toggle-mic").addEventListener("click", () => {
+    const btn = document.getElementById("btn-toggle-mic");
+    if (!isMicOn) {
+        isMicOn = true;
+        btn.innerHTML = `<i class="fa-solid fa-microphone-slash"></i> Mic Off`;
+        btn.className = "btn btn-danger";
+        showToast("Mikrofon Diaktifkan!");
+    } else {
+        isMicOn = false;
+        btn.innerHTML = `<i class="fa-solid fa-microphone"></i> Mic On`;
+        btn.className = "btn btn-secondary";
+        showToast("Mikrofon Dimatikan!");
+    }
+});
+
+document.getElementById("btn-share-screen").addEventListener("click", async () => {
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const video = document.getElementById("local-video");
+        video.srcObject = stream;
+        document.getElementById("local-video-placeholder").classList.add("hidden");
+        showToast("Berbagi Layar Dimulai!");
+        
+        stream.getVideoTracks()[0].addEventListener('ended', () => {
+            video.srcObject = isCamOn ? localStream : null;
+            if (!isCamOn) document.getElementById("local-video-placeholder").classList.remove("hidden");
+            showToast("Berbagi Layar Selesai.");
+        });
+    } catch (err) {
+        console.error("Display media error:", err);
+    }
+});
+
+// --- Flash Match / Emergency request board ---
+document.getElementById("btn-create-flash").addEventListener("click", () => {
+    openModal("modal-flash");
+});
+
+document.getElementById("form-create-flash").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+    
+    const title = document.getElementById("flash-title").value;
+    const rewardDescription = document.getElementById("flash-reward").value;
+    const category = document.getElementById("flash-category").value;
+    
+    try {
+        const res = await fetch('/api/flash-requests/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                title,
+                rewardDescription,
+                category
+            })
+        });
+        if (res.ok) {
+            const data = await res.json();
+            flashRequests = data.flashRequests || [];
+            showToast("Request darurat berhasil diposting!");
+            closeModal("modal-flash");
+            
+            document.getElementById("flash-title").value = "";
+            document.getElementById("flash-reward").value = "";
+            renderFlashRequests();
+        }
+    } catch (err) {
+        console.error("Error creating flash request:", err);
+    }
+});
+
+function renderFlashRequests() {
+    const list = document.getElementById("flash-board-list");
+    list.innerHTML = "";
+    
+    const openRequests = flashRequests.filter(r => r.status === 'OPEN');
+    if (openRequests.length === 0) {
+        list.innerHTML = `<div class="empty-state" style="padding: 10px; text-align: center;"><p style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada tugas darurat saat ini.</p></div>`;
+        return;
+    }
+    
+    openRequests.forEach(r => {
+        const owner = users.find(u => u.id === r.userId) || { displayName: "User" };
+        const isSelf = r.userId === currentUser.id;
+        const takeBtn = isSelf ? "" : `<button class="btn btn-danger btn-sm" onclick="takeFlashRequest('${r.id}')" style="font-size: 0.7rem; padding: 4px 10px;"><i class="fa-solid fa-bolt"></i> Ambil</button>`;
+        
+        list.innerHTML += `
+            <div class="flash-req-card">
+                <div class="flash-req-info">
+                    <h5>${r.title} <span class="skill-chip ${getCategoryClass(r.category)}" style="font-size: 0.6rem; padding: 2px 6px;">${r.category}</span></h5>
+                    <p style="margin-bottom: 2px;"><i class="fa-solid fa-gift" style="color: var(--danger); margin-right: 4px;"></i> Imbalan: ${r.rewardDescription}</p>
+                    <p><i class="fa-solid fa-user" style="margin-right: 4px;"></i> Oleh: ${owner.displayName}</p>
+                </div>
+                <div>${takeBtn}</div>
+            </div>
+        `;
+    });
+}
+
+window.takeFlashRequest = async function(requestId) {
+    if (!currentUser) return;
+    try {
+        const res = await fetch('/api/flash-requests/take', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                requestId,
+                userId: currentUser.id
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            flashRequests = data.flashRequests || [];
+            matches = data.matches || [];
+            showToast("Flash Match terbentuk! Membuka obrolan...", "success");
+            
+            // Switch to chat view with the new match partner
+            activeChatPartnerId = data.request.userId;
+            
+            // Switch navigation click
+            document.querySelector('[data-target="view-chat"]').click();
+        } else {
+            showToast(data.error || "Gagal mengambil request", "danger");
+        }
+    } catch (err) {
+        console.error("Error taking flash request:", err);
+    }
+};
+
+// --- Skill Passport Portfolio PDF Print Exporter ---
+// Exporter click handler inside profile page
+const profileCard = document.querySelector(".profile-layout");
+if (profileCard) {
+    const printBtn = document.createElement("button");
+    printBtn.className = "btn btn-secondary btn-block margin-top";
+    printBtn.type = "button";
+    printBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> <span data-i18n="export_passport">Unduh Skill Passport (PDF)</span>`;
+    printBtn.addEventListener("click", exportSkillPassport);
+    
+    // Append print button in personal info card
+    const personalCard = document.querySelector(".profile-card");
+    if (personalCard) {
+        personalCard.appendChild(printBtn);
+    }
+}
+
+function exportSkillPassport() {
+    if (!currentUser) return;
+    
+    // Fill passport printable data
+    document.getElementById("passport-name").innerText = currentUser.displayName;
+    document.getElementById("passport-dept").innerText = currentUser.department;
+    document.getElementById("passport-grade").innerText = currentUser.grade;
+    document.getElementById("passport-level").innerText = currentUser.level || 1;
+    document.getElementById("passport-xp").innerText = currentUser.xp || 0;
+    document.getElementById("passport-print-date").innerText = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    
+    // Average rating
+    const myReviews = reviews.filter(r => r.revieweeId === currentUser.id);
+    const avg = myReviews.length > 0 ? (myReviews.reduce((sum, r) => sum + r.rating, 0) / myReviews.length).toFixed(1) : "0";
+    document.getElementById("passport-rating").innerText = `⭐ ${avg}/5 (${myReviews.length} ulasan)`;
+    
+    // Badges
+    const badgeText = (currentUser.badges || []).length > 0 ? (currentUser.badges || []).join(", ") : "Belum ada gelar";
+    document.getElementById("passport-badges").innerText = badgeText;
+    
+    // Teaching skills list
+    const teachList = document.getElementById("passport-teach-list");
+    teachList.innerHTML = "";
+    if (currentUser.teachSkills.length === 0) {
+        teachList.innerHTML = "<li>Belum ada keahlian diajarkan.</li>";
+    } else {
+        currentUser.teachSkills.forEach(s => {
+            teachList.innerHTML += `<li>&bull; <strong>${s.name}</strong> (${s.category}) &bull; ${s.level || 'Intermediate'}</li>`;
+        });
+    }
+    
+    // Learning needs list
+    const learnList = document.getElementById("passport-learn-list");
+    learnList.innerHTML = "";
+    if (currentUser.learning.length === 0) {
+        learnList.innerHTML = "<li>Belum ada kebutuhan belajar.</li>";
+    } else {
+        currentUser.learning.forEach(s => {
+            learnList.innerHTML += `<li>&bull; <strong>${s.name}</strong> (${s.category}) &bull; ${s.level || 'Intermediate'}</li>`;
+        });
+    }
+    
+    // Trigger browser printing
+    window.print();
+}

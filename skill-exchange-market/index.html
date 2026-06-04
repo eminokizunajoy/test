@@ -114,9 +114,26 @@
     <div id="app-container" class="app-container hidden">
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                <span>Skill Exchange</span>
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <span style="font-weight: 700; font-size: 0.95rem;">Skill Exchange</span>
+                </div>
+                <div class="nav-notifications">
+                    <button id="notif-bell-btn" class="notifications-bell-btn" type="button">
+                        <i class="fa-solid fa-bell"></i>
+                        <span id="notif-badge" class="notifications-badge hidden"></span>
+                    </button>
+                    <div id="notif-dropdown" class="notifications-dropdown hidden">
+                        <div class="notif-header">
+                            <span data-i18n="notifications_title">Notifikasi</span>
+                            <button id="btn-clear-notif" class="notif-clear-btn" type="button" data-i18n="clear">Bersihkan</button>
+                        </div>
+                        <div id="notif-list-box" class="notif-list-box">
+                            <div class="empty-state" style="padding: 1rem; text-align: center;"><p data-i18n="no_notifications" style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada notifikasi baru</p></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Language Selector -->
@@ -136,6 +153,15 @@
                 </a>
                 <a href="#" class="menu-item" data-target="view-search">
                     <i class="fa-solid fa-circle-nodes"></i> <span data-i18n="menu_swipe">Geser Kartu</span>
+                </a>
+                <a href="#" class="menu-item" data-target="view-forum">
+                    <i class="fa-solid fa-message-question"></i> <span data-i18n="menu_forum">Forum Q&A</span>
+                </a>
+                <a href="#" class="menu-item" data-target="view-study">
+                    <i class="fa-solid fa-hourglass-start"></i> <span data-i18n="menu_study">Study Room</span>
+                </a>
+                <a href="#" class="menu-item" data-target="view-leaderboard">
+                    <i class="fa-solid fa-trophy"></i> <span data-i18n="menu_leaderboard">Leaderboard</span>
                 </a>
                 <a href="#" class="menu-item" data-target="view-matches">
                     <i class="fa-solid fa-handshake"></i> <span data-i18n="menu_matches">Kecocokan</span>
@@ -167,6 +193,21 @@
                 <div class="view-header">
                     <h1 data-i18n="dash_welcome">Selamat Datang Kembali! 👋</h1>
                     <p data-i18n="dash_subtitle">Temukan mahasiswa lain untuk bertukar keahlian hari ini.</p>
+                </div>
+
+                <!-- XP / Level Gamification progress bar -->
+                <div class="xp-level-container" style="width: 100%;">
+                    <div class="xp-level-header">
+                        <span style="font-weight: 700;"><i class="fa-solid fa-medal"></i> Level <span id="dash-user-level">1</span></span>
+                        <span id="dash-user-rank" class="user-badge-item" style="margin: 0; font-size: 0.75rem;">Novice</span>
+                    </div>
+                    <div class="xp-progress-bar">
+                        <div id="dash-xp-progress-fill" class="xp-progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span id="dash-xp-progress-text" class="xp-progress-text">0 / 300 XP</span>
+                        <span id="dash-xp-badges-count" style="font-size: 0.75rem; color: var(--text-muted);">0 Lencana</span>
+                    </div>
                 </div>
 
                 <!-- Stats Cards -->
@@ -234,11 +275,60 @@
 
             <!-- ================= BUMBLE-STYLE SWIPE VIEW ================= -->
             <section id="view-search" class="app-view hidden">
-                <div class="view-header">
-                    <h1 data-i18n="swipe_title">Temukan Partner Belajar</h1>
-                    <p data-i18n="swipe_subtitle">Geser ke Kanan jika tertarik belajar bareng, Geser ke Kiri untuk melewati.</p>
+                <div class="view-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <div>
+                        <h1 data-i18n="swipe_title">Temukan Partner Belajar</h1>
+                        <p data-i18n="swipe_subtitle">Geser ke Kanan jika tertarik belajar bareng, Geser ke Kiri untuk melewati.</p>
+                    </div>
+                    <button id="btn-toggle-filters" class="btn btn-secondary" type="button"><i class="fa-solid fa-sliders"></i> <span data-i18n="filters">Filter</span></button>
                 </div>
                 
+                <!-- Search Filters Panel -->
+                <div id="search-filters-panel" class="profile-card margin-bottom hidden" style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 1.25rem; border-radius: var(--radius-lg); width: 100%;">
+                    <div class="form-row">
+                        <div class="form-group col-4">
+                            <label for="filter-skill-level" data-i18n="filter_skill_level">Level Keahlian</label>
+                            <select id="filter-skill-level">
+                                <option value="all" data-i18n="all">Semua Level</option>
+                                <option value="Beginner">Beginner (Pemula)</option>
+                                <option value="Intermediate">Intermediate (Menengah)</option>
+                                <option value="Advanced">Advanced (Ahli)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="filter-study-method" data-i18n="filter_study_method">Metode Belajar</label>
+                            <select id="filter-study-method">
+                                <option value="all" data-i18n="all">Semua Metode</option>
+                                <option value="Online">Online (Zoom/Meet)</option>
+                                <option value="Offline">Offline (Tatap Muka)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="filter-availability" data-i18n="filter_availability">Ketersediaan Waktu</label>
+                            <select id="filter-availability">
+                                <option value="all" data-i18n="all">Semua Waktu</option>
+                                <option value="Weekday">Weekday (Hari Kerja)</option>
+                                <option value="Weekend">Weekend (Akhir Pekan)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px;">
+                        <button id="btn-reset-filters" class="btn btn-secondary" type="button" data-i18n="reset">Reset</button>
+                        <button id="btn-apply-filters" class="btn btn-primary" type="button" data-i18n="apply">Terapkan</button>
+                    </div>
+                </div>
+
+                <!-- Emergency Flash Match Board -->
+                <div class="flash-requests-container" style="width: 100%;">
+                    <h4 style="margin: 0 0 10px 0;"><i class="fa-solid fa-bolt"></i> <span data-i18n="flash_board_title">Papan Tugas Darurat (Flash Match)</span></h4>
+                    <div id="flash-board-list" class="flash-scroll-box">
+                        <div class="empty-state" style="padding: 10px; text-align: center;"><p data-i18n="no_flash_requests" style="font-size: 0.75rem; color: var(--text-muted);">Tidak ada tugas darurat saat ini.</p></div>
+                    </div>
+                    <div class="margin-top text-right">
+                        <button id="btn-create-flash" class="btn btn-danger btn-sm" type="button" style="font-size: 0.8rem;"><i class="fa-solid fa-circle-exclamation"></i> <span data-i18n="btn_create_flash">Buat Tugas Darurat</span></button>
+                    </div>
+                </div>
+
                 <!-- Swiper Deck Container -->
                 <div class="swiper-deck-container">
                     <div id="card-stack" class="card-stack">
@@ -304,7 +394,7 @@
 
                         <!-- Chat active state -->
                         <div id="chat-active" class="chat-active-window hidden">
-                            <div class="chat-header">
+                            <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                                 <div class="chat-header-user">
                                     <img id="chat-partner-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=partner" alt="Avatar" class="avatar-small">
                                     <div>
@@ -313,18 +403,36 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Real-time Translation Control -->
-                                <div class="chat-translate-selector">
-                                    <label for="chat-translate-lang"><i class="fa-solid fa-language"></i> <span data-i18n="chat_translate_to">Translate to:</span></label>
-                                    <select id="chat-translate-lang">
-                                        <option value="none" data-i18n="lang_original">Original</option>
-                                        <option value="id" data-i18n="lang_id">Bahasa Indonesia</option>
-                                        <option value="jp" data-i18n="lang_jp">日本語</option>
-                                        <option value="en" data-i18n="lang_en">English</option>
-                                        <option value="zh" data-i18n="lang_zh">中文</option>
-                                    </select>
+                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                    <!-- Real-time Translation Control -->
+                                    <div class="chat-translate-selector">
+                                        <label for="chat-translate-lang"><i class="fa-solid fa-language"></i> <span data-i18n="chat_translate_to">Translate to:</span></label>
+                                        <select id="chat-translate-lang">
+                                            <option value="none" data-i18n="lang_original">Original</option>
+                                            <option value="id" data-i18n="lang_id">Bahasa Indonesia</option>
+                                            <option value="jp" data-i18n="lang_jp">日本語</option>
+                                            <option value="en" data-i18n="lang_en">English</option>
+                                            <option value="zh" data-i18n="lang_zh">中文</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Review Partner Button -->
+                                    <button id="btn-chat-review" class="btn btn-secondary btn-sm" type="button" style="font-size: 0.75rem; padding: 6px 12px;"><i class="fa-solid fa-star"></i> <span data-i18n="rate_partner">Beri Ulasan</span></button>
                                 </div>
                             </div>
+
+                            <!-- Meeting Coordinator Widget -->
+                            <div class="chat-scheduler-container">
+                                <div class="chat-scheduler-header">
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);"><i class="fa-regular fa-calendar-days"></i> <span data-i18n="schedule_study">Jadwal Belajar</span></span>
+                                    <button id="btn-create-schedule" class="chat-scheduler-btn" type="button"><i class="fa-solid fa-plus"></i> <span data-i18n="set_meeting">Atur Pertemuan</span></button>
+                                </div>
+                                <div id="chat-schedules-list" class="schedules-list-inline">
+                                    <!-- Scheduled sessions show here -->
+                                    <div class="schedule-mini-card" style="border: none; background: none; color: var(--text-muted); padding: 0;"><small data-i18n="no_sessions">Belum ada pertemuan terjadwal</small></div>
+                                </div>
+                            </div>
+
                             <div id="chat-messages-container" class="chat-messages-container">
                                 <!-- Messages list -->
                             </div>
@@ -380,6 +488,24 @@
                                     <input type="text" id="profile-grade" placeholder="2024, 2023, 2022..." required>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <label for="profile-method" data-i18n="profile_method">Metode Belajar Utama</label>
+                                    <select id="profile-method">
+                                        <option value="Both">Keduanya (Online & Offline)</option>
+                                        <option value="Online">Online (Zoom/Meet)</option>
+                                        <option value="Offline">Offline (Tatap Muka)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="profile-availability" data-i18n="profile_availability">Ketersediaan Waktu</label>
+                                    <select id="profile-availability">
+                                        <option value="Both">Keduanya (Weekday & Weekend)</option>
+                                        <option value="Weekday">Weekday (Hari Kerja)</option>
+                                        <option value="Weekend">Weekend (Akhir Pekan)</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="profile-bio" data-i18n="bio">Bio Diri (Deskripsi singkat)</label>
                                 <textarea id="profile-bio" rows="4" data-i18n="profile_bio_placeholder" placeholder="Saya menyukai programming..."></textarea>
@@ -396,13 +522,18 @@
                         <div class="skills-manage-section">
                             <h4 data-i18n="skills_to_teach">Keahlian yang Bisa Saya Ajarkan</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-teach-skill" data-i18n="input_teach_skill_placeholder" placeholder="Python, Masak, Fotografi">
-                                <select id="select-teach-cat">
+                                <input type="text" id="input-teach-skill" data-i18n="input_teach_skill_placeholder" placeholder="Python, Masak, Fotografi" style="flex: 2;">
+                                <select id="select-teach-cat" style="flex: 1.2;">
                                     <option value="IT">IT</option>
                                     <option value="Design" data-i18n="cat_design">Desain</option>
                                     <option value="Business" data-i18n="cat_business">Bisnis</option>
                                     <option value="Language" data-i18n="cat_language">Bahasa</option>
                                     <option value="Other" data-i18n="cat_other">Lain-lain</option>
+                                </select>
+                                <select id="select-teach-level" style="flex: 1;">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate" selected>Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
                                 </select>
                                 <button type="button" id="btn-add-teach" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
                             </div>
@@ -415,13 +546,18 @@
                         <div class="skills-manage-section margin-top">
                             <h4 data-i18n="skills_to_learn">Keahlian yang Ingin Saya Pelajari</h4>
                             <div class="skill-input-row">
-                                <input type="text" id="input-learn-skill" data-i18n="input_learn_skill_placeholder" placeholder="Laravel, Photoshop, Mandarin">
-                                <select id="select-learn-cat">
+                                <input type="text" id="input-learn-skill" data-i18n="input_learn_skill_placeholder" placeholder="Laravel, Photoshop, Mandarin" style="flex: 2;">
+                                <select id="select-learn-cat" style="flex: 1.2;">
                                     <option value="IT">IT</option>
                                     <option value="Design" data-i18n="cat_design">Desain</option>
                                     <option value="Business" data-i18n="cat_business">Bisnis</option>
                                     <option value="Language" data-i18n="cat_language">Bahasa</option>
                                     <option value="Other" data-i18n="cat_other">Lain-lain</option>
+                                </select>
+                                <select id="select-learn-level" style="flex: 1;">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate" selected>Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
                                 </select>
                                 <button type="button" id="btn-add-learn" class="btn btn-secondary btn-icon-only"><i class="fa-solid fa-plus"></i></button>
                             </div>
@@ -432,7 +568,330 @@
                     </div>
                 </div>
             </section>
+
+            <!-- ================= FORUM Q&A VIEW ================= -->
+            <section id="view-forum" class="app-view hidden">
+                <div class="view-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <div>
+                        <h1 data-i18n="forum_title">Forum Diskusi & Q&A</h1>
+                        <p data-i18n="forum_subtitle">Tanyakan hal kecil dan temukan teman belajar sebelum mencocokkan.</p>
+                    </div>
+                    <button id="btn-ask-question" class="btn btn-primary" type="button"><i class="fa-solid fa-plus"></i> <span data-i18n="btn_ask">Tanya Sesuatu</span></button>
+                </div>
+
+                <div id="forum-list-panel">
+                    <div class="forum-actions">
+                        <div class="forum-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="forum-search-input" data-i18n="forum_search_placeholder" placeholder="Cari pertanyaan...">
+                        </div>
+                    </div>
+
+                    <!-- Feed list -->
+                    <div id="forum-list-view" class="question-list">
+                        <!-- Question Cards dynamically -->
+                    </div>
+                </div>
+
+                <!-- Question Detail View -->
+                <div id="forum-detail-view" class="forum-detail-view hidden">
+                    <button id="btn-forum-back" class="btn btn-secondary margin-bottom" type="button"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="back">Kembali</span></button>
+                    <div id="forum-detail-content">
+                        <!-- Detail content loaded dynamically -->
+                    </div>
+                    
+                    <div class="forum-answers-container">
+                        <h4 data-i18n="answers_title">Jawaban</h4>
+                        <div id="forum-answers-list">
+                            <!-- Answer Cards dynamically -->
+                        </div>
+                        
+                        <!-- Add Answer form -->
+                        <form id="forum-answer-form" class="margin-top">
+                            <div class="form-group">
+                                <label for="forum-answer-input" data-i18n="your_answer">Tulis Jawaban Anda</label>
+                                <textarea id="forum-answer-input" rows="3" data-i18n="forum_answer_placeholder" placeholder="Bagikan pengetahuan Anda..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-i18n="btn_submit_answer">Kirim Jawaban</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= STUDY ROOM VIEW ================= -->
+            <section id="view-study" class="app-view hidden">
+                <div class="view-header">
+                    <h1 data-i18n="study_title">Virtual Study Room (Pomodoro)</h1>
+                    <p data-i18n="study_subtitle">Belajar produktif bersama teman secara visual tanpa gangguan.</p>
+                </div>
+
+                <div class="study-room-layout">
+                    <!-- Left: Pomodoro clock & Controls -->
+                    <div class="study-room-sidebar">
+                        <div class="pomodoro-box">
+                            <h3 data-i18n="pomodoro_session">Fokus Sesi</h3>
+                            <div id="pomodoro-timer" class="pomodoro-timer">25:00</div>
+                            <div class="pomodoro-controls">
+                                <button id="btn-pomodoro-start" class="btn btn-primary btn-round" type="button"><i class="fa-solid fa-play"></i></button>
+                                <button id="btn-pomodoro-pause" class="btn btn-secondary btn-round hidden" type="button"><i class="fa-solid fa-pause"></i></button>
+                                <button id="btn-pomodoro-reset" class="btn btn-secondary btn-round" type="button"><i class="fa-solid fa-rotate-left"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="study-room-info">
+                            <h4 data-i18n="study_info_title">Status Co-Working</h4>
+                            <p id="study-status-desc" data-i18n="study_desc">Mulai timer Pomodoro Anda sekarang untuk mengaktifkan sesi belajar fokus.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Webcams stream simulator -->
+                    <div class="study-room-main">
+                        <div id="video-grid" class="video-grid">
+                            <!-- Local video wrapper -->
+                            <div class="video-wrapper active-speaker">
+                                <video id="local-video" class="video-feed" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+                                <div id="local-video-placeholder" class="video-placeholder-avatar" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e293b, #0f172a); height: 100%; width: 100%;">
+                                    <i class="fa-solid fa-camera" style="font-size: 3rem; opacity: 0.3;"></i>
+                                </div>
+                                <div class="video-label">Kamu (Milik Sendiri)</div>
+                            </div>
+                            <!-- Mock study buddy camera -->
+                            <div class="video-wrapper">
+                                <div class="video-feed" style="background: linear-gradient(135deg, #1e293b, #0f172a); display: flex; align-items: center; justify-content: center; height: 100%;">
+                                    <i class="fa-solid fa-user-graduate" style="font-size: 3rem; opacity: 0.3;"></i>
+                                </div>
+                                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=partnerUser" class="video-placeholder-avatar" alt="Partner">
+                                <div class="video-label" id="study-partner-label">Partner Belajar</div>
+                            </div>
+                        </div>
+
+                        <div class="study-controls">
+                            <button id="btn-toggle-cam" class="btn btn-secondary" type="button"><i class="fa-solid fa-video"></i> Kamera On</button>
+                            <button id="btn-toggle-mic" class="btn btn-secondary" type="button"><i class="fa-solid fa-microphone"></i> Mic On</button>
+                            <button id="btn-share-screen" class="btn btn-secondary" type="button"><i class="fa-solid fa-desktop"></i> Share Screen</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= LEADERBOARD VIEW ================= -->
+            <section id="view-leaderboard" class="app-view hidden">
+                <div class="view-header">
+                    <h1 data-i18n="leaderboard_title">Papan Peringkat (Leaderboard)</h1>
+                    <p data-i18n="leaderboard_subtitle">Aktivitas mengajar dan belajar terbaik mahasiswa bulan ini.</p>
+                </div>
+                
+                <!-- Podium Top 3 -->
+                <div id="leaderboard-podium" class="leaderboard-podium">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- List position 4-10 -->
+                <div class="leaderboard-list">
+                    <div class="leaderboard-row header">
+                        <span data-i18n="rank">Peringkat</span>
+                        <span>Avatar</span>
+                        <span data-i18n="fullname">Nama Lengkap</span>
+                        <span data-i18n="level">Level</span>
+                        <span>XP</span>
+                    </div>
+                    <div id="leaderboard-list-rows">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
         </main>
+    </div>
+
+    <!-- ================= MODALS & POPUPS ================= -->
+
+    <!-- Ask Question Modal -->
+    <div id="modal-ask" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_ask_title">Tanyakan Sesuatu</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-ask')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-ask-question" class="modal-body">
+                <div class="form-group">
+                    <label for="ask-title" data-i18n="question_title_label">Judul Pertanyaan</label>
+                    <input type="text" id="ask-title" placeholder="Contoh: Error Axios di React Native" required>
+                </div>
+                <div class="form-group">
+                    <label for="ask-category" data-i18n="question_category">Kategori Skill</label>
+                    <select id="ask-category">
+                        <option value="IT">IT</option>
+                        <option value="Design">Desain</option>
+                        <option value="Business">Bisnis</option>
+                        <option value="Language">Bahasa</option>
+                        <option value="Other">Lain-lain</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ask-body" data-i18n="question_body_label">Detail Masalah Anda</label>
+                    <textarea id="ask-body" rows="5" placeholder="Tulis deskripsi detail error atau materi yang ingin Anda tanyakan..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="closeModal('modal-ask')" data-i18n="cancel">Batal</button>
+                    <button class="btn btn-primary" type="submit" data-i18n="btn_publish">Publikasikan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Meeting Modal -->
+    <div id="modal-schedule" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_schedule_title">Atur Jadwal Belajar</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-schedule')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-create-schedule" class="modal-body">
+                <div class="form-group">
+                    <label for="schedule-title" data-i18n="meeting_title">Materi / Topik Belajar</label>
+                    <input type="text" id="schedule-title" placeholder="Contoh: Belajar Fungsi Pointer C++" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="schedule-date" data-i18n="meeting_date">Tanggal</label>
+                        <input type="date" id="schedule-date" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="schedule-time" data-i18n="meeting_time">Waktu / Jam</label>
+                        <input type="time" id="schedule-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="schedule-link" data-i18n="meeting_link">Tautan Pertemuan (Zoom/Meet/Discord)</label>
+                    <input type="url" id="schedule-link" placeholder="https://zoom.us/j/...">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="closeModal('modal-schedule')" data-i18n="cancel">Batal</button>
+                    <button class="btn btn-primary" type="submit" data-i18n="btn_save_schedule">Simpan Jadwal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rate / Review Modal -->
+    <div id="modal-review" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_review_title">Ulasan Partner Belajar</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-review')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-submit-review" class="modal-body">
+                <div class="form-group" style="text-align: center;">
+                    <label data-i18n="rate_stars">Berikan Rating Bintang</label>
+                    <div class="rating-stars-input" style="font-size: 2rem; color: #cbd5e0; cursor: pointer; display: flex; justify-content: center; gap: 8px; margin: 10px 0;">
+                        <i class="fa-solid fa-star star-btn" data-value="1"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="2"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="3"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="4"></i>
+                        <i class="fa-solid fa-star star-btn" data-value="5"></i>
+                    </div>
+                    <input type="hidden" id="review-stars-val" value="5">
+                </div>
+                <div class="form-group">
+                    <label for="review-comment" data-i18n="review_testimony">Testimoni Singkat</label>
+                    <textarea id="review-comment" rows="4" placeholder="Tulis masukan tentang pengalaman belajar Anda (misal: 'Penjelasannya mudah dipahami!')..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="closeModal('modal-review')" data-i18n="cancel">Batal</button>
+                    <button class="btn btn-primary" type="submit" data-i18n="btn_submit_review">Kirim Ulasan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Flash Match Modal -->
+    <div id="modal-flash" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 data-i18n="modal_flash_title">Buat Tugas Darurat (Flash Match)</h3>
+                <button class="modal-close-btn" type="button" onclick="closeModal('modal-flash')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-create-flash" class="modal-body">
+                <div class="form-group">
+                    <label for="flash-title" data-i18n="flash_title_label">Tugas / Materi Darurat</label>
+                    <input type="text" id="flash-title" placeholder="Contoh: Butuh paham Pointer C++ malam ini" required>
+                </div>
+                <div class="form-group">
+                    <label for="flash-category" data-i18n="question_category">Kategori</label>
+                    <select id="flash-category">
+                        <option value="IT">IT</option>
+                        <option value="Design">Desain</option>
+                        <option value="Business">Bisnis</option>
+                        <option value="Language">Bahasa</option>
+                        <option value="Other">Lain-lain</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="flash-reward" data-i18n="flash_reward_label">Imbalan Belajar (Barter Ilmu)</label>
+                    <input type="text" id="flash-reward" placeholder="Contoh: Siap barter diajarkan UI/UX selama 2 jam" required>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="closeModal('modal-flash')" data-i18n="cancel">Batal</button>
+                    <button class="btn btn-primary" type="submit" data-i18n="btn_publish">Publikasikan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= PRINTABLE CERTIFICATE / PORTFOLIO PASSPORT ================= -->
+    <div id="passport-export-wrapper" class="passport-export-wrapper">
+        <div class="passport-border">
+            <div class="passport-header">
+                <h1>SKILL PASSPORT</h1>
+                <h3>Skill Exchange Market - Academic Learning Network</h3>
+                <div class="passport-line"></div>
+            </div>
+            <div class="passport-body">
+                <p style="font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px;">
+                    Sertifikat Portofolio ini secara resmi diberikan kepada:
+                </p>
+                <div style="font-size: 2.2rem; font-weight: 800; font-family: 'Georgia', serif; color: #1a365d; text-align: center; margin: 15px 0;">
+                    <span id="passport-name">Sabda</span>
+                </div>
+                <p style="font-size: 1.05rem; line-height: 1.6; text-align: center;">
+                    dari Program Studi / Jurusan <strong id="passport-dept">Fakultas Belum Diisi</strong> (Angkatan <span id="passport-grade">2026</span>)
+                    atas keaktifan akademik dan partisipasi dalam pertukaran keahlian mahasiswa.
+                </p>
+                
+                <div class="passport-grid">
+                    <div class="passport-section-box">
+                        <h4>Materi Pengajaran (Give Skills)</h4>
+                        <div id="passport-teach-list" style="font-size: 0.9rem; line-height: 1.8;">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                    <div class="passport-section-box">
+                        <h4>Materi Kebutuhan Belajar (Take Skills)</h4>
+                        <div id="passport-learn-list" style="font-size: 0.9rem; line-height: 1.8;">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="passport-grid" style="margin-top: 20px;">
+                    <div class="passport-section-box" style="grid-column: span 2; text-align: center; background: #f7fafc;">
+                        <p style="margin: 0; font-size: 1rem;">
+                            Tingkat Reputasi: <strong>Level <span id="passport-level">1</span></strong> (<span id="passport-xp">0</span> XP) &bull;
+                            Rating Penilaian: <strong id="passport-rating">⭐ 0/5</strong> &bull;
+                            Badges yang Diperoleh: <strong id="passport-badges">None</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="passport-footer-signature">
+                <div class="signature-line">
+                    Tanggal Cetak: <span id="passport-print-date">04 Juni 2026</span>
+                </div>
+                <div class="signature-line">
+                    Skill Exchange Market
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Custom Logic Script -->
