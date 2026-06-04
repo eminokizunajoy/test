@@ -343,16 +343,77 @@ const DUMMY_USERS = [
     }
 ];
 
-let users = JSON.parse(localStorage.getItem("sem_users"));
-if (!users || users.length === 0) {
-    users = DUMMY_USERS;
-    localStorage.setItem("sem_users", JSON.stringify(users));
-}
-
-let matches = JSON.parse(localStorage.getItem("sem_matches")) || [];
-let messages = JSON.parse(localStorage.getItem("sem_messages")) || [];
+let users = [];
+let matches = [];
+let messages = [];
 let currentUser = JSON.parse(localStorage.getItem("sem_current_user")) || null;
 let currentLanguage = localStorage.getItem("sem_lang") || "id";
+let syncInterval = null;
+
+async function syncData() {
+    try {
+        const res = await fetch('/api/sync');
+        if (!res.ok) throw new Error("Sync failed");
+        const data = await res.json();
+        users = data.users || [];
+        matches = data.matches || [];
+        messages = data.messages || [];
+
+        if (currentUser) {
+            const updatedMe = users.find(u => u.id === currentUser.id);
+            if (updatedMe) {
+                currentUser = updatedMe;
+                localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+            }
+        }
+        return true;
+    } catch (err) {
+        console.error("Error syncing data:", err);
+        return false;
+    }
+}
+
+function startSyncInterval() {
+    if (syncInterval) clearInterval(syncInterval);
+    syncInterval = setInterval(async () => {
+        if (!currentUser) {
+            stopSyncInterval();
+            return;
+        }
+        const success = await syncData();
+        if (success) {
+            updateChatBadge();
+            const activeView = document.querySelector(".app-view:not(.hidden)");
+            if (activeView) {
+                const viewId = activeView.id;
+                if (viewId === "view-chat" && activeChatPartnerId) {
+                    const chatContainer = document.getElementById("chat-messages-container");
+                    const isAtBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight < 20;
+                    renderChat();
+                    if (isAtBottom) {
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                    }
+                } else if (viewId === "view-matches") {
+                    renderMatches();
+                } else if (viewId === "view-dashboard") {
+                    elStatTeach.innerText = currentUser.teachSkills.length;
+                    elStatLearn.innerText = currentUser.learning.length;
+                    const activeMatches = matches.filter(m => 
+                        (m.userAId === currentUser.id || m.userBId === currentUser.id) && m.status === "ACTIVE"
+                    );
+                    elStatMatch.innerText = activeMatches.length;
+                }
+            }
+        }
+    }, 3000);
+}
+
+function stopSyncInterval() {
+    if (syncInterval) {
+        clearInterval(syncInterval);
+        syncInterval = null;
+    }
+}
 
 // Temporary active states
 let activeChatPartnerId = null;
@@ -369,7 +430,7 @@ const elToRegister = document.getElementById("to-register");
 const elToLogin = document.getElementById("to-login");
 const elBtnLogout = document.getElementById("btn-logout");
 const elLangSelect = document.getElementById("lang-select");
-const elAuthLangSelect = document.getElementById("auth-lang-select");
+const elAuthLangSelects = document.querySelectorAll(".auth-lang-select-box");
 
 // Sidebar DOM
 const elUserDisplayName = document.getElementById("user-display-name");
@@ -467,13 +528,17 @@ function updateLanguageUI() {
     });
 
     if (elLangSelect) elLangSelect.value = currentLanguage;
-    if (elAuthLangSelect) elAuthLangSelect.value = currentLanguage;
+    elAuthLangSelects.forEach(sel => {
+        sel.value = currentLanguage;
+    });
 }
 
 elLangSelect.addEventListener("change", (e) => {
     currentLanguage = e.target.value;
     localStorage.setItem("sem_lang", currentLanguage);
-    if (elAuthLangSelect) elAuthLangSelect.value = currentLanguage;
+    elAuthLangSelects.forEach(sel => {
+        sel.value = currentLanguage;
+    });
     updateLanguageUI();
     
     // Refresh page structures
@@ -483,11 +548,14 @@ elLangSelect.addEventListener("change", (e) => {
     renderChat();
 });
 
-if (elAuthLangSelect) {
-    elAuthLangSelect.addEventListener("change", (e) => {
+elAuthLangSelects.forEach(sel => {
+    sel.addEventListener("change", (e) => {
         currentLanguage = e.target.value;
         localStorage.setItem("sem_lang", currentLanguage);
         if (elLangSelect) elLangSelect.value = currentLanguage;
+        elAuthLangSelects.forEach(s => {
+            s.value = currentLanguage;
+        });
         updateLanguageUI();
         
         // Refresh page structures if logged in
@@ -498,7 +566,7 @@ if (elAuthLangSelect) {
             renderChat();
         }
     });
-}
+});
 
 // ================= ROUTING & MENU SWITCHING =================
 elMenuItems.forEach(item => {
@@ -545,24 +613,40 @@ elToLogin.addEventListener("click", (e) => {
     elLoginCard.classList.remove("hidden");
 });
 
-elLoginForm.addEventListener("submit", (e) => {
+elLoginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("login-email").value.trim();
     const password = document.getElementById("login-password").value;
 
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (!user || user.passwordHash !== password) {
-        showToast("Email atau password Anda salah!", "danger");
-        return;
-    }
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        
+        if (!res.ok) {
+            showToast(data.error || "Email atau password Anda salah!", "danger");
+            return;
+        }
 
-    currentUser = user;
-    localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-    showToast(`Selamat datang, ${user.displayName || user.username}!`);
-    loginSuccess();
+        currentUser = data.user;
+        users = data.users || [];
+        matches = data.matches || [];
+        messages = data.messages || [];
+
+        localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+        showToast(`Selamat datang, ${currentUser.displayName || currentUser.username}!`);
+        loginSuccess();
+        startSyncInterval();
+    } catch (err) {
+        showToast("Terjadi kesalahan jaringan!", "danger");
+        console.error(err);
+    }
 });
 
-elRegisterForm.addEventListener("submit", (e) => {
+elRegisterForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const username = document.getElementById("reg-username").value.trim().toLowerCase();
     const email = document.getElementById("reg-email").value.trim().toLowerCase();
@@ -573,40 +657,38 @@ elRegisterForm.addEventListener("submit", (e) => {
         return;
     }
 
-    const emailExists = users.some(u => u.email === email);
-    const userExists = users.some(u => u.username === username);
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        });
+        const data = await res.json();
 
-    if (emailExists || userExists) {
-        showToast("Username atau Email sudah terdaftar!", "danger");
-        return;
+        if (!res.ok) {
+            showToast(data.error || "Pendaftaran gagal!", "danger");
+            return;
+        }
+
+        currentUser = data.user;
+        users = data.users || [];
+        matches = data.matches || [];
+        messages = data.messages || [];
+
+        localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+        showToast("Pendaftaran berhasil!");
+        loginSuccess();
+        startSyncInterval();
+    } catch (err) {
+        showToast("Terjadi kesalahan jaringan!", "danger");
+        console.error(err);
     }
-
-    const newUser = {
-        id: "user_" + Date.now(),
-        username,
-        email,
-        passwordHash: password,
-        displayName: username.split("_").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" "),
-        department: "Fakultas Belum Diisi",
-        grade: "2026",
-        bio: "Mahasiswa baru di Skill Exchange Market.",
-        avatarSeed: "Felix",
-        teachSkills: [],
-        learning: []
-    };
-
-    users.push(newUser);
-    localStorage.setItem("sem_users", JSON.stringify(users));
-
-    currentUser = newUser;
-    localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-    showToast("Pendaftaran berhasil!");
-    loginSuccess();
 });
 
 elBtnLogout.addEventListener("click", () => {
     currentUser = null;
     localStorage.removeItem("sem_current_user");
+    stopSyncInterval();
     showToast("Berhasil keluar.", "success");
     logoutSuccess();
 });
@@ -634,12 +716,29 @@ function logoutSuccess() {
     elRegisterCard.classList.add("hidden");
 }
 
-// Check session on start
-if (currentUser) {
-    loginSuccess();
-} else {
-    updateLanguageUI();
+// Check session on start with real backend sync
+async function initApp() {
+    const synced = await syncData();
+    if (synced && currentUser) {
+        const latestMe = users.find(u => u.id === currentUser.id);
+        if (latestMe) {
+            currentUser = latestMe;
+            localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+            loginSuccess();
+            startSyncInterval();
+        } else {
+            currentUser = null;
+            localStorage.removeItem("sem_current_user");
+            updateLanguageUI();
+        }
+    } else if (currentUser) {
+        loginSuccess();
+        startSyncInterval();
+    } else {
+        updateLanguageUI();
+    }
 }
+initApp();
 
 // ================= MATCHING ENGINE (HEURISTIC) =================
 function calculateMatchScore(userA, userB) {
@@ -966,63 +1065,66 @@ window.triggerCardSwipeRight = function(userId) {
 };
 
 // ================= LIKE & PASS LOGIC + MATCH POPUP =================
-function handleLike(partnerId) {
+async function handleLike(partnerId) {
     const partner = users.find(u => u.id === partnerId);
     if (!partner) return;
 
-    // Cek apakah ada permintaan masuk PENDING dari partner ke kita
-    const incomingReqIndex = matches.findIndex(m => m.userAId === partnerId && m.userBId === currentUser.id && m.status === "PENDING");
-
-    if (incomingReqIndex !== -1) {
-        // MATCH TERJADI (MUTUAL MATCH)
-        matches[incomingReqIndex].status = "ACTIVE";
-        localStorage.setItem("sem_matches", JSON.stringify(matches));
+    try {
+        const res = await fetch('/api/swipe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                partnerId: partnerId,
+                action: 'like'
+            })
+        });
+        const data = await res.json();
         
-        // Tampilkan YOU MATCHED Popup!
-        triggerMatchModal(partner);
-    } else {
-        // Cek jika belum ada relasi sama sekali, buat PENDING
-        const exists = matches.some(m => 
-            (m.userAId === currentUser.id && m.userBId === partnerId) ||
-            (m.userAId === partnerId && m.userBId === currentUser.id)
-        );
-
-        if (!exists) {
-            const newMatch = {
-                id: "match_" + Date.now(),
-                userAId: currentUser.id,
-                userBId: partnerId,
-                status: "PENDING",
-                createdAt: new Date().toISOString()
-            };
-            matches.push(newMatch);
-            localStorage.setItem("sem_matches", JSON.stringify(matches));
-            showToast("Match request sent!");
-
-            // SIMULASI: Jika skor >= 65%, dummy user akan langsung auto-like balik dalam 1.5 detik!
-            const score = calculateMatchScore(currentUser, partner);
-            if (score >= 65) {
-                setTimeout(() => {
-                    const matchIndex = matches.findIndex(m => m.id === newMatch.id);
-                    if (matchIndex !== -1 && matches[matchIndex].status === "PENDING") {
-                        matches[matchIndex].status = "ACTIVE";
-                        localStorage.setItem("sem_matches", JSON.stringify(matches));
-                        triggerMatchModal(partner);
-                        renderDashboard();
-                        renderMatches();
-                    }
-                }, 1500);
-            }
+        if (!res.ok) {
+            showToast(data.error || "Gagal merekam swipe", "danger");
+            return;
         }
-    }
 
-    renderDashboard();
-    renderMatches();
+        matches = data.matches || [];
+
+        if (data.isMatch) {
+            triggerMatchModal(partner);
+        } else {
+            showToast("Match request sent!");
+        }
+
+        renderDashboard();
+        renderSearch();
+        renderMatches();
+    } catch (err) {
+        console.error("Error on swipe right:", err);
+    }
 }
 
-function handlePass(partnerId) {
-    // Abaikan atau hilangkan dari tumpukan
-    showToast("Skipped");
+async function handlePass(partnerId) {
+    try {
+        const res = await fetch('/api/swipe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                partnerId: partnerId,
+                action: 'pass'
+            })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            matches = data.matches || [];
+            showToast("Skipped");
+            renderDashboard();
+            renderSearch();
+            renderMatches();
+        }
+    } catch (err) {
+        console.error("Error on swipe left:", err);
+    }
 }
 
 // YOU MATCHED Popup Modal
@@ -1276,65 +1378,38 @@ function mockTranslation(text, lang) {
     }
 }
 
-elChatSendForm.addEventListener("submit", (e) => {
+elChatSendForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!activeChatPartnerId || !currentUser) return;
 
     const messageText = elChatInput.value.trim();
     if (!messageText) return;
 
-    const newMsg = {
-        id: "msg_" + Date.now(),
-        senderId: currentUser.id,
-        receiverId: activeChatPartnerId,
-        body: messageText,
-        createdAt: new Date().toISOString()
-    };
-
-    messages.push(newMsg);
-    localStorage.setItem("sem_messages", JSON.stringify(messages));
     elChatInput.value = "";
 
-    renderChat();
-    simulatePartnerReply(activeChatPartnerId, messageText);
-});
-
-function simulatePartnerReply(partnerId, userMsg) {
-    setTimeout(() => {
-        const partner = users.find(u => u.id === partnerId);
-        if (!partner) return;
-
-        let reply = "";
-        const lowerMsg = userMsg.toLowerCase();
-
-        if (lowerMsg.includes("halo") || lowerMsg.includes("hai") || lowerMsg.includes("pagi") || lowerMsg.includes("siang")) {
-            reply = "Halo juga! Salam kenal ya. Makasih sudah kirim match, senang bisa terhubung dengan kamu di Skill Exchange Market!";
-        } else if (lowerMsg.includes("kapan") || lowerMsg.includes("waktu") || lowerMsg.includes("luang") || lowerMsg.includes("belajar")) {
-            reply = "Saya biasanya luang sore hari di weekdays atau pagi hari di hari Sabtu. Kamu lebih luang kapan? Nanti kita bisa bikin sesi belajar bareng via Zoom/Meet.";
-        } else if (lowerMsg.includes("makasih") || lowerMsg.includes("terima kasih") || lowerMsg.includes("thank")) {
-            reply = "Sama-sama! Semoga sesi tukar skill kita berjalan lancar ya.";
-        } else {
-            reply = "Menarik sekali! Saya sangat tertarik mendiskusikan itu lebih lanjut. Nanti kita coba bahas detail keahlian kita masing-masing saat belajar bareng ya.";
-        }
-
-        const newReply = {
-            id: "msg_" + Date.now(),
-            senderId: partner.id,
-            receiverId: currentUser.id,
-            body: reply,
-            createdAt: new Date().toISOString()
-        };
-
-        messages.push(newReply);
-        localStorage.setItem("sem_messages", JSON.stringify(messages));
-
-        if (activeChatPartnerId === partnerId) {
+    try {
+        const res = await fetch('/api/messages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                senderId: currentUser.id,
+                receiverId: activeChatPartnerId,
+                body: messageText
+            })
+        });
+        const data = await res.json();
+        
+        if (res.ok) {
+            messages = data.messages || [];
             renderChat();
-        } else {
-            updateChatBadge();
+            
+            const chatContainer = document.getElementById("chat-messages-container");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-    }, 1500);
-}
+    } catch (err) {
+        console.error("Error sending message:", err);
+    }
+});
 
 function updateChatBadge() {
     elChatBadge.classList.add("hidden");
@@ -1353,28 +1428,44 @@ function loadProfileFields() {
     renderManageSkills();
 }
 
-elProfileForm.addEventListener("submit", (e) => {
+elProfileForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!currentUser) return;
 
-    currentUser.displayName = elProfileName.value.trim();
-    currentUser.avatarSeed = elProfileAvatarSeed.value;
-    currentUser.department = elProfileDept.value.trim();
-    currentUser.grade = elProfileGrade.value.trim();
-    currentUser.bio = elProfileBio.value.trim();
+    const updatedProfile = {
+        userId: currentUser.id,
+        displayName: elProfileName.value.trim(),
+        avatarSeed: elProfileAvatarSeed.value,
+        department: elProfileDept.value.trim(),
+        grade: elProfileGrade.value.trim(),
+        bio: elProfileBio.value.trim()
+    };
 
-    const idx = users.findIndex(u => u.id === currentUser.id);
-    if (idx !== -1) {
-        users[idx] = currentUser;
-        localStorage.setItem("sem_users", JSON.stringify(users));
+    try {
+        const res = await fetch('/api/profile/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedProfile)
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            showToast(data.error || "Gagal memperbarui profil!", "danger");
+            return;
+        }
+
+        currentUser = data.user;
+        users = data.users || [];
+        localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+        showToast("Profile updated!");
+        
+        elUserDisplayName.innerText = currentUser.displayName;
+        elUserDisplayDept.innerText = `${currentUser.department} (${currentUser.grade})`;
+        elUserAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.avatarSeed}`;
+    } catch (err) {
+        showToast("Terjadi kesalahan jaringan!", "danger");
+        console.error(err);
     }
-
-    localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-    showToast("Profile updated!");
-    
-    elUserDisplayName.innerText = currentUser.displayName;
-    elUserDisplayDept.innerText = `${currentUser.department} (${currentUser.grade})`;
-    elUserAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.avatarSeed}`;
 });
 
 function renderManageSkills() {
@@ -1399,7 +1490,7 @@ function renderManageSkills() {
     });
 }
 
-elBtnAddTeach.addEventListener("click", () => {
+elBtnAddTeach.addEventListener("click", async () => {
     const name = elInputTeachSkill.value.trim();
     const category = elSelectTeachCat.value;
 
@@ -1411,13 +1502,31 @@ elBtnAddTeach.addEventListener("click", () => {
         return;
     }
 
-    currentUser.teachSkills.push({ name, category });
-    saveUserSkills();
-    elInputTeachSkill.value = "";
-    renderManageSkills();
+    try {
+        const res = await fetch('/api/profile/skills', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                type: 'teach',
+                skill: { name, category }
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            currentUser = data.user;
+            users = data.users || [];
+            localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+            elInputTeachSkill.value = "";
+            renderManageSkills();
+            showToast("Skill added!");
+        }
+    } catch (err) {
+        console.error("Error adding skill:", err);
+    }
 });
 
-elBtnAddLearn.addEventListener("click", () => {
+elBtnAddLearn.addEventListener("click", async () => {
     const name = elInputLearnSkill.value.trim();
     const category = elSelectLearnCat.value;
 
@@ -1429,27 +1538,54 @@ elBtnAddLearn.addEventListener("click", () => {
         return;
     }
 
-    currentUser.learning.push({ name, category });
-    saveUserSkills();
-    elInputLearnSkill.value = "";
-    renderManageSkills();
+    try {
+        const res = await fetch('/api/profile/skills', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                type: 'learn',
+                skill: { name, category }
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            currentUser = data.user;
+            users = data.users || [];
+            localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+            elInputLearnSkill.value = "";
+            renderManageSkills();
+            showToast("Skill added!");
+        }
+    } catch (err) {
+        console.error("Error adding skill:", err);
+    }
 });
 
-window.removeSkill = function(type, index) {
-    if (type === "teach") {
-        currentUser.teachSkills.splice(index, 1);
-    } else {
-        currentUser.learning.splice(index, 1);
-    }
-    saveUserSkills();
-    renderManageSkills();
-};
+window.removeSkill = async function(type, index) {
+    const skillList = type === 'teach' ? currentUser.teachSkills : currentUser.learning;
+    if (!skillList[index]) return;
+    const skillName = skillList[index].name;
 
-function saveUserSkills() {
-    const idx = users.findIndex(u => u.id === currentUser.id);
-    if (idx !== -1) {
-        users[idx] = currentUser;
-        localStorage.setItem("sem_users", JSON.stringify(users));
+    try {
+        const res = await fetch('/api/profile/skills/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: currentUser.id,
+                type,
+                skillName
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            currentUser = data.user;
+            users = data.users || [];
+            localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
+            renderManageSkills();
+            showToast("Skill removed!");
+        }
+    } catch (err) {
+        console.error("Error removing skill:", err);
     }
-    localStorage.setItem("sem_current_user", JSON.stringify(currentUser));
-}
+};

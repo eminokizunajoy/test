@@ -92,23 +92,20 @@ body {
     position: relative;
 }
 
-.auth-lang-selector {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    background: var(--bg-card);
+.auth-lang-selector-card {
+    margin-top: 1.2rem;
+    background: rgba(10, 15, 30, 0.6);
     border: 1px solid var(--border-color);
-    padding: 8px 16px;
+    padding: 6px 12px;
     border-radius: var(--radius-md);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     backdrop-filter: blur(15px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 50;
 }
 
-.auth-lang-selector select {
+.auth-lang-select-box {
     background: transparent;
     border: none;
     color: var(--text-primary);
@@ -118,11 +115,11 @@ body {
     cursor: pointer;
 }
 
-.auth-lang-selector select:focus {
+.auth-lang-select-box:focus {
     outline: none;
 }
 
-.auth-lang-selector i {
+.auth-lang-selector-card i {
     color: var(--primary);
 }
 
