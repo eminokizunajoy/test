@@ -347,7 +347,7 @@ let users = [];
 let matches = [];
 let messages = [];
 let currentUser = JSON.parse(localStorage.getItem("sem_current_user")) || null;
-let currentLanguage = localStorage.getItem("sem_lang") || "id";
+let currentLanguage = localStorage.getItem("sem_lang") || "jp";
 let syncInterval = null;
 
 async function syncData() {
