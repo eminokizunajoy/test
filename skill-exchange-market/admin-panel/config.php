@@ -16,6 +16,8 @@ $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 if (strpos($requestUri, '/skill-exchange-market/admin-panel') !== false) {
     define('BASE_URL', $protocol . $host . '/skill-exchange-market/admin-panel');
+} elseif (strpos($requestUri, '/admin-panel') !== false) {
+    define('BASE_URL', $protocol . $host . '/admin-panel');
 } else {
     define('BASE_URL', $protocol . $host);
 }

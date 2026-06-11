@@ -1365,6 +1365,16 @@ function loginSuccess() {
     updateLanguageUI();
     updateChatBadge();
 
+    // Show WAF Monitor menu item only for admin users (username: 'sabda26' or 'admin')
+    const elAdminWaf = document.getElementById("admin-waf-item");
+    if (elAdminWaf) {
+        if (currentUser && (currentUser.username === 'sabda26' || currentUser.username === 'admin')) {
+            elAdminWaf.classList.remove("hidden");
+        } else {
+            elAdminWaf.classList.add("hidden");
+        }
+    }
+
     // Default to dashboard
     document.querySelector('[data-target="view-dashboard"]').click();
 }
