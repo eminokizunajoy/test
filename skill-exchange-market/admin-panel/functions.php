@@ -4,18 +4,33 @@
 // ============================================================
 
 // ── Database connection (singleton) ──────────────────────────
-function getDB(): mysqli {
+function getDB(bool $selectDb = true): mysqli {
     static $conn = null;
     if ($conn === null) {
-        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        // Disable mysqli exception throwing temporarily for custom error page rendering
+        mysqli_report(MYSQLI_REPORT_OFF);
+        
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS);
         if ($conn->connect_error) {
             http_response_code(500);
             die('<div style="font:16px monospace;padding:40px;background:#0f172a;color:#f87171;min-height:100vh;">
-                <h2>⛔ Database Error</h2><pre>' . htmlspecialchars($conn->connect_error) . '</pre>
-                <p>Edit <strong>config.php</strong> and make sure MySQL is running.</p>
+                <h2>⛔ Database Connection Error</h2><pre>' . htmlspecialchars($conn->connect_error) . '</pre>
+                <p>Edit <strong>config.php</strong> and make sure MySQL/MariaDB server is running.</p>
             </div>');
         }
         $conn->set_charset('utf8mb4');
+        
+        if ($selectDb) {
+            if (!$conn->select_db(DB_NAME)) {
+                // If database does not exist and we are not in setup, prompt to run setup.php
+                http_response_code(500);
+                die('<div style="font:16px monospace;padding:40px;background:#0f172a;color:#f87171;min-height:100vh;">
+                    <h2>⛔ Database Not Found</h2>
+                    <p>Database <strong>' . htmlspecialchars(DB_NAME) . '</strong> does not exist.</p>
+                    <p>Please run the setup script to initialize the database: <a href="setup.php?token=setup_waf_2026" style="color:#60a5fa;text-decoration:underline;">setup.php</a></p>
+                </div>');
+            }
+        }
     }
     return $conn;
 }

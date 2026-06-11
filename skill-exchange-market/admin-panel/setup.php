@@ -12,7 +12,7 @@ if (php_sapi_name() !== 'cli' && $token !== 'setup_waf_2026') {
     die('<div style="font:14px monospace;padding:3rem;background:#0f172a;color:#ef4444;">403 — Add ?token=setup_waf_2026 to run setup.</div>');
 }
 
-$db   = getDB();
+$db   = getDB(false);
 $msgs = [];
 
 // ── 1. Create database ──
