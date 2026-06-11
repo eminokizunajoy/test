@@ -1,9 +1,8 @@
 <?php
 // ============================================================
-// logout.php
+// logout.php — Destroy admin session and redirect to login
 // ============================================================
 require_once __DIR__ . '/config.php';
 session_destroy();
-header('Location: login.php?out=1');
+header('Location: ' . BASE_URL . '/login.php');
 exit;
-?>
