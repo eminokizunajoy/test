@@ -10,21 +10,27 @@ $activePage = 'logs';
 $db         = getDB();
 
 // ── Pagination + Search ──
-$search = trim($_GET['q'] ?? '');
-$page   = max(1, (int)($_GET['p'] ?? 1));
-$limit  = 25;
-$offset = ($page - 1) * $limit;
+$search       = trim($_GET['q'] ?? '');
+$statusFilter = trim($_GET['status'] ?? '');
+$page         = max(1, (int)($_GET['p'] ?? 1));
+$limit        = 25;
+$offset       = ($page - 1) * $limit;
 
-$where = '';
+$where = [];
 if ($search !== '') {
     $s = $db->real_escape_string($search);
-    $where = "WHERE ip_address LIKE '%$s%' OR username LIKE '%$s%'
-              OR action LIKE '%$s%' OR status LIKE '%$s%' OR user_agent LIKE '%$s%'";
+    $where[] = "(ip_address LIKE '%$s%' OR username LIKE '%$s%' OR action LIKE '%$s%' OR status LIKE '%$s%' OR user_agent LIKE '%$s%')";
+}
+if ($statusFilter !== '') {
+    $st = $db->real_escape_string($statusFilter);
+    $where[] = "status = '$st'";
 }
 
-$totalRows  = (int)$db->query("SELECT COUNT(*) AS n FROM access_logs $where")->fetch_assoc()['n'];
+$whereClause = count($where) > 0 ? 'WHERE ' . implode(' AND ', $where) : '';
+
+$totalRows  = (int)$db->query("SELECT COUNT(*) AS n FROM access_logs $whereClause")->fetch_assoc()['n'];
 $totalPages = max(1, ceil($totalRows / $limit));
-$logs       = $db->query("SELECT * FROM access_logs $where ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
+$logs       = $db->query("SELECT * FROM access_logs $whereClause ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
 
 include __DIR__ . '/header.php';
 ?>
@@ -35,20 +41,33 @@ include __DIR__ . '/header.php';
 </div>
 
 <!-- Toolbar -->
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-    <form method="GET" style="display:flex;gap:8px;align-items:center;">
-        <div class="search-wrap">
-            <i class="fa-solid fa-search"></i>
-            <input type="text" name="q" class="search-input" id="live-search"
-                   placeholder="Search by IP, user, action, status..."
-                   value="<?= e($search) ?>">
-        </div>
-        <button type="submit" class="btn btn-primary btn-sm">Search</button>
-        <?php if ($search): ?>
-        <a href="logs.php" class="btn btn-secondary btn-sm">✕ Clear</a>
-        <?php endif; ?>
-    </form>
-    <span class="text-muted"><?= number_format($totalRows) ?> records<?= $search ? " matching \"".e($search)."\"" : "" ?></span>
+<div style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <form method="GET" style="display:flex;gap:8px;align-items:center;">
+            <?php if ($statusFilter): ?>
+            <input type="hidden" name="status" value="<?= e($statusFilter) ?>">
+            <?php endif; ?>
+            <div class="search-wrap">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" name="q" class="search-input" id="live-search"
+                       placeholder="Search by IP, user, action, status..."
+                       value="<?= e($search) ?>">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            <?php if ($search || $statusFilter): ?>
+            <a href="logs.php" class="btn btn-secondary btn-sm">✕ Clear All</a>
+            <?php endif; ?>
+        </form>
+        <span class="text-muted" style="font-weight: 600; font-size: 0.82rem;"><?= number_format($totalRows) ?> records found</span>
+    </div>
+
+    <!-- Behance-style Filter Pills -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;border-bottom: 1px solid var(--border);padding-bottom:12px;">
+        <a href="logs.php?q=<?= urlencode($search) ?>" class="btn <?= $statusFilter==='' ? 'btn-primary' : 'btn-secondary' ?> btn-sm">All Logs</a>
+        <a href="logs.php?q=<?= urlencode($search) ?>&status=failed" class="btn <?= $statusFilter==='failed' ? 'btn-primary' : 'btn-secondary' ?> btn-sm">Failed</a>
+        <a href="logs.php?q=<?= urlencode($search) ?>&status=blocked" class="btn <?= $statusFilter==='blocked' ? 'btn-primary' : 'btn-secondary' ?> btn-sm">Blocked</a>
+        <a href="logs.php?q=<?= urlencode($search) ?>&status=success" class="btn <?= $statusFilter==='success' ? 'btn-primary' : 'btn-secondary' ?> btn-sm">Success</a>
+    </div>
 </div>
 
 <!-- Logs Table -->
@@ -91,6 +110,7 @@ include __DIR__ . '/header.php';
                         <!-- Quick block IP -->
                         <form method="POST" action="actions/block_ip.php"
                               onsubmit="return confirmAction('Block IP <?= e($log['ip_address']) ?>?')">
+                            <?= csrfInput() ?>
                             <input type="hidden" name="ip_address" value="<?= e($log['ip_address']) ?>">
                             <input type="hidden" name="reason" value="Blocked from log #<?= $log['id'] ?>">
                             <input type="hidden" name="redirect" value="logs.php?q=<?= urlencode($search) ?>&p=<?= $page ?>">
@@ -101,6 +121,7 @@ include __DIR__ . '/header.php';
                         <!-- Delete log -->
                         <form method="POST" action="actions/delete_log.php"
                               onsubmit="return confirmAction('Delete log #<?= $log['id'] ?>?')">
+                            <?= csrfInput() ?>
                             <input type="hidden" name="log_id" value="<?= $log['id'] ?>">
                             <input type="hidden" name="redirect" value="logs.php?q=<?= urlencode($search) ?>&p=<?= $page ?>">
                             <button type="submit" class="btn btn-danger btn-xs" title="Delete">

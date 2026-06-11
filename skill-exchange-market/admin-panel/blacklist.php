@@ -117,6 +117,7 @@ include __DIR__ . '/header.php';
                                 <!-- Unblock -->
                                 <form method="POST" action="actions/unblock_ip.php"
                                       onsubmit="return confirmAction('Unblock <?= e($bl['ip_address']) ?>?')">
+                                    <?= csrfInput() ?>
                                     <input type="hidden" name="bl_id" value="<?= $bl['id'] ?>">
                                     <input type="hidden" name="redirect" value="blacklist.php?q=<?= urlencode($search) ?>">
                                     <button type="submit" class="btn btn-danger btn-xs">
@@ -162,6 +163,7 @@ include __DIR__ . '/header.php';
                         <?php elseif ($off['fails'] >= 5): ?>
                             <!-- Quick block from offender list -->
                             <form method="POST" action="actions/block_ip.php">
+                                <?= csrfInput() ?>
                                 <input type="hidden" name="ip_address" value="<?= e($off['ip_address']) ?>">
                                 <input type="hidden" name="reason" value="High failed attempt count (<?= $off['fails'] ?> fails)">
                                 <input type="hidden" name="redirect" value="blacklist.php">
@@ -188,6 +190,7 @@ include __DIR__ . '/header.php';
     <div class="modal-box">
         <div class="modal-title">🔨 Block IP Address</div>
         <form method="POST" action="actions/block_ip.php">
+            <?= csrfInput() ?>
             <input type="hidden" name="redirect" value="blacklist.php">
             <div class="form-group" style="margin-bottom:1rem;">
                 <label class="form-label">IP Address</label>
@@ -213,6 +216,7 @@ include __DIR__ . '/header.php';
     <div class="modal-box">
         <div class="modal-title">✏️ Update Block Reason</div>
         <form method="POST" action="actions/update_reason.php">
+            <?= csrfInput() ?>
             <input type="hidden" name="redirect" value="blacklist.php?q=<?= urlencode($search) ?>">
             <input type="hidden" name="bl_id" id="edit-id">
             <div class="form-group" style="margin-bottom:1rem;">

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const { WebSocketServer, WebSocket } = require('ws');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,10 +46,11 @@ function readDB() {
         if (!db.questions) db.questions = [];
         if (!db.flashRequests) db.flashRequests = [];
         if (!db.groups) db.groups = [];
+        if (!db.studySessions) db.studySessions = [];
         return db;
     } catch (error) {
         console.error("Error reading database file:", error);
-        return { users: [], matches: [], messages: [], reviews: [], schedules: [], notifications: [], questions: [], flashRequests: [], groups: [] };
+        return { users: [], matches: [], messages: [], reviews: [], schedules: [], notifications: [], questions: [], flashRequests: [], groups: [], studySessions: [] };
     }
 }
 
@@ -791,11 +794,204 @@ app.post('/api/groups/messages', (req, res) => {
     res.json({ message: newMsg, group, groups: db.groups });
 });
 
+// ================= STUDY SESSIONS REST API =================
+
+// Create a new private study session
+app.post('/api/study-sessions/create', (req, res) => {
+    const { hostId, title, skill } = req.body;
+    if (!hostId || !title) return res.status(400).json({ error: 'Missing fields' });
+    const db = readDB();
+    // End any existing active session for this host
+    db.studySessions = db.studySessions.map(s => {
+        if (s.hostId === hostId && s.status === 'active') s.status = 'ended';
+        return s;
+    });
+    const session = {
+        id: 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+        hostId,
+        title,
+        skill: skill || '',
+        memberIds: [hostId],
+        status: 'active',
+        pomodoroMode: 'focus',
+        pomodoroSeconds: 25 * 60,
+        isRunning: false,
+        lastSyncAt: new Date().toISOString(),
+        createdAt: new Date().toISOString()
+    };
+    db.studySessions.push(session);
+    writeDB(db);
+    res.json({ session });
+});
+
+// Get active session for a user
+app.get('/api/study-sessions/active', (req, res) => {
+    const { userId } = req.query;
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+    const db = readDB();
+    const session = db.studySessions.find(s =>
+        s.status === 'active' && s.memberIds.includes(userId)
+    );
+    if (!session) return res.json({ session: null });
+    // Enrich with member user objects
+    const members = session.memberIds.map(id => {
+        const u = db.users.find(u => u.id === id);
+        return u ? { id: u.id, name: u.name, avatar: u.avatar } : null;
+    }).filter(Boolean);
+    res.json({ session: { ...session, members } });
+});
+
+// Invite a matched partner or group member to the session
+app.post('/api/study-sessions/invite', (req, res) => {
+    const { sessionId, hostId, inviteeId } = req.body;
+    if (!sessionId || !hostId || !inviteeId) return res.status(400).json({ error: 'Missing fields' });
+    const db = readDB();
+    const session = db.studySessions.find(s => s.id === sessionId && s.status === 'active');
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+    // Validate: invitee must be a match or in same group
+    const isMatch = db.matches.some(m =>
+        m.status === 'active' &&
+        ((m.user1Id === hostId && m.user2Id === inviteeId) ||
+         (m.user2Id === hostId && m.user1Id === inviteeId))
+    );
+    const isGroupMember = db.groups.some(g =>
+        g.memberIds.includes(hostId) && g.memberIds.includes(inviteeId)
+    );
+    if (!isMatch && !isGroupMember) {
+        return res.status(403).json({ error: 'Can only invite matched partners or group members' });
+    }
+    if (session.memberIds.includes(inviteeId)) {
+        return res.status(400).json({ error: 'Already in session' });
+    }
+    const host = db.users.find(u => u.id === hostId);
+    addNotification(db, inviteeId, 'study_invite',
+        JSON.stringify({ sessionId: session.id, hostName: host ? host.name : 'Someone', title: session.title, skill: session.skill })
+    );
+    writeDB(db);
+    res.json({ ok: true });
+});
+
+// Join a session (accept invite)
+app.post('/api/study-sessions/join', (req, res) => {
+    const { sessionId, userId } = req.body;
+    if (!sessionId || !userId) return res.status(400).json({ error: 'Missing fields' });
+    const db = readDB();
+    const session = db.studySessions.find(s => s.id === sessionId && s.status === 'active');
+    if (!session) return res.status(404).json({ error: 'Session not found or ended' });
+    if (!session.memberIds.includes(userId)) {
+        session.memberIds.push(userId);
+    }
+    writeDB(db);
+    const members = session.memberIds.map(id => {
+        const u = db.users.find(u => u.id === id);
+        return u ? { id: u.id, name: u.name, avatar: u.avatar } : null;
+    }).filter(Boolean);
+    res.json({ session: { ...session, members } });
+});
+
+// Leave a session
+app.post('/api/study-sessions/leave', (req, res) => {
+    const { sessionId, userId } = req.body;
+    if (!sessionId || !userId) return res.status(400).json({ error: 'Missing fields' });
+    const db = readDB();
+    const session = db.studySessions.find(s => s.id === sessionId);
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+    session.memberIds = session.memberIds.filter(id => id !== userId);
+    // Host leaves → end session
+    if (session.hostId === userId || session.memberIds.length === 0) {
+        session.status = 'ended';
+    }
+    writeDB(db);
+    res.json({ ok: true });
+});
+
+// Sync Pomodoro timer state (host pushes, members poll via /active)
+app.post('/api/study-sessions/sync-timer', (req, res) => {
+    const { sessionId, userId, pomodoroMode, pomodoroSeconds, isRunning } = req.body;
+    if (!sessionId || !userId) return res.status(400).json({ error: 'Missing fields' });
+    const db = readDB();
+    const session = db.studySessions.find(s => s.id === sessionId && s.status === 'active');
+    if (!session) return res.status(404).json({ error: 'Session not found' });
+    // Only host can sync timer
+    if (session.hostId !== userId) return res.status(403).json({ error: 'Only host can sync timer' });
+    session.pomodoroMode = pomodoroMode || session.pomodoroMode;
+    session.pomodoroSeconds = pomodoroSeconds !== undefined ? pomodoroSeconds : session.pomodoroSeconds;
+    session.isRunning = isRunning !== undefined ? isRunning : session.isRunning;
+    session.lastSyncAt = new Date().toISOString();
+    writeDB(db);
+    res.json({ ok: true });
+});
+
 // Fallback to index.html for Single Page Routing
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// ================= HTTP + WEBSOCKET SERVER =================
+
+const server = http.createServer(app);
+
+// WebSocket signaling server for WebRTC
+const wss = new WebSocketServer({ server, path: '/ws' });
+
+// Map: sessionId -> Map(userId -> WebSocket)
+const sessionRooms = new Map();
+
+wss.on('connection', (ws, req) => {
+    const url = new URL(req.url, 'http://localhost');
+    const sessionId = url.searchParams.get('sessionId');
+    const userId = url.searchParams.get('userId');
+
+    if (!sessionId || !userId) { ws.close(); return; }
+
+    // Add to room
+    if (!sessionRooms.has(sessionId)) sessionRooms.set(sessionId, new Map());
+    const room = sessionRooms.get(sessionId);
+    room.set(userId, ws);
+
+    // Notify existing peers that a new user joined
+    room.forEach((peerWs, peerId) => {
+        if (peerId === userId) return;
+        // Tell existing peer about the new joiner
+        if (peerWs.readyState === WebSocket.OPEN) {
+            peerWs.send(JSON.stringify({ type: 'peer-joined', peerId: userId }));
+        }
+        // Tell new joiner about each existing peer
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'peer-joined', peerId }));
+        }
+    });
+
+    ws.on('message', (raw) => {
+        let msg;
+        try { msg = JSON.parse(raw); } catch { return; }
+        const { type, targetId, data } = msg;
+        const room = sessionRooms.get(sessionId);
+        if (!room) return;
+        const targetWs = room.get(targetId);
+        if (!targetWs || targetWs.readyState !== WebSocket.OPEN) return;
+        // Forward signaling messages to target peer
+        if (['offer', 'answer', 'candidate'].includes(type)) {
+            targetWs.send(JSON.stringify({ type, peerId: userId, data }));
+        }
+    });
+
+    ws.on('close', () => {
+        const room = sessionRooms.get(sessionId);
+        if (!room) return;
+        room.delete(userId);
+        if (room.size === 0) { sessionRooms.delete(sessionId); return; }
+        // Notify remaining peers
+        room.forEach((peerWs) => {
+            if (peerWs.readyState === WebSocket.OPEN) {
+                peerWs.send(JSON.stringify({ type: 'peer-left', peerId: userId }));
+            }
+        });
+    });
+
+    ws.on('error', (err) => console.error('WS error:', err));
+});
+
+server.listen(PORT, () => {
+    console.log(`Server (HTTP + WebSocket) running on port ${PORT}`);
 });

@@ -113,28 +113,39 @@ const TRANSLATIONS = {
         your_answer: "Tulis Jawaban Anda",
         forum_answer_placeholder: "Bagikan pengetahuan Anda...",
         btn_submit_answer: "Kirim Jawaban",
-        study_title: "Virtual Study Room (Pomodoro)",
-        study_subtitle: "Belajar produktif bersama teman secara visual tanpa gangguan.",
+        study_title: "Virtual Study Room",
+        study_subtitle: "Undang partner match kamu ke sesi belajar privat.",
         pomodoro_session: "Sesi Fokus",
-        study_info_title: "Status Co-Working",
-        study_desc: "Mulai timer Pomodoro untuk mengaktifkan sesi belajar fokus.",
+        study_info_title: "Status",
+        study_desc: "Mulai timer untuk sesi belajar fokus.",
         pomodoro_mode_focus: "Fokus (25 Menit)",
         pomodoro_mode_short: "Istirahat Singkat (5 Menit)",
         pomodoro_mode_long: "Istirahat Panjang (15 Menit)",
-        pomodoro_status_running: "Fokus Belajar Aktif! Tetap fokus pada tugas Anda.",
+        pomodoro_status_running: "Fokus Belajar Aktif! Tetap fokus.",
         pomodoro_status_paused: "Sesi ditunda. Klik putar untuk melanjutkan.",
         pomodoro_status_idle: "Mulai timer Pomodoro untuk sesi belajar fokus.",
-        pomodoro_status_break: "Waktunya Istirahat! Nikmati 5 menit waktu senggang.",
+        pomodoro_status_break: "Waktunya Istirahat!",
         pomodoro_finished_focus: "Sesi fokus selesai! Waktunya istirahat.",
         pomodoro_finished_break: "Istirahat selesai! Mulai sesi fokus berikutnya.",
-        cam_on: "Kamera On",
-        cam_off: "Kamera Off",
-        mic_on: "Mic On",
-        mic_off: "Mic Off",
-        screen_share: "Bagikan Layar",
-        video_label_you: "Kamu",
-        video_label_partner: "Partner Belajar (Simulasi)",
-        leaderboard_title: "Papan Peringkat (Leaderboard)",
+        cam_on: "Kamera", cam_off: "Kamera Off", mic_on: "Mikrofon", mic_off: "Mikrofon Off",
+        screen_share: "Bagikan", video_label_you: "Kamu", video_label_partner: "Partner",
+        study_no_session: "Kamu belum dalam sesi belajar privat",
+        study_private_note: "Hanya partner match atau anggota grup kamu yang bisa diundang.",
+        study_create_session: "Buat Sesi",
+        study_session_title: "Judul Sesi",
+        study_session_skill: "Topik Skill",
+        study_invite_btn: "Undang",
+        study_invite_desc: "Hanya partner match atau anggota grup kamu yang bisa diundang.",
+        study_leave_btn: "Keluar",
+        study_info_title: "Status",
+        study_incoming_invites: "📨 Ada Undangan Masuk",
+        toast_session_created: "Sesi berhasil dibuat!",
+        toast_invite_sent: "Undangan terkirim!",
+        toast_session_joined: "Berhasil bergabung ke sesi!",
+        toast_session_left: "Kamu keluar dari sesi.",
+        toast_session_invite_err: "Gagal mengirim undangan.",
+        session_chat_placeholder: "Tulis pesan...",
+
         leaderboard_subtitle: "Aktivitas mengajar dan belajar terbaik mahasiswa bulan ini.",
         rank: "Peringkat",
         modal_ask_title: "Tanyakan Sesuatu",
@@ -3401,22 +3412,731 @@ window.inviteFromForum = async function(partnerId) {
     }
 };
 
-// --- Open Study Room (Pomodoro & WebRTC Mock Camera) ---
+// ============================================================
+// PRIVATE STUDY SESSION — Session Manager + WebRTC + Pomodoro
+// ============================================================
+
+// ── State ──
 let pomodoroTimer = null;
 let pomodoroTotalSeconds = 25 * 60;
 let pomodoroSeconds = 25 * 60;
 let isTimerRunning = false;
+let pomodoroMode = 'focus';
+const POMODORO_MODES = { focus: 25 * 60, short: 5 * 60, long: 15 * 60 };
+const RING_CIRCUMFERENCE = 565.48;
+
 let localStream = null;
 let micStream = null;
 let isCamOn = false;
 let isMicOn = false;
-let pomodoroMode = 'focus'; // 'focus' | 'short' | 'long'
 
-const POMODORO_MODES = {
-    focus: 25 * 60,
-    short: 5 * 60,
-    long: 15 * 60
+// Session state
+let currentSession = null;  // { id, hostId, title, skill, memberIds, members }
+let isSessionHost = false;
+let sessionTimerSyncInterval = null;
+let sessionPollInterval = null;
+
+// WebRTC state
+let signalingWS = null;
+const peerConnections = {};  // peerId -> RTCPeerConnection
+const RTC_CONFIG = {
+    iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+    ]
 };
+
+function tr(key) {
+    return (TRANSLATIONS[currentLanguage] || TRANSLATIONS['jp'])[key] || key;
+}
+
+// ── Helpers ──
+function getWsUrl(sessionId, userId) {
+    const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+    return `${proto}://${location.host}/ws?sessionId=${encodeURIComponent(sessionId)}&userId=${encodeURIComponent(userId)}`;
+}
+
+function isSecureContext() {
+    return location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+}
+
+// ── Render Study Room (entry point) ──
+async function renderStudyRoom() {
+    const httpsWarning = document.getElementById('study-https-warning');
+    if (httpsWarning) httpsWarning.classList.toggle('hidden', isSecureContext());
+
+    if (!currentUser) return;
+
+    try {
+        const res = await fetch(`${API_BASE}/study-sessions/active?userId=${currentUser.id}`);
+        const data = await res.json();
+        if (data.session) {
+            currentSession = data.session;
+            isSessionHost = currentSession.hostId === currentUser.id;
+            showSessionPanel(currentSession);
+            initWebSocket();
+        } else {
+            showLobby();
+            await checkPendingInvites();
+        }
+    } catch (e) {
+        console.error('Failed to load study session:', e);
+        showLobby();
+    }
+}
+
+function showLobby() {
+    document.getElementById('study-lobby').classList.remove('hidden');
+    document.getElementById('study-session-active').classList.add('hidden');
+}
+
+function showSessionPanel(session) {
+    document.getElementById('study-lobby').classList.add('hidden');
+    document.getElementById('study-session-active').classList.remove('hidden');
+
+    document.getElementById('session-title-display').textContent = session.title || '—';
+    const skillEl = document.getElementById('session-skill-display');
+    skillEl.textContent = session.skill || '';
+    skillEl.style.display = session.skill ? '' : 'none';
+    document.getElementById('session-member-count').textContent = (session.memberIds || []).length;
+
+    // Set local avatar
+    const localAvatar = document.getElementById('local-tile-avatar');
+    const localName = document.getElementById('local-tile-name');
+    if (localAvatar) localAvatar.src = currentUser.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(currentUser.name)}`;
+    if (localName) localName.textContent = tr('video_label_you');
+
+    // Render member tiles (excluding self)
+    renderMemberTiles(session.members || []);
+
+    // Start timer sync
+    startSessionSync();
+}
+
+function renderMemberTiles(members) {
+    const grid = document.getElementById('session-video-grid');
+    // Remove existing remote tiles
+    grid.querySelectorAll('.session-video-tile:not(.local-tile)').forEach(el => el.remove());
+
+    members.forEach(member => {
+        if (member.id === currentUser.id) return;
+        addRemoteTile(member.id, member.name, member.avatar);
+    });
+}
+
+function addRemoteTile(peerId, name, avatar) {
+    const grid = document.getElementById('session-video-grid');
+    if (document.getElementById(`tile-${peerId}`)) return; // already exists
+    const tile = document.createElement('div');
+    tile.className = 'session-video-tile';
+    tile.id = `tile-${peerId}`;
+    const avatarSrc = avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name || peerId)}`;
+    tile.innerHTML = `
+        <video id="video-${peerId}" autoplay playsinline style="display:none;width:100%;height:100%;object-fit:cover;border-radius:10px;"></video>
+        <div class="tile-placeholder" id="placeholder-${peerId}">
+            <img src="${avatarSrc}" alt="${name}" class="tile-avatar-img">
+        </div>
+        <div class="tile-name-label">${name || peerId}</div>
+        <div class="tile-status-badge" id="status-${peerId}">⚫</div>
+    `;
+    grid.appendChild(tile);
+}
+
+function removeRemoteTile(peerId) {
+    const tile = document.getElementById(`tile-${peerId}`);
+    if (tile) tile.remove();
+}
+
+// ── Session Sync (Pomodoro) ──
+function startSessionSync() {
+    clearInterval(sessionTimerSyncInterval);
+    clearInterval(sessionPollInterval);
+
+    if (isSessionHost) {
+        // Host pushes timer state every 5s
+        sessionTimerSyncInterval = setInterval(async () => {
+            if (!currentSession) return;
+            try {
+                await fetch(`${API_BASE}/study-sessions/sync-timer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId: currentSession.id,
+                        userId: currentUser.id,
+                        pomodoroMode,
+                        pomodoroSeconds,
+                        isRunning: isTimerRunning
+                    })
+                });
+            } catch (e) { /* ignore */ }
+        }, 5000);
+    } else {
+        // Members poll timer state every 4s
+        sessionPollInterval = setInterval(async () => {
+            if (!currentSession) return;
+            try {
+                const res = await fetch(`${API_BASE}/study-sessions/active?userId=${currentUser.id}`);
+                const data = await res.json();
+                if (!data.session) { leaveSessionUI(); return; }
+                // Sync timer from server
+                const srv = data.session;
+                const elapsed = (Date.now() - new Date(srv.lastSyncAt).getTime()) / 1000;
+                const synced = Math.max(0, srv.pomodoroSeconds - (srv.isRunning ? elapsed : 0));
+                if (Math.abs(synced - pomodoroSeconds) > 3) {
+                    pomodoroMode = srv.pomodoroMode;
+                    pomodoroTotalSeconds = POMODORO_MODES[pomodoroMode];
+                    pomodoroSeconds = Math.round(synced);
+                    updatePomodoroDisplay();
+                    updatePomodoroRing();
+                    // Sync mode buttons
+                    document.querySelectorAll('.pomodoro-mode-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.mode === pomodoroMode);
+                    });
+                    if (srv.isRunning && !isTimerRunning) startPomodoroTick();
+                }
+                // Update member list
+                document.getElementById('session-member-count').textContent = srv.memberIds.length;
+                renderMemberTiles(data.session.members || []);
+            } catch (e) { /* ignore */ }
+        }, 4000);
+    }
+}
+
+function stopSessionSync() {
+    clearInterval(sessionTimerSyncInterval);
+    clearInterval(sessionPollInterval);
+}
+
+// ── WebSocket Signaling ──
+function initWebSocket() {
+    if (!currentSession || !currentUser) return;
+    if (signalingWS && signalingWS.readyState === WebSocket.OPEN) signalingWS.close();
+
+    signalingWS = new WebSocket(getWsUrl(currentSession.id, currentUser.id));
+
+    signalingWS.onmessage = async (event) => {
+        const msg = JSON.parse(event.data);
+        const { type, peerId, data } = msg;
+
+        if (type === 'peer-joined') {
+            // Get member info and add tile
+            await ensureRemoteTileForPeer(peerId);
+            // Create offer as the existing peer
+            createOffer(peerId);
+        } else if (type === 'offer') {
+            await handleOffer(peerId, data);
+        } else if (type === 'answer') {
+            const pc = peerConnections[peerId];
+            if (pc) await pc.setRemoteDescription(new RTCSessionDescription(data));
+        } else if (type === 'candidate') {
+            const pc = peerConnections[peerId];
+            if (pc && data) await pc.addIceCandidate(new RTCIceCandidate(data)).catch(() => {});
+        } else if (type === 'peer-left') {
+            closePeer(peerId);
+            removeRemoteTile(peerId);
+        }
+    };
+
+    signalingWS.onerror = (err) => console.error('WS error:', err);
+    signalingWS.onclose = () => {};
+}
+
+async function ensureRemoteTileForPeer(peerId) {
+    if (!document.getElementById(`tile-${peerId}`)) {
+        try {
+            const res = await fetch(`${API_BASE}/sync?userId=${currentUser.id}`);
+            // Just add generic tile if we can't get name
+        } catch(e) {}
+        addRemoteTile(peerId, peerId, '');
+    }
+}
+
+function createPeerConnection(peerId) {
+    if (peerConnections[peerId]) return peerConnections[peerId];
+    const pc = new RTCPeerConnection(RTC_CONFIG);
+    peerConnections[peerId] = pc;
+
+    // Add local tracks
+    if (localStream) {
+        localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+    }
+
+    pc.onicecandidate = (event) => {
+        if (event.candidate && signalingWS && signalingWS.readyState === WebSocket.OPEN) {
+            signalingWS.send(JSON.stringify({ type: 'candidate', targetId: peerId, data: event.candidate }));
+        }
+    };
+
+    pc.ontrack = (event) => {
+        const videoEl = document.getElementById(`video-${peerId}`);
+        const placeholder = document.getElementById(`placeholder-${peerId}`);
+        if (videoEl && event.streams[0]) {
+            videoEl.srcObject = event.streams[0];
+            videoEl.style.display = 'block';
+            if (placeholder) placeholder.style.display = 'none';
+            document.getElementById(`tile-${peerId}`)?.classList.add('cam-active');
+        }
+        // Handle track ended (camera off)
+        event.streams[0].getTracks().forEach(track => {
+            track.onended = () => {
+                if (videoEl) videoEl.style.display = 'none';
+                if (placeholder) placeholder.style.display = '';
+                document.getElementById(`tile-${peerId}`)?.classList.remove('cam-active');
+            };
+        });
+    };
+
+    pc.onconnectionstatechange = () => {
+        if (['failed', 'disconnected', 'closed'].includes(pc.connectionState)) {
+            closePeer(peerId);
+        }
+    };
+    return pc;
+}
+
+async function createOffer(peerId) {
+    const pc = createPeerConnection(peerId);
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    if (signalingWS && signalingWS.readyState === WebSocket.OPEN) {
+        signalingWS.send(JSON.stringify({ type: 'offer', targetId: peerId, data: offer }));
+    }
+}
+
+async function handleOffer(peerId, offerSdp) {
+    await ensureRemoteTileForPeer(peerId);
+    const pc = createPeerConnection(peerId);
+    await pc.setRemoteDescription(new RTCSessionDescription(offerSdp));
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+    if (signalingWS && signalingWS.readyState === WebSocket.OPEN) {
+        signalingWS.send(JSON.stringify({ type: 'answer', targetId: peerId, data: answer }));
+    }
+}
+
+function closePeer(peerId) {
+    if (peerConnections[peerId]) {
+        peerConnections[peerId].close();
+        delete peerConnections[peerId];
+    }
+}
+
+function closeAllPeers() {
+    Object.keys(peerConnections).forEach(peerId => closePeer(peerId));
+    if (signalingWS) { signalingWS.close(); signalingWS = null; }
+}
+
+// ── Create Session ──
+document.getElementById('btn-create-session').addEventListener('click', () => {
+    openModal('modal-create-session');
+});
+
+document.getElementById('form-create-session').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('session-title-input').value.trim();
+    const skill = document.getElementById('session-skill-input').value.trim();
+    if (!title || !currentUser) return;
+    try {
+        const res = await fetch(`${API_BASE}/study-sessions/create`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ hostId: currentUser.id, title, skill })
+        });
+        const data = await res.json();
+        if (data.session) {
+            currentSession = { ...data.session, members: [{ id: currentUser.id, name: currentUser.name, avatar: currentUser.avatar }] };
+            isSessionHost = true;
+            closeModal('modal-create-session');
+            document.getElementById('session-title-input').value = '';
+            document.getElementById('session-skill-input').value = '';
+            showSessionPanel(currentSession);
+            initWebSocket();
+            showToast(tr('toast_session_created'), 'success');
+        }
+    } catch (err) {
+        console.error('Create session error:', err);
+    }
+});
+
+// ── Invite to Session ──
+document.getElementById('btn-invite-session').addEventListener('click', async () => {
+    if (!currentSession || !currentUser) return;
+    const container = document.getElementById('session-invite-candidates');
+    container.innerHTML = '<p style="opacity:0.5;font-size:0.85rem;">読み込み中...</p>';
+    openModal('modal-invite-session');
+
+    try {
+        const syncRes = await fetch(`${API_BASE}/sync?userId=${currentUser.id}`);
+        const syncData = await syncRes.json();
+        const matches = (syncData.matches || []).filter(m => m.status === 'active');
+        const groups = syncData.groups || [];
+
+        // Build candidate set (matches + group members), exclude already in session
+        const candidates = new Map();
+        matches.forEach(m => {
+            const partner = m.user1Id === currentUser.id ? { id: m.user2Id, name: m.user2Name, avatar: m.user2Avatar } : { id: m.user1Id, name: m.user1Name, avatar: m.user1Avatar };
+            if (partner.id && !currentSession.memberIds.includes(partner.id)) {
+                candidates.set(partner.id, { ...partner, relation: tr('study_invite_btn') + ' (Match)' });
+            }
+        });
+        groups.forEach(g => {
+            (g.memberIds || []).forEach(mid => {
+                if (mid !== currentUser.id && !currentSession.memberIds.includes(mid) && !candidates.has(mid)) {
+                    const u = syncData.users?.find(u => u.id === mid);
+                    if (u) candidates.set(mid, { id: u.id, name: u.name, avatar: u.avatar, relation: `${g.name} (Group)` });
+                }
+            });
+        });
+
+        if (candidates.size === 0) {
+            container.innerHTML = `<p style="opacity:0.55;font-size:0.85rem;">${tr('no_eligible_partners')}</p>`;
+            return;
+        }
+
+        container.innerHTML = '';
+        candidates.forEach(candidate => {
+            const row = document.createElement('div');
+            row.className = 'invite-candidate-row';
+            const avatarSrc = candidate.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(candidate.name)}`;
+            row.innerHTML = `
+                <img src="${avatarSrc}" alt="${candidate.name}">
+                <div class="candidate-info">
+                    <strong>${candidate.name}</strong>
+                    <small>${candidate.relation}</small>
+                </div>
+                <button class="btn btn-primary btn-sm" data-invitee="${candidate.id}">${tr('study_invite_btn')}</button>
+            `;
+            row.querySelector('button').addEventListener('click', async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/study-sessions/invite`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sessionId: currentSession.id, hostId: currentUser.id, inviteeId: candidate.id })
+                    });
+                    if (res.ok) {
+                        showToast(`${tr('toast_invite_sent')} → ${candidate.name}`, 'success');
+                        row.querySelector('button').disabled = true;
+                        row.querySelector('button').textContent = '✓ Sent';
+                    } else {
+                        const err = await res.json();
+                        showToast(err.error || tr('toast_session_invite_err'), 'danger');
+                    }
+                } catch (err) {
+                    showToast(tr('toast_session_invite_err'), 'danger');
+                }
+            });
+            container.appendChild(row);
+        });
+    } catch (err) {
+        container.innerHTML = `<p style="opacity:0.55;">${tr('toast_session_invite_err')}</p>`;
+    }
+});
+
+// ── Leave Session ──
+document.getElementById('btn-leave-session').addEventListener('click', async () => {
+    if (!currentSession || !currentUser) return;
+    try {
+        await fetch(`${API_BASE}/study-sessions/leave`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId: currentSession.id, userId: currentUser.id })
+        });
+    } catch (e) { /* ignore */ }
+    leaveSessionUI();
+});
+
+function leaveSessionUI() {
+    stopSessionSync();
+    closeAllPeers();
+    clearInterval(pomodoroTimer);
+    isTimerRunning = false;
+    // Stop media
+    if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+    if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+    isCamOn = false; isMicOn = false;
+    _updateCamBtn(); _updateMicBtn();
+    currentSession = null;
+    showToast(tr('toast_session_left'));
+    showLobby();
+}
+
+// ── Check Pending Invites ──
+async function checkPendingInvites() {
+    if (!currentUser) return;
+    try {
+        const res = await fetch(`${API_BASE}/sync?userId=${currentUser.id}`);
+        const data = await res.json();
+        const inviteNotifs = (data.notifications || []).filter(n => n.type === 'study_invite' && !n.read);
+        const container = document.getElementById('study-invite-cards');
+        const listEl = document.getElementById('study-invite-list');
+        container.innerHTML = '';
+        if (inviteNotifs.length === 0) { listEl.classList.add('hidden'); return; }
+        listEl.classList.remove('hidden');
+        inviteNotifs.forEach(notif => {
+            let info;
+            try { info = JSON.parse(notif.content); } catch { return; }
+            const card = document.createElement('div');
+            card.className = 'invite-incoming-card';
+            card.innerHTML = `
+                <div class="invite-info">
+                    <strong>${info.hostName}</strong>
+                    <small>${info.title}${info.skill ? ' · ' + info.skill : ''}</small>
+                </div>
+                <button class="btn btn-primary btn-sm" data-session="${info.sessionId}">${tr('study_join_btn') || '参加'}</button>
+            `;
+            card.querySelector('button').addEventListener('click', async () => {
+                try {
+                    const res = await fetch(`${API_BASE}/study-sessions/join`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ sessionId: info.sessionId, userId: currentUser.id })
+                    });
+                    const joinData = await res.json();
+                    if (joinData.session) {
+                        currentSession = joinData.session;
+                        isSessionHost = false;
+                        // Mark notification read
+                        await fetch(`${API_BASE}/notifications/read`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notificationId: notif.id, userId: currentUser.id }) });
+                        showSessionPanel(currentSession);
+                        initWebSocket();
+                        showToast(tr('toast_session_joined'), 'success');
+                    } else {
+                        showToast(joinData.error || 'Session ended', 'danger');
+                    }
+                } catch (err) {
+                    showToast('Failed to join session', 'danger');
+                }
+            });
+            container.appendChild(card);
+        });
+    } catch (e) { console.error('checkPendingInvites error:', e); }
+}
+
+// ── Pomodoro Timer ──
+function updatePomodoroDisplay() {
+    const mins = String(Math.floor(pomodoroSeconds / 60)).padStart(2, '0');
+    const secs = String(pomodoroSeconds % 60).padStart(2, '0');
+    const el = document.getElementById('pomodoro-timer');
+    if (el) el.textContent = `${mins}:${secs}`;
+}
+
+function updatePomodoroRing() {
+    const ring = document.getElementById('pomodoro-ring');
+    if (!ring) return;
+    const progress = pomodoroTotalSeconds > 0 ? pomodoroSeconds / pomodoroTotalSeconds : 0;
+    ring.style.strokeDashoffset = RING_CIRCUMFERENCE * (1 - progress);
+    // Color by mode
+    const colors = { focus: '#6c63ff', short: '#22c55e', long: '#f59e0b' };
+    ring.style.stroke = colors[pomodoroMode] || '#6c63ff';
+}
+
+function setMode(mode) {
+    if (isTimerRunning) return;
+    pomodoroMode = mode;
+    pomodoroTotalSeconds = POMODORO_MODES[mode];
+    pomodoroSeconds = pomodoroTotalSeconds;
+    document.querySelectorAll('.pomodoro-mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_idle');
+    updatePomodoroDisplay();
+    updatePomodoroRing();
+}
+
+function startPomodoroTick() {
+    if (isTimerRunning) return;
+    isTimerRunning = true;
+    document.getElementById('btn-pomodoro-start')?.classList.add('hidden');
+    document.getElementById('btn-pomodoro-pause')?.classList.remove('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_running');
+
+    pomodoroTimer = setInterval(() => {
+        if (pomodoroSeconds > 0) {
+            pomodoroSeconds--;
+            updatePomodoroDisplay();
+            updatePomodoroRing();
+        } else {
+            clearInterval(pomodoroTimer);
+            isTimerRunning = false;
+            const isFocus = pomodoroMode === 'focus';
+            showToast(isFocus ? tr('pomodoro_finished_focus') : tr('pomodoro_finished_break'), 'success');
+            document.getElementById('btn-pomodoro-start')?.classList.remove('hidden');
+            document.getElementById('btn-pomodoro-pause')?.classList.add('hidden');
+            if (statusEl) statusEl.innerText = isFocus ? tr('pomodoro_status_break') : tr('pomodoro_status_idle');
+            const nextMode = isFocus ? 'short' : 'focus';
+            setMode(nextMode);
+        }
+    }, 1000);
+}
+
+// Mode buttons
+document.querySelectorAll('.pomodoro-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+});
+
+document.getElementById('btn-pomodoro-start')?.addEventListener('click', () => startPomodoroTick());
+
+document.getElementById('btn-pomodoro-pause')?.addEventListener('click', () => {
+    clearInterval(pomodoroTimer);
+    isTimerRunning = false;
+    document.getElementById('btn-pomodoro-start')?.classList.remove('hidden');
+    document.getElementById('btn-pomodoro-pause')?.classList.add('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_paused');
+});
+
+document.getElementById('btn-pomodoro-reset')?.addEventListener('click', () => {
+    clearInterval(pomodoroTimer);
+    isTimerRunning = false;
+    pomodoroSeconds = POMODORO_MODES[pomodoroMode];
+    pomodoroTotalSeconds = pomodoroSeconds;
+    document.getElementById('btn-pomodoro-start')?.classList.remove('hidden');
+    document.getElementById('btn-pomodoro-pause')?.classList.add('hidden');
+    const statusEl = document.getElementById('study-status-desc');
+    if (statusEl) statusEl.innerText = tr('pomodoro_status_idle');
+    updatePomodoroDisplay();
+    updatePomodoroRing();
+});
+
+// ── Camera / Mic / Screen ──
+function _updateCamBtn() {
+    const btn = document.getElementById('btn-toggle-cam');
+    if (!btn) return;
+    btn.classList.toggle('active', isCamOn);
+    btn.classList.toggle('muted', false);
+    btn.querySelector('i').className = isCamOn ? 'fa-solid fa-video' : 'fa-solid fa-video-slash';
+}
+function _updateMicBtn() {
+    const btn = document.getElementById('btn-toggle-mic');
+    if (!btn) return;
+    btn.classList.toggle('active', isMicOn);
+    btn.querySelector('i').className = isMicOn ? 'fa-solid fa-microphone' : 'fa-solid fa-microphone-slash';
+}
+function _updateShareBtn() {
+    const btn = document.getElementById('btn-share-screen');
+    if (!btn) return;
+    // Share button has no toggle state
+}
+
+document.getElementById('btn-toggle-cam')?.addEventListener('click', async () => {
+    if (!isSecureContext()) { showToast('⚠️ HTTPS required for camera', 'danger'); return; }
+    const video = document.getElementById('local-video');
+    const placeholder = document.getElementById('local-video-placeholder');
+    if (!isCamOn) {
+        try {
+            const camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            if (localStream) localStream.getVideoTracks().forEach(t => t.stop());
+            const tracks = [...camStream.getVideoTracks()];
+            if (micStream) tracks.push(...micStream.getAudioTracks());
+            localStream = new MediaStream(tracks);
+            if (video) { video.srcObject = localStream; video.style.display = 'block'; }
+            if (placeholder) placeholder.style.display = 'none';
+            document.getElementById('local-tile')?.classList.add('cam-active');
+            isCamOn = true;
+            // Add tracks to all peer connections
+            Object.values(peerConnections).forEach(pc => {
+                camStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+            });
+        } catch (err) {
+            const msg = err.name === 'NotAllowedError' ? '🚫 Camera permission denied' : err.name === 'NotFoundError' ? '📷 No camera found' : tr('toast_camera_error');
+            showToast(msg, 'danger');
+        }
+    } else {
+        if (localStream) localStream.getVideoTracks().forEach(t => t.stop());
+        if (video) { video.srcObject = null; video.style.display = 'none'; }
+        if (placeholder) placeholder.style.display = '';
+        document.getElementById('local-tile')?.classList.remove('cam-active');
+        isCamOn = false;
+        localStream = isMicOn && micStream ? micStream : null;
+    }
+    _updateCamBtn();
+});
+
+document.getElementById('btn-toggle-mic')?.addEventListener('click', async () => {
+    if (!isSecureContext()) { showToast('⚠️ HTTPS required for mic', 'danger'); return; }
+    if (!isMicOn) {
+        try {
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+            isMicOn = true;
+            showToast(tr('toast_mic_on'));
+            Object.values(peerConnections).forEach(pc => {
+                micStream.getAudioTracks().forEach(track => pc.addTrack(track, micStream));
+            });
+        } catch (err) {
+            const msg = err.name === 'NotAllowedError' ? '🚫 Mic permission denied' : '🎤 No microphone found';
+            showToast(msg, 'danger');
+        }
+    } else {
+        if (micStream) micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
+        isMicOn = false;
+        showToast(tr('toast_mic_off'));
+    }
+    _updateMicBtn();
+});
+
+document.getElementById('btn-share-screen')?.addEventListener('click', async () => {
+    if (!isSecureContext()) { showToast('⚠️ HTTPS required for screen share', 'danger'); return; }
+    try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        const video = document.getElementById('local-video');
+        const placeholder = document.getElementById('local-video-placeholder');
+        if (video) { video.srcObject = stream; video.style.display = 'block'; }
+        if (placeholder) placeholder.style.display = 'none';
+        showToast(tr('toast_screenshare_start'));
+        // Add to peers
+        Object.values(peerConnections).forEach(pc => {
+            stream.getTracks().forEach(track => pc.addTrack(track, stream));
+        });
+        stream.getVideoTracks()[0].addEventListener('ended', () => {
+            if (video) { video.srcObject = isCamOn && localStream ? localStream : null; if (!isCamOn) video.style.display = 'none'; }
+            if (placeholder && !isCamOn) placeholder.style.display = '';
+            showToast(tr('toast_screenshare_end'));
+        });
+    } catch (err) {
+        if (err.name !== 'AbortError' && err.name !== 'NotAllowedError') console.error('Screen share error:', err);
+    }
+});
+
+// ── Session Mini Chat ──
+document.getElementById('session-chat-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentSession || !currentUser) return;
+    const input = document.getElementById('session-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    // Add to UI immediately
+    appendSessionChatBubble(currentUser.name, text, true);
+    // Broadcast via signaling WS as chat message
+    if (signalingWS && signalingWS.readyState === WebSocket.OPEN) {
+        signalingWS.send(JSON.stringify({ type: 'chat', data: { name: currentUser.name, text } }));
+    }
+});
+
+// Listen for incoming chat via WS
+function handleWsChatMessage(name, text) {
+    appendSessionChatBubble(name, text, false);
+}
+
+function appendSessionChatBubble(name, text, isSelf) {
+    const container = document.getElementById('session-chat-messages');
+    if (!container) return;
+    const bubble = document.createElement('div');
+    bubble.className = 'session-chat-bubble';
+    bubble.innerHTML = `<span class="bubble-name">${name}</span><span class="bubble-text">${text}</span>`;
+    container.appendChild(bubble);
+    container.scrollTop = container.scrollHeight;
+}
+
+// Extend WS onmessage to handle chat
+const _origWsInit = initWebSocket;
+// Patch: handle chat in WS message handler (already done inline above via type === 'chat' check)
+// We add chat handling to the existing ws.onmessage in initWebSocket via the peer-left block
+
+function initStudyRoom() {
+    renderStudyRoom();
+}
+
+
 
 function tr(key) {
     return (TRANSLATIONS[currentLanguage] || TRANSLATIONS['jp'])[key] || key;

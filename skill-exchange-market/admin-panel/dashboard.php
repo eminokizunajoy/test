@@ -44,35 +44,55 @@ include __DIR__ . '/header.php';
 
 <!-- Stats Cards -->
 <div class="stats-grid">
-    <div class="stat-card" style="--line-color:linear-gradient(90deg,#6c63ff,#3b82f6);">
-        <div class="stat-label">Total Logs</div>
-        <div class="stat-value"><?= number_format($stats['total_logs']) ?></div>
-        <div class="stat-sub">All-time records</div>
-        <i class="fa-solid fa-database stat-icon"></i>
+    <div class="stat-card" style="--line-color:linear-gradient(135deg,#6c63ff,#3b82f6);">
+        <div class="stat-card-cover">
+            <i class="fa-solid fa-database"></i>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-label">Total Logs</div>
+            <div class="stat-value"><?= number_format($stats['total_logs']) ?></div>
+            <div class="stat-sub">All-time records</div>
+        </div>
     </div>
-    <div class="stat-card" style="--line-color:linear-gradient(90deg,#ef4444,#dc2626);--val-color:#f87171;">
-        <div class="stat-label">Failed Attempts</div>
-        <div class="stat-value"><?= number_format($stats['failed_count']) ?></div>
-        <div class="stat-sub">Login failures</div>
-        <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+    <div class="stat-card" style="--line-color:linear-gradient(135deg,#ef4444,#dc2626);">
+        <div class="stat-card-cover">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-label">Failed Attempts</div>
+            <div class="stat-value" style="color: #ff3b30;"><?= number_format($stats['failed_count']) ?></div>
+            <div class="stat-sub">Login failures</div>
+        </div>
     </div>
-    <div class="stat-card" style="--line-color:linear-gradient(90deg,#f59e0b,#d97706);--val-color:#fbbf24;">
-        <div class="stat-label">Blocked Hits</div>
-        <div class="stat-value"><?= number_format($stats['blocked_count']) ?></div>
-        <div class="stat-sub">Gatekeeper stops</div>
-        <i class="fa-solid fa-ban stat-icon"></i>
+    <div class="stat-card" style="--line-color:linear-gradient(135deg,#f59e0b,#d97706);">
+        <div class="stat-card-cover">
+            <i class="fa-solid fa-ban"></i>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-label">Blocked Hits</div>
+            <div class="stat-value" style="color: #ff9500;"><?= number_format($stats['blocked_count']) ?></div>
+            <div class="stat-sub">Gatekeeper stops</div>
+        </div>
     </div>
-    <div class="stat-card" style="--line-color:linear-gradient(90deg,#22c55e,#16a34a);--val-color:#4ade80;">
-        <div class="stat-label">Unique IPs</div>
-        <div class="stat-value"><?= number_format($stats['unique_ips']) ?></div>
-        <div class="stat-sub">Distinct sources</div>
-        <i class="fa-solid fa-network-wired stat-icon"></i>
+    <div class="stat-card" style="--line-color:linear-gradient(135deg,#22c55e,#16a34a);">
+        <div class="stat-card-cover">
+            <i class="fa-solid fa-network-wired"></i>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-label">Unique IPs</div>
+            <div class="stat-value" style="color: #34c759;"><?= number_format($stats['unique_ips']) ?></div>
+            <div class="stat-sub">Distinct sources</div>
+        </div>
     </div>
-    <div class="stat-card" style="--line-color:linear-gradient(90deg,#8b5cf6,#7c3aed);--val-color:#a78bfa;">
-        <div class="stat-label">Blacklisted IPs</div>
-        <div class="stat-value"><?= number_format($stats['blacklist_count']) ?></div>
-        <div class="stat-sub">Currently blocked</div>
-        <i class="fa-solid fa-shield-halved stat-icon"></i>
+    <div class="stat-card" style="--line-color:linear-gradient(135deg,#8b5cf6,#7c3aed);">
+        <div class="stat-card-cover">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-label">Blacklisted IPs</div>
+            <div class="stat-value" style="color: #8b5cf6;"><?= number_format($stats['blacklist_count']) ?></div>
+            <div class="stat-sub">Currently blocked</div>
+        </div>
     </div>
 </div>
 

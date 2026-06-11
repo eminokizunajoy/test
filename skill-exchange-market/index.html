@@ -632,87 +632,156 @@
             <!-- ================= STUDY ROOM VIEW ================= -->
             <section id="view-study" class="app-view hidden">
                 <div class="view-header">
-                    <h1 data-i18n="study_title">バーチャル自習室 (ポモドーロ)</h1>
-                    <p data-i18n="study_subtitle">ポモドーロタイマーとWebカメラ共有で、他の学生と一緒に集中して勉強しましょう。</p>
+                    <h1 data-i18n="study_title">バーチャル自習室</h1>
+                    <p data-i18n="study_subtitle">マッチしたパートナーだけを招待できるプライベート自習ルーム。</p>
                 </div>
 
-                <!-- HTTPS warning — hidden when on HTTPS/localhost -->
+                <!-- HTTPS warning -->
                 <div id="study-https-warning" class="study-https-warning hidden">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <div>
-                        <strong>⚠️ HTTPS が必要 / HTTPS Required</strong><br>
-                        <span style="font-size:0.85rem;">カメラ・マイク・画面共有は HTTPS 接続でのみ動作します。<br>
-                        Camera, mic & screen share only work over HTTPS. Please deploy with SSL.</span>
+                    <div><strong>⚠️ HTTPS Required</strong><br>
+                        <span style="font-size:0.85rem;">Camera / mic / screen share only work over HTTPS (SSL).</span>
                     </div>
                 </div>
 
-                <div class="study-room-layout">
-                    <!-- Left: Pomodoro clock & Controls -->
-                    <div class="study-room-sidebar">
-                        <div class="pomodoro-box">
-                            <!-- Mode selector -->
-                            <div class="pomodoro-modes">
-                                <button class="pomodoro-mode-btn active" data-mode="focus" type="button" data-i18n="pomodoro_mode_focus">集中 (25分)</button>
-                                <button class="pomodoro-mode-btn" data-mode="short" type="button" data-i18n="pomodoro_mode_short">短い休憩 (5分)</button>
-                                <button class="pomodoro-mode-btn" data-mode="long" type="button" data-i18n="pomodoro_mode_long">長い休憩 (15分)</button>
-                            </div>
+                <!-- ── LOBBY (not in any session) ── -->
+                <div id="study-lobby" class="study-lobby">
+                    <div class="lobby-hero">
+                        <div class="lobby-icon"><i class="fa-solid fa-lock"></i></div>
+                        <h2 data-i18n="study_no_session">プライベートセッションに参加していません</h2>
+                        <p data-i18n="study_private_note" style="opacity:0.65;max-width:480px;text-align:center;line-height:1.6;">マッチしたパートナーまたは同じグループのメンバーのみ招待できます。</p>
+                        <button id="btn-create-session" class="btn btn-primary btn-lg" type="button">
+                            <i class="fa-solid fa-plus"></i> <span data-i18n="study_create_session">セッションを作成</span>
+                        </button>
+                    </div>
+                    <div id="study-invite-list" class="study-invite-list hidden">
+                        <h3 style="margin-bottom:1rem;" data-i18n="study_incoming_invites">📨 招待が届いています</h3>
+                        <div id="study-invite-cards"></div>
+                    </div>
+                </div>
 
-                            <!-- SVG Ring + Timer -->
-                            <div class="pomodoro-ring-wrapper">
-                                <svg class="pomodoro-ring-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Background ring -->
-                                    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
-                                    <!-- Progress ring -->
-                                    <circle id="pomodoro-ring" cx="100" cy="100" r="90" fill="none"
-                                        stroke="#6c63ff" stroke-width="10"
-                                        stroke-linecap="round"
-                                        transform="rotate(-90 100 100)"
-                                        style="transition: stroke-dashoffset 1s linear; stroke-dasharray: 565.48; stroke-dashoffset: 0;"/>
-                                </svg>
-                                <div id="pomodoro-timer" class="pomodoro-timer">25:00</div>
-                            </div>
-
-                            <div class="pomodoro-controls">
-                                <button id="btn-pomodoro-start" class="btn btn-primary btn-round" type="button"><i class="fa-solid fa-play"></i></button>
-                                <button id="btn-pomodoro-pause" class="btn btn-secondary btn-round hidden" type="button"><i class="fa-solid fa-pause"></i></button>
-                                <button id="btn-pomodoro-reset" class="btn btn-secondary btn-round" type="button"><i class="fa-solid fa-rotate-left"></i></button>
-                            </div>
+                <!-- ── ACTIVE SESSION ── -->
+                <div id="study-session-active" class="study-session-active hidden">
+                    <div class="session-header">
+                        <div class="session-header-info">
+                            <span class="session-live-dot"></span>
+                            <strong id="session-title-display">—</strong>
+                            <span class="session-skill-badge" id="session-skill-display"></span>
+                            <span class="session-members-count"><i class="fa-solid fa-users"></i> <span id="session-member-count">1</span></span>
                         </div>
-
-                        <div class="study-room-info">
-                            <h4 data-i18n="study_info_title">コワーキングステータス</h4>
-                            <p id="study-status-desc" data-i18n="study_desc">ポモドーロタイマーを開始して、集中学習セッションを始めましょう。</p>
+                        <div class="session-header-actions">
+                            <button id="btn-invite-session" class="btn btn-secondary btn-sm" type="button">
+                                <i class="fa-solid fa-user-plus"></i> <span data-i18n="study_invite_btn">招待</span>
+                            </button>
+                            <button id="btn-leave-session" class="btn btn-danger btn-sm" type="button">
+                                <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="study_leave_btn">退出</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Right: Webcam stream -->
-                    <div class="study-room-main">
-                        <div id="video-grid" class="video-grid">
-                            <!-- Local video wrapper -->
-                            <div class="video-wrapper active-speaker">
-                                <video id="local-video" class="video-feed" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;display:none;"></video>
-                                <div id="local-video-placeholder" class="video-placeholder-avatar" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e293b,#0f172a);height:100%;width:100%;">
-                                    <i class="fa-solid fa-camera" style="font-size:3rem;opacity:0.3;"></i>
+                    <div class="session-main-layout">
+                        <!-- Left: Pomodoro -->
+                        <div class="session-pomodoro-col">
+                            <div class="pomodoro-box">
+                                <div class="pomodoro-modes">
+                                    <button class="pomodoro-mode-btn active" data-mode="focus" type="button" data-i18n="pomodoro_mode_focus">集中 (25分)</button>
+                                    <button class="pomodoro-mode-btn" data-mode="short" type="button" data-i18n="pomodoro_mode_short">短い休憩 (5分)</button>
+                                    <button class="pomodoro-mode-btn" data-mode="long" type="button" data-i18n="pomodoro_mode_long">長い休憩 (15分)</button>
                                 </div>
-                                <div class="video-label" id="local-video-label" data-i18n="video_label_you">あなた</div>
+                                <div class="pomodoro-ring-wrapper">
+                                    <svg class="pomodoro-ring-svg" viewBox="0 0 200 200">
+                                        <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+                                        <circle id="pomodoro-ring" cx="100" cy="100" r="90" fill="none"
+                                            stroke="#6c63ff" stroke-width="10" stroke-linecap="round"
+                                            transform="rotate(-90 100 100)"
+                                            style="transition:stroke-dashoffset 1s linear;stroke-dasharray:565.48;stroke-dashoffset:0;"/>
+                                    </svg>
+                                    <div id="pomodoro-timer" class="pomodoro-timer">25:00</div>
+                                </div>
+                                <div class="pomodoro-controls">
+                                    <button id="btn-pomodoro-start" class="btn btn-primary btn-round" type="button"><i class="fa-solid fa-play"></i></button>
+                                    <button id="btn-pomodoro-pause" class="btn btn-secondary btn-round hidden" type="button"><i class="fa-solid fa-pause"></i></button>
+                                    <button id="btn-pomodoro-reset" class="btn btn-secondary btn-round" type="button"><i class="fa-solid fa-rotate-left"></i></button>
+                                </div>
                             </div>
-                            <!-- Mock study buddy -->
-                            <div class="video-wrapper">
-                                <div class="video-feed" style="background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;height:100%;">
-                                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=studyBuddy" style="width:80px;height:80px;opacity:0.5;border-radius:50%;" alt="Partner">
-                                </div>
-                                <div class="video-label" id="study-partner-label" data-i18n="video_label_partner">学習パートナー (シミュレーション)</div>
+                            <div class="study-room-info">
+                                <h4 data-i18n="study_info_title">ステータス</h4>
+                                <p id="study-status-desc" data-i18n="study_desc">タイマーを開始しましょう。</p>
                             </div>
                         </div>
 
-                        <div class="study-controls">
-                            <button id="btn-toggle-cam" class="btn btn-secondary" type="button"><i class="fa-solid fa-video"></i> <span data-i18n="cam_on">カメラ オン</span></button>
-                            <button id="btn-toggle-mic" class="btn btn-secondary" type="button"><i class="fa-solid fa-microphone"></i> <span data-i18n="mic_on">マイク オン</span></button>
-                            <button id="btn-share-screen" class="btn btn-secondary" type="button"><i class="fa-solid fa-desktop"></i> <span data-i18n="screen_share">画面共有</span></button>
+                        <!-- Right: Video Grid + Controls + Chat -->
+                        <div class="session-right-col">
+                            <div id="session-video-grid" class="session-video-grid">
+                                <div class="session-video-tile local-tile" id="local-tile">
+                                    <video id="local-video" autoplay playsinline muted style="display:none;width:100%;height:100%;object-fit:cover;border-radius:10px;"></video>
+                                    <div id="local-video-placeholder" class="tile-placeholder">
+                                        <img id="local-tile-avatar" src="" alt="" class="tile-avatar-img">
+                                    </div>
+                                    <div class="tile-name-label" id="local-tile-name" data-i18n="video_label_you">あなた</div>
+                                    <div class="tile-status-badge" id="local-tile-status">⚫</div>
+                                </div>
+                            </div>
+
+                            <div class="session-media-controls">
+                                <button id="btn-toggle-cam" class="media-btn" type="button" title="Camera">
+                                    <i class="fa-solid fa-video"></i><span class="media-btn-label" data-i18n="cam_on">カメラ</span>
+                                </button>
+                                <button id="btn-toggle-mic" class="media-btn" type="button" title="Mic">
+                                    <i class="fa-solid fa-microphone"></i><span class="media-btn-label" data-i18n="mic_on">マイク</span>
+                                </button>
+                                <button id="btn-share-screen" class="media-btn" type="button" title="Share Screen">
+                                    <i class="fa-solid fa-desktop"></i><span class="media-btn-label" data-i18n="screen_share">共有</span>
+                                </button>
+                            </div>
+
+                            <div class="session-mini-chat">
+                                <div id="session-chat-messages" class="session-chat-messages"></div>
+                                <form id="session-chat-form" class="session-chat-form">
+                                    <input type="text" id="session-chat-input" autocomplete="off" placeholder="メッセージ...">
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-paper-plane"></i></button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Modal: Create Session -->
+            <div id="modal-create-session" class="modal-overlay hidden">
+                <div class="modal-card">
+                    <div class="modal-header">
+                        <h3 data-i18n="study_create_session">セッションを作成</h3>
+                        <button class="modal-close-btn" type="button" onclick="closeModal('modal-create-session')"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <form id="form-create-session" class="modal-body">
+                        <div class="form-group">
+                            <label data-i18n="study_session_title">セッションのタイトル</label>
+                            <input type="text" id="session-title-input" required placeholder="例：AWS を一緒に勉強しよう">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="study_session_skill">対象スキル</label>
+                            <input type="text" id="session-skill-input" placeholder="例：Cloud Computing, Python...">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%"><i class="fa-solid fa-rocket"></i> <span data-i18n="study_create_session">セッション作成</span></button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal: Invite to Session -->
+            <div id="modal-invite-session" class="modal-overlay hidden">
+                <div class="modal-card">
+                    <div class="modal-header">
+                        <h3 data-i18n="study_invite_btn">招待する</h3>
+                        <button class="modal-close-btn" type="button" onclick="closeModal('modal-invite-session')"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="font-size:0.85rem;opacity:0.65;margin-bottom:1rem;" data-i18n="study_invite_desc">マッチしたパートナーまたはグループメンバーのみ招待できます。</p>
+                        <div id="session-invite-candidates" class="session-invite-candidates"></div>
+                    </div>
+                </div>
+            </div>
+
 
 
             <!-- ================= LEADERBOARD VIEW ================= -->

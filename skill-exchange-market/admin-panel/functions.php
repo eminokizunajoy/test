@@ -117,8 +117,34 @@ function requireAdmin(): void {
 // ── Redirect back with flash message ─────────────────────────
 function redirectBack(string $url, string $msg, string $type = 'success'): void {
     $_SESSION['flash'] = ['msg' => $msg, 'type' => $type];
+    
+    // Prevent Open Redirect: ensure URL is local or matches BASE_URL host
+    $parsedUrl = parse_url($url);
+    if (isset($parsedUrl['host'])) {
+        $parsedBase = parse_url(BASE_URL);
+        if ($parsedUrl['host'] !== ($parsedBase['host'] ?? $_SERVER['HTTP_HOST'])) {
+            $url = BASE_URL . '/dashboard.php';
+        }
+    }
+    
     header("Location: $url");
     exit;
+}
+
+// ── CSRF Token Helpers ────────────────────────────────────────
+function getCSRFToken(): string {
+    return $_SESSION['csrf_token'] ?? '';
+}
+
+function verifyCSRFToken(?string $token): bool {
+    if (empty($_SESSION['csrf_token']) || empty($token)) {
+        return false;
+    }
+    return hash_equals($_SESSION['csrf_token'], $token);
+}
+
+function csrfInput(): string {
+    return '<input type="hidden" name="csrf_token" value="' . e(getCSRFToken()) . '">';
 }
 
 // ── Render and clear flash message ───────────────────────────
@@ -190,6 +216,6 @@ function actionBadge(string $action): string {
 }
 
 // ── Sanitize output ───────────────────────────────────────────
-function e(string $str): string {
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+function e(?string $str): string {
+    return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
