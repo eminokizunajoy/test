@@ -10,8 +10,15 @@ define('DB_NAME',         'waf_monitor');
 define('ADMIN_USERNAME',  'sabda26');
 define('ADMIN_PASSWORD',  '123456');
 
-// Sesuaikan dengan URL server kamu (tanpa trailing slash)
-define('BASE_URL', 'http://localhost/skill-exchange-market/admin-panel');
+// Dynamic BASE_URL detection
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+if (strpos($requestUri, '/skill-exchange-market/admin-panel') !== false) {
+    define('BASE_URL', $protocol . $host . '/skill-exchange-market/admin-panel');
+} else {
+    define('BASE_URL', $protocol . $host);
+}
 
 if (session_status() === PHP_SESSION_NONE) {
     session_name('waf_admin_sess');
