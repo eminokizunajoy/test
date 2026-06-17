@@ -1955,6 +1955,11 @@ window.rejectMatchRequest = async function(matchId) {
 // ================= CHAT LOGIC & TRANSLATOR TOOL =================
 window.openChatWindow = function(partnerId) {
     activeChatPartnerId = partnerId;
+    activeGroupId = null;
+    const chatBtn = document.querySelector('[data-target="view-chat"]');
+    if (chatBtn) chatBtn.click();
+    renderChat();
+};
 function renderGroups() {
     const list = document.getElementById("chat-groups-list");
     if (!list) return;
