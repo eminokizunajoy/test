@@ -2161,12 +2161,15 @@ select option {
 .invite-candidate-row .candidate-info strong { display: block; font-size: 0.9rem; }
 .invite-candidate-row .candidate-info small { opacity: 0.55; font-size: 0.75rem; }
 
-
+/* ── Study Room Info Box ── */
+.study-room-info p {
     background: rgba(0,0,0,0.6);
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 .study-controls {
