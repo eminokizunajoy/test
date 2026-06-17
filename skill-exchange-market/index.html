@@ -813,6 +813,141 @@
                     </div>
                 </div>
             </section>
+
+            <!-- ================= WAF MONITOR VIEW (Admin Only) ================= -->
+            <section id="view-waf" class="app-view hidden">
+                <div class="view-header">
+                    <h1><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i> WAF Monitor</h1>
+                    <p style="opacity:0.6;font-size:0.9rem;">Real-time security dashboard &mdash; hanya terlihat oleh admin</p>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;gap:10px;">
+                    <select id="waf-log-filter" class="waf-filter-select">
+                        <option value="all">Semua Log</option>
+                        <option value="failed">Login Gagal</option>
+                        <option value="blocked">Diblokir</option>
+                        <option value="success">Berhasil</option>
+                    </select>
+                    <button id="btn-waf-refresh" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="waf-stats-grid">
+                    <div class="waf-stat-card">
+                        <div class="wsc-icon" style="background:linear-gradient(135deg,#6c63ff,#3b82f6);"><i class="fa-solid fa-database"></i></div>
+                        <div class="wsc-body">
+                            <div class="wsc-label">Total Log</div>
+                            <div class="wsc-value" id="waf-stat-total">&mdash;</div>
+                            <div class="wsc-sub">Semua rekaman</div>
+                        </div>
+                    </div>
+                    <div class="waf-stat-card">
+                        <div class="wsc-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="wsc-body">
+                            <div class="wsc-label">Login Gagal</div>
+                            <div class="wsc-value" style="color:#f87171;" id="waf-stat-failed">&mdash;</div>
+                            <div class="wsc-sub">Percobaan gagal</div>
+                        </div>
+                    </div>
+                    <div class="waf-stat-card">
+                        <div class="wsc-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fa-solid fa-ban"></i></div>
+                        <div class="wsc-body">
+                            <div class="wsc-label">Diblokir WAF</div>
+                            <div class="wsc-value" style="color:#fbbf24;" id="waf-stat-blocked">&mdash;</div>
+                            <div class="wsc-sub">Terhadang sistem</div>
+                        </div>
+                    </div>
+                    <div class="waf-stat-card">
+                        <div class="wsc-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);"><i class="fa-solid fa-network-wired"></i></div>
+                        <div class="wsc-body">
+                            <div class="wsc-label">IP Unik</div>
+                            <div class="wsc-value" style="color:#4ade80;" id="waf-stat-ips">&mdash;</div>
+                            <div class="wsc-sub">Sumber berbeda</div>
+                        </div>
+                    </div>
+                    <div class="waf-stat-card">
+                        <div class="wsc-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="wsc-body">
+                            <div class="wsc-label">IP Blacklist</div>
+                            <div class="wsc-value" style="color:#a78bfa;" id="waf-stat-blacklist">&mdash;</div>
+                            <div class="wsc-sub">Sedang diblokir</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="waf-card" style="margin-bottom:1.25rem;">
+                    <div class="waf-card-header">
+                        <span><i class="fa-solid fa-chart-line" style="color:#6c63ff;"></i> Aktivitas 24 Jam Terakhir</span>
+                    </div>
+                    <div class="waf-card-body" style="padding:16px;">
+                        <div id="waf-chart-empty" class="waf-empty" style="display:none;">
+                            <i class="fa-solid fa-chart-line"></i><p>Belum ada aktivitas</p>
+                        </div>
+                        <canvas id="waf-activity-chart" style="max-height:200px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Logs + Blacklist -->
+                <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;margin-bottom:1.25rem;" class="waf-two-col">
+                    <div class="waf-card">
+                        <div class="waf-card-header">
+                            <span><i class="fa-solid fa-list" style="color:#6c63ff;"></i> Log Akses Terbaru</span>
+                            <span id="waf-log-count" style="font-size:0.75rem;opacity:0.5;"></span>
+                        </div>
+                        <div class="waf-card-body waf-table-wrap">
+                            <table class="waf-table">
+                                <thead><tr><th>IP</th><th>User</th><th>Aksi</th><th>Status</th><th>Waktu</th></tr></thead>
+                                <tbody id="waf-logs-body">
+                                    <tr><td colspan="5" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="waf-card">
+                        <div class="waf-card-header">
+                            <span><i class="fa-solid fa-ban" style="color:#ef4444;"></i> IP Blacklist</span>
+                            <button class="btn btn-danger btn-sm" id="btn-waf-add-block" style="font-size:0.72rem;padding:4px 10px;">
+                                <i class="fa-solid fa-plus"></i> Blokir IP
+                            </button>
+                        </div>
+                        <div class="waf-card-body waf-table-wrap">
+                            <table class="waf-table">
+                                <thead><tr><th>IP</th><th>Alasan</th><th>Aksi</th></tr></thead>
+                                <tbody id="waf-bl-body">
+                                    <tr><td colspan="3" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Block IP Modal -->
+                <div id="waf-block-modal" class="modal-overlay hidden">
+                    <div class="modal-box" style="max-width:420px;">
+                        <div class="modal-header">
+                            <h3><i class="fa-solid fa-ban"></i> Blokir IP Address</h3>
+                            <button class="modal-close" id="waf-block-modal-close">&times;</button>
+                        </div>
+                        <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+                            <div class="form-group">
+                                <label>IP Address</label>
+                                <input type="text" id="waf-block-ip-input" placeholder="contoh: 192.168.1.1" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label>Alasan (opsional)</label>
+                                <input type="text" id="waf-block-reason-input" placeholder="Manually blocked by admin" class="form-input">
+                            </div>
+                            <button id="btn-waf-confirm-block" class="btn btn-danger" style="width:100%;">
+                                <i class="fa-solid fa-shield-halved"></i> Blokir Sekarang
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -1051,147 +1186,6 @@
         </div>
     </div>
 
-    <!-- WAF Monitor View -->
-    <section id="view-waf" class="app-view hidden">
-        <div class="view-header">
-            <h1><i class="fa-solid fa-shield-halved" style="color:#a78bfa;"></i> WAF Monitor</h1>
-            <p style="opacity:0.6;font-size:0.9rem;">Real-time security dashboard — hanya terlihat oleh admin</p>
-        </div>
-
-        <!-- Refresh button -->
-        <div style="display:flex;justify-content:flex-end;margin-bottom:1rem;gap:10px;">
-            <select id="waf-log-filter" class="waf-filter-select">
-                <option value="all">Semua Log</option>
-                <option value="failed">Login Gagal</option>
-                <option value="blocked">Diblokir</option>
-                <option value="success">Berhasil</option>
-            </select>
-            <button id="btn-waf-refresh" class="btn btn-secondary btn-sm">
-                <i class="fa-solid fa-rotate"></i> Refresh
-            </button>
-        </div>
-
-        <!-- Stats Cards -->
-        <div class="waf-stats-grid" id="waf-stats-grid">
-            <div class="waf-stat-card" id="wsc-total">
-                <div class="wsc-icon" style="background:linear-gradient(135deg,#6c63ff,#3b82f6);"><i class="fa-solid fa-database"></i></div>
-                <div class="wsc-body">
-                    <div class="wsc-label">Total Log</div>
-                    <div class="wsc-value" id="waf-stat-total">—</div>
-                    <div class="wsc-sub">Semua rekaman</div>
-                </div>
-            </div>
-            <div class="waf-stat-card">
-                <div class="wsc-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626);"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div class="wsc-body">
-                    <div class="wsc-label">Login Gagal</div>
-                    <div class="wsc-value" style="color:#f87171;" id="waf-stat-failed">—</div>
-                    <div class="wsc-sub">Percobaan gagal</div>
-                </div>
-            </div>
-            <div class="waf-stat-card">
-                <div class="wsc-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fa-solid fa-ban"></i></div>
-                <div class="wsc-body">
-                    <div class="wsc-label">Diblokir</div>
-                    <div class="wsc-value" style="color:#fbbf24;" id="waf-stat-blocked">—</div>
-                    <div class="wsc-sub">Terhadang WAF</div>
-                </div>
-            </div>
-            <div class="waf-stat-card">
-                <div class="wsc-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);"><i class="fa-solid fa-network-wired"></i></div>
-                <div class="wsc-body">
-                    <div class="wsc-label">IP Unik</div>
-                    <div class="wsc-value" style="color:#4ade80;" id="waf-stat-ips">—</div>
-                    <div class="wsc-sub">Sumber berbeda</div>
-                </div>
-            </div>
-            <div class="waf-stat-card">
-                <div class="wsc-icon" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><i class="fa-solid fa-shield-halved"></i></div>
-                <div class="wsc-body">
-                    <div class="wsc-label">IP Diblacklist</div>
-                    <div class="wsc-value" style="color:#a78bfa;" id="waf-stat-blacklist">—</div>
-                    <div class="wsc-sub">Sedang diblokir</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Activity Chart -->
-        <div class="waf-card" style="margin-bottom:1.25rem;">
-            <div class="waf-card-header">
-                <span><i class="fa-solid fa-chart-line" style="color:#6c63ff;"></i> Aktivitas 24 Jam Terakhir</span>
-            </div>
-            <div class="waf-card-body">
-                <div id="waf-chart-empty" class="waf-empty" style="display:none;">
-                    <i class="fa-solid fa-chart-line"></i><p>Belum ada aktivitas</p>
-                </div>
-                <canvas id="waf-activity-chart" style="max-height:200px;"></canvas>
-            </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:1.25rem;margin-bottom:1.25rem;" class="waf-two-col">
-
-            <!-- Recent Logs -->
-            <div class="waf-card">
-                <div class="waf-card-header">
-                    <span><i class="fa-solid fa-list" style="color:#6c63ff;"></i> Log Akses Terbaru</span>
-                    <span id="waf-log-count" style="font-size:0.75rem;opacity:0.5;"></span>
-                </div>
-                <div class="waf-card-body waf-table-wrap">
-                    <table class="waf-table" id="waf-logs-table">
-                        <thead>
-                            <tr><th>IP</th><th>User</th><th>Aksi</th><th>Status</th><th>Waktu</th></tr>
-                        </thead>
-                        <tbody id="waf-logs-body">
-                            <tr><td colspan="5" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Blacklist -->
-            <div class="waf-card">
-                <div class="waf-card-header">
-                    <span><i class="fa-solid fa-ban" style="color:#ef4444;"></i> IP Blacklist</span>
-                    <button class="btn btn-danger btn-sm" id="btn-waf-add-block" style="font-size:0.72rem;padding:4px 10px;">
-                        <i class="fa-solid fa-plus"></i> Blokir IP
-                    </button>
-                </div>
-                <div class="waf-card-body waf-table-wrap">
-                    <table class="waf-table" id="waf-bl-table">
-                        <thead>
-                            <tr><th>IP</th><th>Alasan</th><th>Aksi</th></tr>
-                        </thead>
-                        <tbody id="waf-bl-body">
-                            <tr><td colspan="3" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Block IP Modal -->
-        <div id="waf-block-modal" class="modal-overlay hidden">
-            <div class="modal-box" style="max-width:420px;">
-                <div class="modal-header">
-                    <h3><i class="fa-solid fa-ban"></i> Blokir IP Address</h3>
-                    <button class="modal-close" id="waf-block-modal-close">✕</button>
-                </div>
-                <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
-                    <div class="form-group">
-                        <label>IP Address</label>
-                        <input type="text" id="waf-block-ip-input" placeholder="contoh: 192.168.1.1" class="form-input">
-                    </div>
-                    <div class="form-group">
-                        <label>Alasan (opsional)</label>
-                        <input type="text" id="waf-block-reason-input" placeholder="Manually blocked by admin" class="form-input">
-                    </div>
-                    <button id="btn-waf-confirm-block" class="btn btn-danger" style="width:100%;">
-                        <i class="fa-solid fa-shield-halved"></i> Blokir Sekarang
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Custom Logic Script -->
     <script src="app.js"></script>
