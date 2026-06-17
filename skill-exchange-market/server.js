@@ -220,14 +220,18 @@ app.post('/api/auth/register', (req, res) => {
 app.post('/api/auth/login', (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        return res.status(400).json({ error: "Email dan password wajib diisi" });
+        return res.status(400).json({ error: "Email atau username dan password wajib diisi" });
     }
 
     const db = readDB();
-    const user = db.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    // Allow login with email OR username
+    const user = db.users.find(u =>
+        u.email.toLowerCase() === email.toLowerCase() ||
+        u.username.toLowerCase() === email.toLowerCase()
+    );
 
     if (!user || user.passwordHash !== password) {
-        return res.status(401).json({ error: "Email atau password salah!" });
+        return res.status(401).json({ error: "Email/username atau password salah!" });
     }
 
     res.json({ user, ...db });

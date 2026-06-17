@@ -1256,6 +1256,8 @@ elMenuItems.forEach(item => {
             loadProfileFields();
         } else if (targetId === "view-study") {
             initStudyRoom();
+        } else if (targetId === "view-waf") {
+            renderWafMonitor();
         }
     });
 });
@@ -4648,4 +4650,258 @@ function exportSkillPassport() {
     
     // Trigger browser printing
     window.print();
+}
+
+// ============================================================
+// WAF MONITOR — Integrated Security Dashboard (Admin Only)
+// ============================================================
+
+const WAF_API_BASE = '/admin-panel/waf-api.php?token=waf_spa_2026_secure';
+let wafChart = null;
+
+async function renderWafMonitor() {
+    // Double-check admin access
+    if (!currentUser || (currentUser.username !== 'sabda26' && currentUser.username !== 'admin')) {
+        showToast('Akses ditolak. Hanya admin yang bisa melihat WAF Monitor.', 'error');
+        return;
+    }
+    // Load stats + logs + blacklist in parallel
+    await Promise.all([loadWafStats(), loadWafLogs(), loadWafBlacklist()]);
+    setupWafEventListeners();
+}
+
+// -- Load Stats + Chart --
+async function loadWafStats() {
+    try {
+        const res = await fetch(WAF_API_BASE + '&action=stats');
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error);
+        const s = data.stats;
+        document.getElementById('waf-stat-total').textContent     = s.total_logs.toLocaleString();
+        document.getElementById('waf-stat-failed').textContent    = s.failed_count.toLocaleString();
+        document.getElementById('waf-stat-blocked').textContent   = s.blocked_count.toLocaleString();
+        document.getElementById('waf-stat-ips').textContent       = s.unique_ips.toLocaleString();
+        document.getElementById('waf-stat-blacklist').textContent = s.blacklist_count.toLocaleString();
+        renderWafChart(s.chart);
+    } catch(e) {
+        console.error('WAF stats error:', e);
+    }
+}
+
+function renderWafChart(chart) {
+    const canvas = document.getElementById('waf-activity-chart');
+    const emptyEl = document.getElementById('waf-chart-empty');
+    if (!canvas) return;
+    if (!chart.labels || chart.labels.length === 0) {
+        canvas.style.display = 'none';
+        emptyEl.style.display = 'flex';
+        return;
+    }
+    canvas.style.display = 'block';
+    emptyEl.style.display = 'none';
+    if (wafChart) { wafChart.destroy(); wafChart = null; }
+
+    // Load Chart.js if not already loaded
+    if (typeof Chart === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
+        script.onload = () => _drawWafChart(canvas, chart);
+        document.head.appendChild(script);
+    } else {
+        _drawWafChart(canvas, chart);
+    }
+}
+
+function _drawWafChart(canvas, chart) {
+    wafChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: chart.labels,
+            datasets: [
+                {
+                    label: 'Total',
+                    data: chart.total,
+                    borderColor: '#6c63ff',
+                    backgroundColor: 'rgba(108,99,255,0.08)',
+                    tension: 0.4, fill: true, pointRadius: 3
+                },
+                {
+                    label: 'Gagal',
+                    data: chart.fails,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239,68,68,0.07)',
+                    tension: 0.4, fill: true, pointRadius: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+            scales: {
+                x: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+                y: { ticks: { color: '#475569', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' }, beginAtZero: true }
+            }
+        }
+    });
+}
+
+// -- Load Logs --
+async function loadWafLogs() {
+    const filter = document.getElementById('waf-log-filter')?.value || 'all';
+    const tbody = document.getElementById('waf-logs-body');
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="5" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>`;
+    try {
+        const res = await fetch(`${WAF_API_BASE}&action=logs&limit=50&filter=${filter}`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error);
+        document.getElementById('waf-log-count').textContent = `${data.total} entri`;
+        if (data.logs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="waf-loading" style="color:var(--text-muted);">Tidak ada log ditemukan</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = data.logs.map(log => {
+            const statusBadge = wafStatusBadge(log.status);
+            const actionBadge = wafActionBadge(log.action);
+            const timeStr = wafTimeAgo(log.created_at);
+            const username = log.username ? `<span style="font-size:0.78rem;">${escapeHtml(log.username)}</span>` : '<span style="opacity:0.35;">—</span>';
+            return `<tr>
+                <td class="mono">${escapeHtml(log.ip_address || '—')}</td>
+                <td>${username}</td>
+                <td>${actionBadge}</td>
+                <td>${statusBadge}</td>
+                <td style="font-size:0.75rem;opacity:0.55;white-space:nowrap;">${timeStr}</td>
+            </tr>`;
+        }).join('');
+    } catch(e) {
+        tbody.innerHTML = `<tr><td colspan="5" class="waf-loading" style="color:#f87171;">Gagal memuat: ${e.message}</td></tr>`;
+    }
+}
+
+// -- Load Blacklist --
+async function loadWafBlacklist() {
+    const tbody = document.getElementById('waf-bl-body');
+    if (!tbody) return;
+    tbody.innerHTML = `<tr><td colspan="3" class="waf-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>`;
+    try {
+        const res = await fetch(`${WAF_API_BASE}&action=blacklist`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error);
+        if (data.blacklist.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" class="waf-loading"><i class="fa-solid fa-circle-check" style="color:#4ade80;"></i> Tidak ada IP yang diblokir</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = data.blacklist.map(bl => `
+            <tr>
+                <td class="mono">${escapeHtml(bl.ip_address)}</td>
+                <td style="font-size:0.75rem;opacity:0.65;max-width:140px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(bl.reason || '—')}</td>
+                <td>
+                    <button class="btn-unblock" data-ip="${escapeHtml(bl.ip_address)}">
+                        <i class="fa-solid fa-lock-open"></i> Buka Blokir
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+        // Bind unblock buttons
+        tbody.querySelectorAll('.btn-unblock').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const ip = btn.dataset.ip;
+                if (!confirm(`Buka blokir IP: ${ip}?`)) return;
+                const fd = new FormData();
+                fd.append('ip', ip);
+                await fetch(`${WAF_API_BASE}&action=unblock`, { method: 'POST', body: fd });
+                showToast(`IP ${ip} berhasil dibuka blokirnya`, 'success');
+                await loadWafBlacklist();
+                await loadWafStats();
+            });
+        });
+    } catch(e) {
+        tbody.innerHTML = `<tr><td colspan="3" class="waf-loading" style="color:#f87171;">Gagal memuat: ${e.message}</td></tr>`;
+    }
+}
+
+// -- Event Listeners (setup once) --
+let wafListenersSetup = false;
+function setupWafEventListeners() {
+    if (wafListenersSetup) return;
+    wafListenersSetup = true;
+
+    // Refresh button
+    document.getElementById('btn-waf-refresh')?.addEventListener('click', async () => {
+        await Promise.all([loadWafStats(), loadWafLogs(), loadWafBlacklist()]);
+        showToast('WAF data diperbarui', 'success');
+    });
+
+    // Filter change
+    document.getElementById('waf-log-filter')?.addEventListener('change', () => loadWafLogs());
+
+    // Open block modal
+    document.getElementById('btn-waf-add-block')?.addEventListener('click', () => {
+        document.getElementById('waf-block-modal').classList.remove('hidden');
+    });
+
+    // Close block modal
+    document.getElementById('waf-block-modal-close')?.addEventListener('click', () => {
+        document.getElementById('waf-block-modal').classList.add('hidden');
+    });
+    document.getElementById('waf-block-modal')?.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) e.currentTarget.classList.add('hidden');
+    });
+
+    // Confirm block
+    document.getElementById('btn-waf-confirm-block')?.addEventListener('click', async () => {
+        const ip = document.getElementById('waf-block-ip-input').value.trim();
+        const reason = document.getElementById('waf-block-reason-input').value.trim() || 'Manually blocked by admin';
+        if (!ip) { showToast('Masukkan IP address', 'error'); return; }
+        const fd = new FormData();
+        fd.append('ip', ip);
+        fd.append('reason', reason);
+        await fetch(`${WAF_API_BASE}&action=block`, { method: 'POST', body: fd });
+        document.getElementById('waf-block-modal').classList.add('hidden');
+        document.getElementById('waf-block-ip-input').value = '';
+        document.getElementById('waf-block-reason-input').value = '';
+        showToast(`IP ${ip} berhasil diblokir`, 'success');
+        await loadWafBlacklist();
+        await loadWafStats();
+    });
+}
+
+// -- Helper: Status Badge --
+function wafStatusBadge(status) {
+    const map = {
+        'success': ['success', '? Berhasil'],
+        'failed':  ['failed',  '? Gagal'],
+        'blocked': ['blocked', '? Diblokir'],
+        'visit':   ['visit',   '? Visit'],
+    };
+    const [cls, label] = map[status] || ['visit', status];
+    return `<span class="waf-badge ${cls}">${label}</span>`;
+}
+
+// -- Helper: Action Badge --
+function wafActionBadge(action) {
+    const labels = {
+        'login_attempt': '?? Login',
+        'login_success': '? Login OK',
+        'login_failed':  '? Login Gagal',
+        'blocked':       '?? Diblokir',
+        'page_visit':    '?? Visit',
+    };
+    return `<span class="waf-badge action" style="font-size:0.68rem;">${labels[action] || action}</span>`;
+}
+
+// -- Helper: Time Ago --
+function wafTimeAgo(dateStr) {
+    if (!dateStr) return '—';
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+    if (diff < 60)   return `${diff}d lalu`;
+    if (diff < 3600) return `${Math.floor(diff/60)}m lalu`;
+    if (diff < 86400) return `${Math.floor(diff/3600)}j lalu`;
+    return `${Math.floor(diff/86400)} hari lalu`;
+}
+
+// -- Helper: Escape HTML --
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
